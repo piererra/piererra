@@ -1,0 +1,934 @@
+/* ============================================================
+   GTA SA SAVE EDITOR — editors/gtasa/gtasa-editor.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 5 — Editor reskin
+
+   sae- class names are kept as-is (the 20+ gtasa-*.js logic files
+   hardcode them when building DOM), only the local token *values*
+   below change — every sae- rule in this file already reads through
+   these aliases, so remapping them here is enough to reskin the
+   whole page onto the pier design system.
+
+   Palette (was game-signature green/gold on near-black):
+     bg / panel / card / input : var(--pier-*) monochrome tokens
+     accent (was SA green)     : pier pink   — sidebar active state,
+                                  dropzone hover, focus rings
+     money highlight (was gold): kept as a muted amber, functional
+                                  "this is currency" signal, not brand
+     danger (was red)          : kept functional
+============================================================ */
+
+:root {
+  --bg-deep:    var(--pier-bg);
+  --bg-panel:   var(--pier-panel);
+  --bg-panel-solid: var(--pier-panel);
+  --bg-card:    var(--pier-card);
+  --bg-input:   var(--pier-card);
+  --green:      var(--pier-pink);
+  --green-dim:  color-mix(in srgb, var(--pier-pink) 12%, transparent);
+  --green-glow: var(--pier-pink-glow);
+  /* Aliases consumed by styles/pier-editor-shell.css */
+  --tool-accent:      var(--green);
+  --tool-accent-dim:  var(--green-dim);
+  --tool-accent-glow: var(--green-glow);
+  --gold:       #E0B030;
+  --gold-dim:   rgba(224,176,48,0.13);
+  --red:        #F87171;
+  --text-main:  var(--pier-text);
+  --font:       var(--pier-font-body);
+  --ease:       var(--pier-ease);
+}
+
+.sae-header {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+
+/* Reinforce this tool's accent on the shared top nav so it's clear at a glance which editor is open */
+.pier-nav__current { color: var(--tool-accent); }
+
+.sae-header__game {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--green);
+}
+
+.sae-header__title {
+  font-size: 1.8rem;
+  margin: 0.35rem 0;
+  color: var(--text-main);
+}
+
+.sae-header__by {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.sae-header__badge {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 1px solid rgba(224,176,48,0.35);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+}
+
+.sae-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 0.9rem 3rem;
+}
+
+/* Keeps the load-file dropzone centered and narrow even though
+   .sae-main is now wide enough for the sidebar + panels layout
+   below it (see shared/portal-editor-shell.css) */
+.sae-intro {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.sae-section {
+  background: var(--bg-panel-solid);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.sae-section--first { margin-top: 0.5rem; }
+
+.sae-section__head { margin-bottom: 1rem; }
+
+.sae-section__title {
+  font-size: 1rem;
+  color: var(--green);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+}
+
+.sae-section__desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.sae-section--roadmap {
+  border-style: dashed;
+  opacity: 0.75;
+}
+
+/* ── DROPZONE ────────────────────────────────────────────── */
+.sae-dropzone {
+  position: relative;
+  border: 2px dashed rgba(62,189,47,0.35);
+  border-radius: 12px;
+  padding: 2.2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease);
+}
+
+.sae-dropzone__icon {
+  width: 32px;
+  height: 32px;
+  color: var(--green);
+  margin-bottom: 0.6rem;
+}
+
+.sae-dropzone__text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.sae-dropzone__sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.sae-dropzone__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sae-dropzone--loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.sae-dropzone--loading .sae-dropzone__icon {
+  animation: sae-spin 0.9s linear infinite;
+}
+
+.sae-dropzone--loading .sae-dropzone__text::after {
+  content: " — reading file…";
+  color: var(--green);
+}
+
+@keyframes sae-spin {
+  to { transform: rotate(360deg); }
+}
+
+.sae-action-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.9rem;
+  text-align: center;
+}
+
+.sae-action-hint code {
+  background: rgba(255,255,255,0.06);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+}
+
+/* ── FIELDS ──────────────────────────────────────────────── */
+.sae-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sae-field { flex: 1 1 220px; }
+
+.sae-field__label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.sae-field__hint {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+/* Compact label used above inputs that live in dense repeated
+   rows (garage colors, jump rewards, collectable counts) where a
+   full .sae-field__label would take up too much space. Still
+   gives every input a visible, permanent caption instead of
+   relying on a placeholder or hover-only title. */
+.sae-micro-label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+}
+
+.sae-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: var(--text-main);
+  padding: 0.6rem 0.7rem;
+  font-family: var(--font);
+  font-size: 0.9rem;
+}
+
+/* Plain number entry (Money, Counted Money, ...) doesn't need to
+   stretch edge-to-edge on mobile just because its parent field is
+   full-width — capping it keeps the layout looking intentional
+   instead of one long empty-feeling box. Search boxes and
+   dropdowns (<select>) are untouched by this — they read better
+   full-width. */
+input[type="number"].sae-input {
+  max-width: 180px;
+}
+
+.sae-input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-dim);
+}
+
+.sae-input--gold { color: var(--gold); }
+
+.sae-money-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sae-money-row .sae-input { flex: 1; min-width: 0; }
+
+.sae-max-btn {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 8px;
+  padding: 0 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--ease);
+}
+
+.sae-max-btn:hover { background: rgba(224,176,48,0.22); }
+
+/* ── CHEAT GRID ──────────────────────────────────────────── */
+.sae-cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+
+@media (max-width: 480px) {
+  .sae-cheat-grid { grid-template-columns: 1fr; }
+}
+
+.sae-cheat {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.sae-cheat input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.sae-cheat__mark {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 5px;
+  background: var(--bg-input);
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color var(--ease), background var(--ease);
+}
+
+.sae-cheat input:checked + .sae-cheat__mark {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.sae-cheat input:checked + .sae-cheat__mark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #080A10;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ── ACTIONS ─────────────────────────────────────────────── */
+.sae-action-row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.sae-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: filter var(--ease);
+}
+
+.sae-btn--primary {
+  background: var(--green);
+  color: #080A10;
+}
+
+.sae-btn--primary:hover { filter: brightness(1.1); }
+
+/* ── TOAST ───────────────────────────────────────────────── */
+.sae-toast {
+  position: fixed;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg-panel-solid);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-main);
+  padding: 0.7rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ease), transform var(--ease);
+  z-index: 999;
+}
+
+.sae-toast--ok  { border-color: var(--green); }
+.sae-toast--err { border-color: var(--red); color: var(--red); }
+
+@media (max-width: 640px) {
+  .sae-main { padding: 0 0.7rem 2rem; }
+  .sae-section { padding: 1rem; }
+  .sae-action-row { flex-direction: column; }
+  .sae-btn--primary { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  /* Larger tap targets for dense interactive rows on small screens */
+  .sae-cheat { padding: 0.8rem 0.9rem; }
+  .sae-cheat__mark { width: 22px; height: 22px; }
+  .sae-tags-grid { grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 8px; }
+  .sae-jump-row__toggle { min-height: 32px; }
+  .sae-loc-row { padding: 8px 10px; min-height: 44px; }
+  .sae-garage__summary, .sae-zone__summary { padding: 0.85rem; min-height: 44px; }
+  .sae-max-btn, .sae-btn--ghost, .sae-btn--inline { min-height: 44px; }
+}
+
+/* ── STICKY MOBILE ACTION BAR ────────────────────────────────────────
+   "Apply All & Download" stays reachable at the bottom of the screen
+   at all times on mobile, instead of only after scrolling through
+   every section. ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .sae-main { padding-bottom: 6.5rem; } /* room so the last section isn't hidden behind the bar */
+
+  .sae-section--actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    margin: 0;
+    border-radius: 0;
+    border-width: 1px 0 0;
+    background: var(--bg-panel-solid);
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.35);
+    padding: 0.75rem 0.9rem calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
+  .sae-section--actions .sae-action-hint { margin-top: 0.4rem; }
+
+  /* The fixed bar also sits over the site footer once it's showing —
+     give the footer the same breathing room. */
+  body:has(#sae-editor-body:not([hidden])) .pier-footer {
+    margin-bottom: 6.5rem;
+  }
+}
+
+/* ── SKILLS ──────────────────────────────────────────────── */
+.sae-skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sae-skill__label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  margin-bottom: 0.3rem;
+}
+
+.sae-skill__row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.sae-skill__row input[type="range"] {
+  flex: 1;
+  accent-color: var(--green);
+}
+
+.sae-skill__val {
+  min-width: 2.6rem;
+  text-align: right;
+  font-size: 0.82rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.sae-btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(62,189,47,0.4);
+  color: var(--green);
+}
+
+.sae-btn--ghost:hover { background: var(--green-dim); }
+
+.sae-btn--inline {
+  margin-top: 1rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.8rem;
+}
+
+/* ── STAT BROWSER ────────────────────────────────────────── */
+.sae-stat-search { margin-bottom: 0.8rem; }
+
+.sae-stat-browser {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-right: 0.2rem;
+}
+
+.sae-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+}
+
+.sae-stat-row__label {
+  font-size: 0.8rem;
+  color: var(--text-main);
+}
+
+.sae-stat-row__input {
+  width: 110px;
+  background: var(--bg-input);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  color: var(--gold);
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+.sae-stat-row__empty {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* ── WEAPONS ─────────────────────────────────────────────── */
+.sae-weapons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sae-weapon-row {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.sae-weapon-row__label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.sae-weapon-row__controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sae-weapon-row__select { flex: 2; }
+.sae-weapon-row__ammo { flex: 1; text-align: right; }
+
+@media (max-width: 480px) {
+  .sae-weapon-row__controls { flex-direction: column; }
+}
+
+/* ── GARAGES ─────────────────────────────────────────────── */
+.sae-garages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sae-garage {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sae-garage__summary {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  cursor: pointer;
+  list-style: none;
+}
+
+.sae-garage__summary::-webkit-details-marker { display: none; }
+
+.sae-garage__summary::before {
+  content: "▸ ";
+  color: var(--green);
+}
+
+.sae-garage[open] .sae-garage__summary::before {
+  content: "▾ ";
+}
+
+.sae-garage__body {
+  padding: 0 0.85rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sae-car-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.sae-car-field { flex: 1; min-width: 0; }
+.sae-car-field--model { flex: 3; }
+.sae-car-row__model { width: 100%; }
+.sae-car-row__color { width: 100%; text-align: right; }
+
+@media (max-width: 480px) {
+  .sae-car-row { flex-direction: column; }
+}
+
+/* ── GANG WEAPONS ────────────────────────────────────────── */
+.sae-gangs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sae-gang-row {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.sae-gang-row__name {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.sae-gang-row__weapons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.sae-gang-row__weapon { flex: 1; }
+
+@media (max-width: 480px) {
+  .sae-gang-row__weapons { flex-direction: column; }
+}
+
+/* ── ZONES ───────────────────────────────────────────────── */
+.sae-zones-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+}
+
+.sae-zone {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sae-zone:last-child {
+  border-bottom: none;
+}
+
+.sae-zone__summary {
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  color: var(--text-main);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sae-zone[open] > .sae-zone__summary {
+  background: rgba(255,255,255,0.03);
+}
+
+.sae-zone__summary::-webkit-details-marker { display: none; }
+
+.sae-zone__summary::before {
+  content: "▸ ";
+  color: var(--green);
+}
+
+.sae-zone[open] .sae-zone__summary::before {
+  content: "▾ ";
+}
+
+.sae-zone__hint {
+  font-size: 0.65rem;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.sae-zone__code {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: normal;
+}
+
+.sae-zone__body {
+  padding: 0 0.85rem 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 0.6rem;
+}
+
+.sae-zone-gang {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sae-zone-gang label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.sae-zone-gang__input {
+  width: 100%;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .sae-zone__body { grid-template-columns: 1fr; }
+}
+
+/* ---- Tags grid ---- */
+.sae-section__count {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sae-tags-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.sae-tag-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.sae-tag-cell--on {
+  border-color: var(--green);
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.sae-tag-cell:active { transform: scale(0.94); }
+
+/* ---- Unique Jumps list ---- */
+.sae-jumps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.sae-jump-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto 110px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+
+.sae-jump-row__name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sae-jump-row__coords {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sae-jump-row__toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.sae-jump-field {
+  min-width: 0;
+}
+
+.sae-jump-row__reward {
+  width: 100%;
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .sae-jump-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "name name"
+      "coords coords"
+      "found done"
+      "reward reward";
+  }
+  .sae-jump-row__name { grid-area: name; }
+  .sae-jump-row__coords { grid-area: coords; }
+  .sae-jump-field { grid-area: reward; }
+}
+
+/* ---- Collectables Progress ---- */
+.sae-collectables-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.sae-progress-row__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sae-progress-row__label {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.sae-progress-row__count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.sae-progress-field {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.sae-progress-row__input {
+  width: 56px;
+  text-align: right;
+  padding: 2px 4px;
+}
+
+.sae-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.sae-progress-bar__fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 4px;
+  transition: width 0.2s ease;
+}
+
+/* ---- Collectable Locations ---- */
+.sae-loc-group__title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 16px 0 6px;
+}
+
+.sae-loc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.sae-loc-row {
+  display: grid;
+  grid-template-columns: auto 110px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 5px 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  background: var(--bg-card);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.sae-loc-row--collected {
+  opacity: 0.55;
+}
+
+.sae-loc-row--collected .sae-loc-row__index {
+  text-decoration: line-through;
+}
+
+.sae-loc-row__check {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--green);
+}
+
+.sae-loc-row__index { font-weight: 600; white-space: nowrap; }
+.sae-loc-row__coords { color: var(--text-muted); white-space: nowrap; }
+.sae-loc-row__zone {
+  font-size: 0.68rem;
+  color: var(--green);
+  background: var(--green-dim);
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

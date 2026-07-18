@@ -1,0 +1,403 @@
+/* ============================================================
+   PIER — styles/pier-components.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 2 — Portfolio shell
+
+   This file owns visual styling of individual UI pieces:
+     brand mark, eyebrow labels, headings, buttons, chips, cards,
+     timeline, tool tiles, theme toggle, contact card.
+
+   Requires styles/pier-tokens.css and styles/pier-effects.css.
+============================================================ */
+
+/* ── Brand ── */
+.pier-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pier-brand__name {
+  font-family: var(--pier-font-mono);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+.pier-brand__tag {
+  font-size: 11px;
+  color: var(--pier-text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── Nav links ── */
+.pier-nav-link {
+  font-size: 14px;
+  color: var(--pier-text-muted);
+  transition: color var(--pier-ease);
+}
+
+.pier-nav-link:hover { color: var(--pier-text); }
+
+/* ── Editor breadcrumb (used on tool pages instead of the main-site links) ── */
+.pier-nav__back {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--pier-text);
+  transition: opacity var(--pier-ease);
+}
+.pier-nav__back:hover { opacity: 0.75; }
+.pier-nav__sep { color: var(--pier-text-muted); font-size: 13px; }
+.pier-nav__current { color: var(--pier-text-muted); font-size: 13px; font-weight: 600; }
+
+/* ── Buttons ── */
+.pier-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--pier-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--pier-border-strong);
+  background: var(--pier-panel);
+  color: var(--pier-text);
+  transition: border-color var(--pier-ease), transform var(--pier-ease);
+}
+
+.pier-btn:hover {
+  border-color: var(--pier-pink);
+  transform: translateY(-1px);
+}
+
+.pier-btn--primary {
+  background: var(--pier-text);
+  color: var(--pier-bg);
+  border-color: var(--pier-text);
+}
+
+.pier-btn--primary:hover {
+  border-color: var(--pier-text);
+  opacity: 0.9;
+}
+
+/* ── Theme toggle / menu button ── */
+.pier-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--pier-radius-sm);
+  border: 1px solid var(--pier-border);
+  background: transparent;
+  color: var(--pier-text);
+  cursor: pointer;
+}
+
+.pier-icon-btn:hover { border-color: var(--pier-border-strong); }
+
+/* ── Eyebrow / labels ── */
+.pier-eyebrow {
+  font-family: var(--pier-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--pier-text-muted);
+  margin-bottom: 12px;
+}
+
+.pier-eyebrow--tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--pier-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+/* ── Headings / text ── */
+.pier-h1 {
+  font-size: clamp(34px, 6vw, 56px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.pier-h2 {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.pier-lead {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--pier-text-muted);
+  max-width: 60ch;
+}
+
+/* ── Chips ── */
+.pier-chip {
+  font-family: var(--pier-font-mono);
+  font-size: 13px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--pier-border);
+  color: var(--pier-text-muted);
+  background: var(--pier-panel);
+}
+
+/* ── Status dot (used for "current" states) ── */
+.pier-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pier-pink);
+}
+
+/* ── Timeline ── */
+.pier-timeline {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-left: 1px solid var(--pier-border);
+  padding-left: 24px;
+}
+
+.pier-timeline__item {
+  position: relative;
+}
+
+.pier-timeline__dot {
+  position: absolute;
+  left: -29px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pier-text-muted);
+}
+
+.pier-timeline__item--current .pier-timeline__dot {
+  background: var(--pier-pink);
+}
+
+.pier-timeline__title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.pier-timeline__desc {
+  font-size: 13px;
+  color: var(--pier-text-muted);
+  line-height: 1.6;
+}
+
+/* ── Project card ── */
+.pier-project {
+  position: relative;
+  border: 1px solid var(--pier-border);
+  border-radius: var(--pier-radius);
+  padding: 32px;
+  background: var(--pier-panel);
+  overflow: hidden;
+}
+
+.pier-project__accent-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.pier-project__eyebrow {
+  font-family: var(--pier-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--pier-text-muted);
+  margin-bottom: 10px;
+}
+
+.pier-project__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.pier-project__desc {
+  color: var(--pier-text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 56ch;
+  margin-bottom: 20px;
+}
+
+.pier-project__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.pier-project__cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pier-text);
+  border-bottom: 1px solid var(--pier-text);
+  padding-bottom: 2px;
+}
+
+/* ── Tool tiles ── */
+.pier-tool-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--pier-border);
+  border-radius: var(--pier-radius-sm);
+  background: var(--pier-card);
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color var(--pier-ease), transform var(--pier-ease);
+}
+
+.pier-tool-tile:hover {
+  border-color: var(--c, var(--pier-pink));
+  transform: translateY(-1px);
+}
+
+.pier-tool-tile__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, var(--pier-pink));
+  flex-shrink: 0;
+}
+
+.pier-tool-tile__go {
+  margin-left: auto;
+  color: var(--pier-text-muted);
+}
+
+/* ── Loaded-file bar (shown after a save file is picked) ── */
+.pier-loaded-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  background: var(--pier-card);
+  border: 1px solid var(--pier-border-strong);
+  border-radius: var(--pier-radius);
+  font-size: 0.78rem;
+}
+.pier-loaded-bar__text { color: var(--pier-text-muted); overflow: hidden; }
+.pier-loaded-bar__text strong { color: var(--pier-text); font-weight: 700; }
+
+.pier-change-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid var(--pier-border-strong);
+  color: var(--pier-text-muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 2.2rem;
+  transition: border-color var(--pier-ease), color var(--pier-ease);
+}
+.pier-change-file-btn:hover { border-color: var(--pier-pink); color: var(--pier-text); }
+.pier-change-file-btn:active { transform: scale(0.96); }
+
+/* ── Contact card ── */
+.pier-contact-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border: 1px solid var(--pier-border);
+  border-radius: var(--pier-radius);
+  background: var(--pier-panel);
+  max-width: 420px;
+  transition: border-color var(--pier-ease), transform var(--pier-ease);
+}
+
+.pier-contact-card:hover {
+  border-color: var(--pier-pink);
+  transform: translateY(-1px);
+}
+
+.pier-contact-card__avatar {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.pier-contact-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pier-contact-card__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #23A55A;
+  border: 2px solid var(--pier-panel);
+}
+
+.pier-contact-card__name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pier-contact-card__tag {
+  font-size: 12px;
+  color: var(--pier-text-muted);
+}
+
+.pier-contact-card__icon {
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--pier-text-muted);
+}
+
+/* ── Footer ── */
+.pier-footer__text {
+  font-family: var(--pier-font-mono);
+  font-size: 12px;
+  color: var(--pier-text-muted);
+}
+
+.pier-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--pier-text-muted);
+}
+
+.pier-footer__link:hover { color: var(--pier-text); }

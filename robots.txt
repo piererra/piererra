@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://piererra.pages.dev/sitemap.xml

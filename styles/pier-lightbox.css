@@ -1,0 +1,45 @@
+/* ============================================================
+   PIER — styles/pier-lightbox.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 4 — Editor reskin (shared component)
+
+   Fullscreen image preview modal, used by "See it in-game" style
+   preview buttons across editors.
+
+   Markup:
+     <div class="pier-lightbox" id="..." hidden>
+       <button class="pier-lightbox__close">&times;</button>
+       <img class="pier-lightbox__img" src="..." alt="..." />
+     </div>
+============================================================ */
+
+.pier-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.pier-lightbox[hidden] { display: none; }
+.pier-lightbox__img {
+  max-width: min(90vw, 480px);
+  max-height: 88vh;
+  border-radius: var(--pier-radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.pier-lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.pier-lightbox__close:hover { opacity: 1; }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Private Links — Piererra</title>
+  <meta name="description" content="Password-protect any link. Encryption and decryption happen entirely in your browser — nothing is ever sent to a server." />
+  <meta name="author" content="Piererra" />
+
+  <link rel="canonical" href="https://piererra.pages.dev/tools/private-links/" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/icons/index/favicon.svg" />
+
+  <link rel="stylesheet" href="../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../styles/pier-privatelinks.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../../index.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">Private Links</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pier-container pier-pl-main">
+
+    <!-- ============ CREATE MODE ============ -->
+    <section id="pl-create" hidden>
+      <div class="pier-pl-intro">
+        <div class="pier-eyebrow pier-mono">PRIVATE LINKS</div>
+        <h1 class="pier-h1">Password-protect any link.</h1>
+        <p class="pier-lead">
+          Encrypt a URL behind a password. Anyone who opens the generated link
+          needs the password to reach the real destination — everything happens
+          client-side, nothing is stored on a server.
+        </p>
+        <ul class="pier-pl-uses">
+          <li>Share sensitive links over public or insecure channels</li>
+          <li>Store private bookmarks on a shared computer</li>
+          <li>Add a password to a shared cloud storage link</li>
+          <li>Share password-protected magnet links</li>
+        </ul>
+      </div>
+
+      <div class="pier-pl-card">
+        <div class="pier-pl-field">
+          <label for="pl-url">Link to protect</label>
+          <input type="url" id="pl-url" placeholder="https://" />
+        </div>
+
+        <div class="pier-pl-field">
+          <label for="pl-hint">Hint (optional)</label>
+          <textarea id="pl-hint" rows="1"></textarea>
+        </div>
+
+        <div class="pier-pl-split">
+          <div class="pier-pl-field">
+            <label for="pl-password">Password</label>
+            <input type="password" id="pl-password" />
+          </div>
+          <div class="pier-pl-field">
+            <label for="pl-confirm-password">Confirm password</label>
+            <input type="password" id="pl-confirm-password" />
+          </div>
+        </div>
+
+        <details class="pier-pl-advanced">
+          <summary>Advanced options</summary>
+          <div class="pier-pl-advanced-body">
+            <label class="pier-pl-checkbox">
+              <input type="checkbox" id="pl-iv-random" checked />
+              Random initialization vector (recommended)
+            </label>
+            <label class="pier-pl-checkbox">
+              <input type="checkbox" id="pl-salt-random" checked />
+              Random salt (recommended)
+            </label>
+          </div>
+        </details>
+
+        <button type="button" class="pier-btn pier-btn--primary" id="pl-encrypt-btn">Create locked link</button>
+        <div class="pier-pl-toast" id="pl-create-toast"></div>
+
+        <div class="pier-pl-output" id="pl-output-block" hidden>
+          <label for="pl-output" style="font-size:13px; font-weight:600; color: var(--pier-text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Locked link</label>
+          <input type="text" id="pl-output" readonly />
+          <div class="pier-pl-output-actions">
+            <button type="button" class="pier-btn" id="pl-copy-btn">Copy</button>
+            <a class="pier-btn" id="pl-open-link" target="_blank" rel="noopener">Open in new tab</a>
+            <a class="pier-btn" id="pl-hidden-link" target="_blank" rel="noopener">Create hidden bookmark</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ UNLOCK MODE ============ -->
+    <section id="pl-unlock" hidden>
+      <div class="pier-pl-intro">
+        <div class="pier-eyebrow pier-mono">PRIVATE LINKS</div>
+        <h1 class="pier-h1">This link is locked.</h1>
+        <p class="pier-lead">Enter the password to continue.</p>
+      </div>
+
+      <div class="pier-pl-card pier-pl-unlock" id="pl-unlock-form">
+        <p class="pier-pl-hint" id="pl-unlock-hint" hidden></p>
+        <div class="pier-pl-field">
+          <label for="pl-unlock-password">Password</label>
+          <input type="password" id="pl-unlock-password" autofocus />
+        </div>
+        <button type="button" class="pier-btn pier-btn--primary" id="pl-unlock-btn">Unlock</button>
+      </div>
+
+      <div class="pier-pl-card pier-pl-error" id="pl-unlock-error" hidden>
+        <p class="pier-pl-error-text" id="pl-unlock-error-text">Error</p>
+        <div class="pier-pl-error-actions" id="pl-unlock-error-links" hidden>
+          <a class="pier-btn" id="pl-unlock-decrypt-link" target="_blank" rel="noopener">Decrypt without redirect</a>
+          <a class="pier-btn" id="pl-unlock-hidden-link" target="_blank" rel="noopener">Create hidden bookmark</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="../../index.html">Home</a>
+      <span>&middot;</span>
+      <a class="pier-footer__link" href="bruteforce/index.html">Brute-force demo</a>
+    </div>
+  </footer>
+
+  <script src="pier-privatelinks-core.js"></script>
+  <script src="pier-privatelinks-app.js"></script>
+  <script src="../../scripts/pier-nav.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+/* ============================================================
+   PIER — styles/pier-effects.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 1 — Foundation
+
+   This file owns the three signature motion effects, applied
+   selectively on brand moments (not globally):
+     - .pier-shimmer     : light sweep across a surface
+     - .pier-shift-text  : animated pink/blue gradient text
+     - .pier-pulse-glow  : soft breathing box-shadow glow
+
+   Requires styles/pier-tokens.css to be loaded first.
+   All three respect prefers-reduced-motion.
+============================================================ */
+
+/* Shimmer: a light sweep across a surface. Apply to an element
+   with position:relative — the sweep is an ::after pseudo-element. */
+.pier-shimmer { position: relative; overflow: hidden; }
+.pier-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.14) 50%, transparent 60%);
+  background-size: 220% 220%;
+  animation: pier-shimmer-sweep var(--pier-shimmer-duration) linear infinite;
+}
+@keyframes pier-shimmer-sweep {
+  0%   { background-position: 160% 0%; }
+  100% { background-position: -60% 0%; }
+}
+
+/* Color-shift: animated gradient text cycling between the pink/blue duo */
+.pier-shift-text {
+  background: linear-gradient(90deg, var(--pier-pink), var(--pier-blue), var(--pier-pink));
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: pier-shift var(--pier-shift-duration) linear infinite;
+}
+@keyframes pier-shift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* Same idea, for a border/background gradient instead of text
+   (e.g. a featured card's top edge, a progress bar sweep) */
+.pier-shift-border {
+  background: linear-gradient(90deg, var(--pier-pink), var(--pier-blue), var(--pier-pink));
+  background-size: 300% auto;
+  animation: pier-shift var(--pier-shift-duration) linear infinite;
+}
+
+/* Pulsating glow: soft breathing box-shadow, for dots/status/hover.
+   --pier-glow-color must be set on the element (defaults to pink). */
+.pier-pulse-glow {
+  --pier-glow-color: var(--pier-pink-glow);
+  animation: pier-pulse var(--pier-pulse-duration) ease-in-out infinite;
+}
+@keyframes pier-pulse {
+  0%, 100% { box-shadow: 0 0 calc(var(--pier-glow-size) * 0.6) var(--pier-glow-color); }
+  50%      { box-shadow: 0 0 calc(var(--pier-glow-size) * 1.6) var(--pier-glow-color); }
+}
+
+/* Reduced motion: kill all three effects, fall back to a static state */
+@media (prefers-reduced-motion: reduce) {
+  .pier-shimmer::after { animation: none; display: none; }
+  .pier-shift-text, .pier-shift-border { animation: none; background-position: 0% 50%; }
+  .pier-pulse-glow { animation: none; box-shadow: 0 0 var(--pier-glow-size) var(--pier-glow-color); }
+}

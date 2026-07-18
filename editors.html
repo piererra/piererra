@@ -1,0 +1,129 @@
+<!--
+  Project : Pier — Editors Hub (editors.html)
+  Phase   : 3 — Tools hub (total redesign)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Piererra Tools — Free Save Editors for NFSU2, NFSMW, GTA San Andreas &amp; Subway Surfers</title>
+  <meta name="description" content="Piererra Tools is a free, open-source collection of browser-based save editors for NFS Underground 2, NFS Most Wanted, GTA: San Andreas and Subway Surfers. No install, no server — everything runs on your device." />
+  <meta name="keywords" content="subway surfers save editor, gta san andreas save editor, nfs underground 2 save editor, nfs most wanted save editor, piererra tools" />
+  <meta name="author" content="Piererra" />
+
+  <meta property="og:title" content="Piererra Tools — Free Save Editors" />
+  <meta property="og:description" content="Free, open-source browser-based save editors for NFS Underground 2, NFS Most Wanted, GTA: San Andreas and Subway Surfers." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piererra.pages.dev/editors" />
+  <meta property="og:image" content="https://piererra.pages.dev/assets/icons/index/icon-512.png" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Piererra Tools — Free Save Editors" />
+  <meta name="twitter:description" content="Free, open-source browser-based save editors for NFSU2, NFSMW, GTA: San Andreas and Subway Surfers." />
+
+  <link rel="canonical" href="https://piererra.pages.dev/editors" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/index/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/index/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/index/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="styles/pier-tokens.css" />
+  <link rel="stylesheet" href="styles/pier-effects.css" />
+  <link rel="stylesheet" href="styles/pier-layout.css" />
+  <link rel="stylesheet" href="styles/pier-components.css" />
+  <link rel="stylesheet" href="styles/pier-hub.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-brand" href="index.html" aria-label="Piererra — home">
+      <span class="pier-brand__name pier-shift-text">PIERERRA</span>
+      <span class="pier-brand__tag">save file editors</span>
+    </a>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pier-hub">
+    <div class="pier-eyebrow pier-mono">FREE &middot; BROWSER-BASED &middot; NO INSTALL</div>
+    <h1 class="pier-hub__title">Save file editors for the games you actually still play.</h1>
+    <p class="pier-hub__subtitle">
+      Pick a tool below. Everything runs locally in your browser — your save file never
+      leaves your device.
+    </p>
+
+    <div class="pier-hub__grid">
+      <a class="pier-hub__card pier-shimmer" href="editors/gtasa/index.html" style="--c:#3EBD2F">
+        <div class="pier-hub__card__top">
+          <span class="pier-hub__card__badge" style="--c:#3EBD2F">SA</span>
+          <span class="pier-hub__card__stat">12 sections</span>
+        </div>
+        <div class="pier-hub__card__eyebrow">GTA SAN ANDREAS</div>
+        <div class="pier-hub__card__title">Save Editor</div>
+        <p class="pier-hub__card__desc">Edit money, cheats, stats, weapons, garages, gangs, zones and more in your SA save.</p>
+        <div class="pier-hub__card__cta">Open editor &rarr;</div>
+      </a>
+
+      <a class="pier-hub__card pier-shimmer" href="editors/nfsu2/index.html" style="--c:#7DFF6E">
+        <div class="pier-hub__card__top">
+          <span class="pier-hub__card__badge" style="--c:#7DFF6E">U2</span>
+          <span class="pier-hub__card__stat">5 sections</span>
+        </div>
+        <div class="pier-hub__card__eyebrow">NFS UNDERGROUND 2</div>
+        <div class="pier-hub__card__title">Save Editor</div>
+        <p class="pier-hub__card__desc">Create a fresh profile or edit cash, cars, career progress and unlocks in an existing NFSU2 save.</p>
+        <div class="pier-hub__card__cta">Open editor &rarr;</div>
+      </a>
+
+      <a class="pier-hub__card pier-shimmer" href="editors/nfsmw/index.html" style="--c:#FF9142">
+        <div class="pier-hub__card__top">
+          <span class="pier-hub__card__badge" style="--c:#FF9142">MW</span>
+          <span class="pier-hub__card__stat">9 sections</span>
+        </div>
+        <div class="pier-hub__card__eyebrow">NFS MOST WANTED</div>
+        <div class="pier-hub__card__title">Save Editor</div>
+        <p class="pier-hub__card__desc">Tune bounty, cash, heat level and garage contents in your MW save.</p>
+        <div class="pier-hub__card__cta">Open editor &rarr;</div>
+      </a>
+
+      <a class="pier-hub__card pier-shimmer" href="editors/subway/index.html" style="--c:#FFC736">
+        <div class="pier-hub__card__top">
+          <span class="pier-hub__card__badge" style="--c:#FFC736">SS</span>
+          <span class="pier-hub__card__stat">8 sections</span>
+        </div>
+        <div class="pier-hub__card__eyebrow">SUBWAY SURFERS</div>
+        <div class="pier-hub__card__title">Save Generator</div>
+        <p class="pier-hub__card__desc">Build a fresh Subway Surfers profile with characters, boards and coins.</p>
+        <div class="pier-hub__card__cta">Open editor &rarr;</div>
+      </a>
+    </div>
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA TOOLS &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="scripts/pier-nav.js"></script>
+
+</body>
+</html>

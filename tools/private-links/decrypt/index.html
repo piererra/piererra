@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Decrypt Without Redirect — Private Links</title>
+  <meta name="description" content="Safely inspect a Private Links locked URL without being redirected to it." />
+  <meta name="author" content="Piererra" />
+
+  <link rel="canonical" href="https://piererra.pages.dev/tools/private-links/decrypt/" />
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/index/favicon.svg" />
+
+  <link rel="stylesheet" href="../../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../../styles/pier-privatelinks.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../index.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">Decrypt Without Redirect</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pier-container pier-pl-main">
+    <div class="pier-pl-intro">
+      <div class="pier-eyebrow pier-mono">PRIVATE LINKS</div>
+      <h1 class="pier-h1">Decrypt without redirecting.</h1>
+      <p class="pier-lead">
+        If you received a locked link you don't fully trust, use this page to
+        see the decrypted destination first, without your browser automatically
+        navigating there.
+      </p>
+    </div>
+
+    <div class="pier-pl-card">
+      <div class="pier-pl-field">
+        <label for="pl-encrypted-url">Locked link</label>
+        <input type="url" id="pl-encrypted-url" placeholder="https://" />
+      </div>
+      <div class="pier-pl-field">
+        <label for="pl-password">Password</label>
+        <input type="password" id="pl-password" />
+      </div>
+
+      <button type="button" class="pier-btn pier-btn--primary" id="pl-decrypt-btn">Decrypt</button>
+      <div class="pier-pl-toast" id="pl-toast"></div>
+
+      <div class="pier-pl-output" id="pl-output-block" hidden>
+        <label for="pl-output" style="font-size:13px; font-weight:600; color: var(--pier-text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Decrypted destination</label>
+        <input type="text" id="pl-output" readonly />
+        <div class="pier-pl-output-actions">
+          <button type="button" class="pier-btn" id="pl-copy-btn">Copy</button>
+          <a class="pier-btn" id="pl-open-link" target="_blank" rel="noopener">Open in new tab</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="../index.html">Private Links</a>
+      <span>&middot;</span>
+      <a class="pier-footer__link" href="../../../index.html">Home</a>
+    </div>
+  </footer>
+
+  <script src="../pier-privatelinks-core.js"></script>
+  <script src="pier-privatelinks-decrypt.js"></script>
+  <script src="../../../scripts/pier-nav.js"></script>
+
+</body>
+</html>

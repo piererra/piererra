@@ -1,0 +1,101 @@
+/* ============================================================
+   PIER — styles/pier-tokens.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 1 — Foundation
+   Theme   : Monochrome + pink/blue accent
+
+   This file owns:
+     - Global reset
+     - Color tokens (monochrome dark base, single light override)
+     - Font tokens (sans-serif body/display + monospace utility)
+     - Radius / shadow / easing tokens
+
+   Load this FIRST, before pier-effects.css and any other pier-*
+   stylesheet — every shared and page-level file depends on the
+   custom properties defined here.
+============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── Monochrome base (dark, default) ── */
+  --pier-bg:      #0A0A0A;
+  --pier-panel:   #131313;
+  --pier-card:    #171717;
+  --pier-border:  rgba(255, 255, 255, 0.08);
+  --pier-border-strong: rgba(255, 255, 255, 0.16);
+  --pier-text:       #F2F2F2;
+  --pier-text-muted: #8A8A8A;
+  --pier-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
+
+  /* Accent duo — used only by pier-effects.css (shimmer / glow / shift) */
+  --pier-pink: #FFB3D9;
+  --pier-blue: #A8D8FF;
+  --pier-pink-glow: rgba(255, 179, 217, 0.55);
+  --pier-blue-glow: rgba(168, 216, 255, 0.55);
+
+  /* Type */
+  --pier-font-body: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pier-font-mono: 'JetBrains Mono', ui-monospace, "SFMono-Regular", monospace;
+
+  /* Shape / motion */
+  --pier-radius:    12px;
+  --pier-radius-sm: 8px;
+  --pier-ease: 0.16s ease;
+
+  /* Effect tuning — override per-element via inline style if needed */
+  --pier-glow-size: 10px;
+  --pier-shimmer-duration: 2.6s;
+  --pier-shift-duration: 6s;
+  --pier-pulse-duration: 2.2s;
+}
+
+/* ── LIGHT THEME OVERRIDE (optional, toggled via [data-theme="light"]) ── */
+:root[data-theme="light"] {
+  --pier-bg:      #FAFAFA;
+  --pier-panel:   #FFFFFF;
+  --pier-card:    #FFFFFF;
+  --pier-border:  #E5E5E5;
+  --pier-border-strong: #D4D4D4;
+  --pier-text:       #1A1A1A;
+  --pier-text-muted: #6B6B6B;
+  --pier-shadow: 0 10px 28px rgba(20, 20, 20, 0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  background: var(--pier-bg);
+  color: var(--pier-text);
+  font-family: var(--pier-font-body);
+  min-height: 100vh;
+  transition: background-color var(--pier-ease), color var(--pier-ease);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Guarantee the hidden attribute always wins, even over a component's
+   own `display: flex/grid/...` rule of equal specificity — without
+   this, [hidden] and a class like .pier-loaded-bar{display:flex} tie,
+   and the later stylesheet rule can silently keep the element visible. */
+[hidden] { display: none !important; }
+
+/* Visible keyboard focus everywhere, site-wide baseline */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--pier-pink);
+  outline-offset: 2px;
+}
+
+/* Utility: monospace treatment for technical/data bits (labels, stats, tags) */
+.pier-mono {
+  font-family: var(--pier-font-mono);
+  letter-spacing: 0.02em;
+}

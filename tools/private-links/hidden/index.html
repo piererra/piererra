@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Hidden Bookmarks — Private Links</title>
+  <meta name="description" content="Disguise a locked link as a normal bookmark, only revealed by a companion decrypt bookmark." />
+  <meta name="author" content="Piererra" />
+
+  <link rel="canonical" href="https://piererra.pages.dev/tools/private-links/hidden/" />
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/index/favicon.svg" />
+
+  <link rel="stylesheet" href="../../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../../styles/pier-privatelinks.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../index.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">Hidden Bookmarks</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pier-container pier-pl-main">
+    <div class="pier-pl-intro">
+      <div class="pier-eyebrow pier-mono">PRIVATE LINKS</div>
+      <h1 class="pier-h1">Hidden bookmarks.</h1>
+      <p class="pier-lead">
+        A locked link is still recognizable as "a link that needs a password,"
+        which can look suspicious. Hidden bookmarks disguise it as an ordinary
+        bookmark — clicking it goes somewhere harmless, unless you click a second,
+        companion bookmark right after.
+      </p>
+      <ol class="pier-pl-uses">
+        <li>Create a locked link on the main page first, if you haven't already.</li>
+        <li>Drag the decrypt bookmark below to your bookmarks bar (rename it to something innocuous if you like).</li>
+        <li>Fill in your locked link and a decoy destination below, then create the disguised bookmark.</li>
+        <li>To reach the real destination: click the disguised bookmark, then click the decrypt bookmark.</li>
+      </ol>
+    </div>
+
+    <div class="pier-pl-card">
+      <p style="margin-bottom: 14px; font-size: 14px; color: var(--pier-text-muted);">
+        Clicking the decrypt bookmark goes to a decoy page unless the current tab is a disguised bookmark. Set your own decoy below (defaults to Gmail).
+      </p>
+
+      <div class="pier-pl-field">
+        <label for="pl-decoy-url">Decrypt bookmark decoy destination</label>
+        <input type="url" id="pl-decoy-url" value="https://gmail.com" />
+      </div>
+
+      <p>
+        <a class="pier-pl-bookmark" id="pl-decrypt-bookmark" href="javascript:void(0)" onclick="return false;">Decrypt</a>
+      </p>
+    </div>
+
+    <div class="pier-pl-card">
+      <div class="pier-pl-field">
+        <label for="pl-hidden-url">Locked link to hide</label>
+        <input type="url" id="pl-hidden-url" placeholder="https://" />
+      </div>
+      <div class="pier-pl-field">
+        <label for="pl-bookmark-title">Disguised bookmark name</label>
+        <input type="text" id="pl-bookmark-title" placeholder="e.g. Recipe ideas" />
+      </div>
+      <div class="pier-pl-field">
+        <label for="pl-bookmark-url">Disguised bookmark destination</label>
+        <input type="url" id="pl-bookmark-url" placeholder="https://" />
+      </div>
+
+      <div class="pier-pl-output-actions" style="margin-bottom: 16px;">
+        <button type="button" class="pier-btn pier-btn--primary" id="pl-hide-btn">Create disguised bookmark</button>
+        <button type="button" class="pier-btn" id="pl-random-btn">Use a random decoy link</button>
+      </div>
+      <div class="pier-pl-toast" id="pl-toast"></div>
+
+      <div class="pier-pl-output" id="pl-output-block">
+        <label style="font-size:13px; font-weight:600; color: var(--pier-text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Disguised bookmark</label>
+        <p><a class="pier-pl-bookmark" id="pl-output" href="" onclick="return false;" aria-disabled="true">No bookmark created yet</a></p>
+        <p style="font-size: 13px; color: var(--pier-text-muted);">Drag the bookmark above to your bookmarks bar.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="../index.html">Private Links</a>
+      <span>&middot;</span>
+      <a class="pier-footer__link" href="../../../index.html">Home</a>
+    </div>
+  </footer>
+
+  <script src="../pier-privatelinks-core.js"></script>
+  <script src="pier-privatelinks-hidden.js"></script>
+  <script src="../../../scripts/pier-nav.js"></script>
+
+</body>
+</html>

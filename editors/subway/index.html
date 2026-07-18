@@ -1,0 +1,273 @@
+<!--
+  Project : Pier — Subway Surfers Editor (editors/subway/index.html)
+  Phase   : 4 — Editor reskin (total redesign)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Subway Surfers Save Generator — Piererra Tools</title>
+  <meta name="description" content="Free browser-based save generator for Subway Surfers. Build a fresh profile with characters, boards and coins. No install, runs entirely on your device." />
+  <meta name="keywords" content="subway surfers save editor, subway surfers save generator, subway surfers unlock all characters" />
+  <meta name="author" content="Piererra" />
+
+  <meta property="og:title" content="Subway Surfers Save Generator — Piererra Tools" />
+  <meta property="og:description" content="Free browser-based save generator for Subway Surfers. Build a fresh profile with characters, boards and coins." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piererra.pages.dev/editors/subway/" />
+  <meta property="og:image" content="https://piererra.pages.dev/assets/icons/subway/icon-512.png" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Subway Surfers Save Generator — Piererra Tools" />
+  <meta name="twitter:description" content="Free browser-based save generator for Subway Surfers — characters, boards and coins." />
+
+  <link rel="canonical" href="https://piererra.pages.dev/editors/subway/" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/icons/subway/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icons/subway/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../assets/icons/subway/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../styles/pier-marquee.css" />
+  <link rel="stylesheet" href="../../styles/pier-lightbox.css" />
+  <link rel="stylesheet" href="../../styles/pier-editor-shell.css" />
+  <link rel="stylesheet" href="subway-editor.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../../editors.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">Subway Surfers</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <header class="ssg-header">
+    <p class="ssg-header__game">SUBWAY SURFERS</p>
+    <h1 class="ssg-header__title">Save Generator</h1>
+    <p class="ssg-header__by">by Piererra</p>
+    <button type="button" class="ssg-preview-btn" id="ssg-preview-btn">
+      <img src="img/example-profile.jpg" alt="" aria-hidden="true" class="ssg-preview-btn__thumb" loading="lazy" />
+      <span>See it in-game</span>
+    </button>
+  </header>
+
+  <div class="ssg-version-widget" id="ssg-version-widget">
+    <span class="ssg-version-widget__item">Editor synced to <strong id="ssg-version-ours">&mdash;</strong></span>
+    <span class="ssg-version-widget__sep">&middot;</span>
+    <span class="ssg-version-widget__item">Play Store <strong id="ssg-version-playstore">&mdash;</strong></span>
+    <span class="ssg-version-widget__status" id="ssg-version-status"></span>
+  </div>
+
+  <main class="ssg-main">
+
+    <div id="ssg-editor-layout" class="pier-editor-layout">
+      <nav class="pier-editor-nav" id="pier-editor-nav" aria-label="Editor sections">
+        <a class="pier-editor-nav__link" href="#ssg-panel-wallet" data-section="ssg-panel-wallet">Wallet &amp; Currencies</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-upgrades" data-section="ssg-panel-upgrades">Upgrades</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-characters" data-section="ssg-panel-characters">Characters</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-hoverboards" data-section="ssg-panel-hoverboards">Hoverboards</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-frames" data-section="ssg-panel-frames">Profile Frames</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-portraits" data-section="ssg-panel-portraits">Profile Portraits</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-backgrounds" data-section="ssg-panel-backgrounds">Profile Backgrounds</a>
+        <a class="pier-editor-nav__link" href="#ssg-panel-trophies" data-section="ssg-panel-trophies">Trophy Badges</a>
+      </nav>
+
+      <div class="pier-editor-panels">
+
+    <!-- WALLET & CURRENCIES -->
+    <section class="ssg-section ssg-section--first pier-editor-panel" id="ssg-panel-wallet">
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Wallet &amp; Currencies</h2>
+        <p class="ssg-section__desc">Coins, keys and boosters. Use MAX to fill any field to the game's cap.</p>
+      </div>
+      <div class="ssg-grid ssg-grid--wallet" id="ssg-wallet-grid"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- UPGRADES -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-upgrades" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Power-up Upgrades</h2>
+        <p class="ssg-section__desc">Permanent upgrade levels (0&ndash;5) and active booster amounts.</p>
+      </div>
+      <div class="ssg-grid ssg-grid--upgrades" id="ssg-upgrades-grid"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-characters" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Characters</h2>
+        <p class="ssg-section__desc">Tap a card to own it. The star picks your currently-selected runner.</p>
+      </div>
+      <div class="ssg-picker-toolbar">
+        <input type="search" class="ssg-search" id="ssg-char-search" placeholder="Search characters…" />
+        <div class="ssg-picker-toolbar__btns">
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-char-all">Own All</button>
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-char-none">Own None</button>
+        </div>
+      </div>
+      <div class="ssg-pickgrid" id="ssg-char-grid"><!-- built by subway-ui.js --></div>
+      <p class="ssg-hidden-note" id="ssg-char-hidden-note"></p>
+    </section>
+
+    <!-- HOVERBOARDS -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-hoverboards" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Hoverboards</h2>
+        <p class="ssg-section__desc">Tap a card to own it. The star picks your currently-equipped board.</p>
+      </div>
+      <div class="ssg-picker-toolbar">
+        <input type="search" class="ssg-search" id="ssg-board-search" placeholder="Search hoverboards…" />
+        <div class="ssg-picker-toolbar__btns">
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-board-all">Own All</button>
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-board-none">Own None</button>
+        </div>
+      </div>
+      <div class="ssg-pickgrid" id="ssg-board-grid"><!-- built by subway-ui.js --></div>
+      <p class="ssg-hidden-note" id="ssg-board-hidden-note"></p>
+    </section>
+
+    <!-- PROFILE FRAMES -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-frames" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Profile Frames</h2>
+        <p class="ssg-section__desc">Tap a card to own it. The star picks your currently-equipped frame.</p>
+      </div>
+      <div class="ssg-picker-toolbar">
+        <input type="search" class="ssg-search" id="ssg-frame-search" placeholder="Search frames…" />
+        <div class="ssg-picker-toolbar__btns">
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-frame-all">Own All</button>
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-frame-none">Own None</button>
+        </div>
+      </div>
+      <div class="ssg-pickgrid" id="ssg-frame-grid"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- PROFILE PORTRAITS -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-portraits" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Profile Portraits</h2>
+        <p class="ssg-section__desc">Tap a card to own it. The star picks your currently-equipped portrait.</p>
+      </div>
+      <div class="ssg-picker-toolbar">
+        <input type="search" class="ssg-search" id="ssg-portrait-search" placeholder="Search portraits…" />
+        <div class="ssg-picker-toolbar__btns">
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-portrait-all">Own All</button>
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-portrait-none">Own None</button>
+        </div>
+      </div>
+      <div class="ssg-pickgrid" id="ssg-portrait-grid"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- PROFILE BACKGROUNDS -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-backgrounds" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Profile Backgrounds</h2>
+        <p class="ssg-section__desc">Tap a card to own it. The star picks your currently-equipped background.</p>
+      </div>
+      <div class="ssg-picker-toolbar">
+        <input type="search" class="ssg-search" id="ssg-background-search" placeholder="Search backgrounds…" />
+        <div class="ssg-picker-toolbar__btns">
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-background-all">Own All</button>
+          <button class="ssg-btn ssg-btn--ghost ssg-btn--small" id="ssg-background-none">Own None</button>
+        </div>
+      </div>
+      <div class="ssg-pickgrid" id="ssg-background-grid"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- TROPHIES / BADGES -->
+    <section class="ssg-section pier-editor-panel" id="ssg-panel-trophies" hidden>
+      <div class="ssg-section__head">
+        <h2 class="ssg-section__title">Trophy Badges</h2>
+        <p class="ssg-section__desc">High-score run counts for each medal tier.</p>
+      </div>
+      <div class="ssg-badge-row" id="ssg-badge-row"><!-- built by subway-ui.js --></div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section class="ssg-section ssg-section--actions ssg-section--last">
+      <div class="ssg-action-row">
+        <button class="ssg-btn ssg-btn--primary pier-shimmer" id="ssg-btn-download">
+          Generate &amp; Download ZIP
+        </button>
+      </div>
+      <p class="ssg-action-hint">
+        Unzip and place the <code>profile</code> folder's contents into your Subway Surfers save directory, replacing the existing files.
+      </p>
+      <p class="ssg-action-hint">
+        <strong>Android:</strong> <code>Android/data/com.kiloo.subwaysurf/files/profile/</code> (internal storage)
+      </p>
+    </section>
+
+      </div>
+      <!-- end .pier-editor-panels -->
+    </div>
+    <!-- end .pier-editor-layout -->
+
+  </main>
+
+  <div class="ssg-toast" id="ssg-toast" role="status" aria-live="polite"></div>
+
+  <div class="pier-lightbox" id="ssg-preview-lightbox" hidden>
+    <button type="button" class="pier-lightbox__close" id="ssg-preview-close" aria-label="Close preview">&times;</button>
+    <img src="img/example-profile.jpg" alt="Example Subway Surfers profile generated with this tool, shown in-game" class="pier-lightbox__img" />
+  </div>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA TOOLS &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="../../scripts/pier-marquee.js"></script>
+  <script src="subway-data.js"></script>
+  <script src="subway-core.js"></script>
+  <script src="subway-editor.js"></script>
+  <script src="subway-ui.js"></script>
+  <script src="../../scripts/pier-nav.js"></script>
+  <script src="../../scripts/pier-sidebar-nav.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.PierSidebarNav) PierSidebarNav.init('#pier-editor-nav', '.pier-editor-panel');
+      if (window.ptSSGUI) ptSSGUI.init();
+
+      var btn = document.getElementById('ssg-preview-btn');
+      var box = document.getElementById('ssg-preview-lightbox');
+      var closeBtn = document.getElementById('ssg-preview-close');
+      if (btn && box && closeBtn) {
+        var open = function () { box.hidden = false; };
+        var close = function () { box.hidden = true; };
+        btn.addEventListener('click', open);
+        closeBtn.addEventListener('click', close);
+        box.addEventListener('click', function (e) { if (e.target === box) close(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      }
+    });
+  </script>
+
+</body>
+</html>

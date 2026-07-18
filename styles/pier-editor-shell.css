@@ -1,0 +1,118 @@
+/* ============================================================
+   PIER — styles/pier-editor-shell.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 5 — Editor reskin (shared component)
+
+   Shared by every multi-panel editor (GTA SA first; NFSU2/NFSMW
+   follow the same pattern). Turns a long accordion scroll into a
+   navigable dashboard:
+     - Desktop (>=900px): sticky left sidebar listing every section
+     - Mobile (<900px): sticky horizontal scrollable tab strip
+
+   Consumes --tool-accent / --tool-accent-dim, which each tool's own
+   CSS file defines as aliases (see the alias block at the top of
+   editors/gtasa/gtasa-editor.css) — so the active/hover colors
+   automatically match that tool's accent with zero extra config.
+
+   Expected markup:
+     <div id="..." class="pier-editor-layout" hidden>
+       <nav class="pier-editor-nav" id="pier-editor-nav" aria-label="Editor sections">
+         <a class="pier-editor-nav__link" href="#panel-id" data-section="panel-id">Label</a>
+         ...
+       </nav>
+       <div class="pier-editor-panels">
+         <details class="... pier-editor-panel" id="panel-id"> ... </details>
+         ...
+       </div>
+     </div>
+   Activated by scripts/pier-sidebar-nav.js — call once per page:
+     PierSidebarNav.init('#pier-editor-nav', '.pier-editor-panel');
+============================================================ */
+
+.pier-editor-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.pier-editor-nav {
+  position: sticky;
+  top: 4.75rem; /* clears the sticky top .pier-nav bar */
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: calc(100vh - 5.5rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.pier-editor-nav__link {
+  display: block;
+  text-decoration: none;
+  color: var(--pier-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--pier-radius-sm);
+  border-left: 2px solid transparent;
+  transition: color var(--pier-ease), background var(--pier-ease), border-color var(--pier-ease);
+  white-space: nowrap;
+}
+.pier-editor-nav__link:hover {
+  color: var(--pier-text);
+  background: var(--pier-card);
+}
+.pier-editor-nav__link.is-active {
+  color: var(--tool-accent, var(--pier-pink));
+  background: var(--tool-accent-dim, var(--pier-pink-glow));
+  border-left-color: var(--tool-accent, var(--pier-pink));
+}
+
+.pier-editor-panels {
+  min-width: 0;
+  max-width: 780px;
+}
+
+/* ============================================================
+   MOBILE: sidebar collapses into a sticky horizontal tab strip
+============================================================ */
+@media (max-width: 900px) {
+  .pier-editor-layout {
+    display: block;
+  }
+
+  .pier-editor-nav {
+    position: static;
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 0.4rem;
+    padding: 0.6rem 0.4rem;
+    margin: 0 -0.9rem 1rem;
+    background: var(--pier-panel);
+    border-bottom: 1px solid var(--pier-border);
+    scrollbar-width: thin;
+  }
+
+  .pier-editor-nav__link {
+    flex-shrink: 0;
+    border-left: none;
+    border: 1px solid var(--pier-border);
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    min-height: 2.2rem; /* touch target */
+    display: flex;
+    align-items: center;
+  }
+  .pier-editor-nav__link.is-active {
+    border-color: var(--tool-accent, var(--pier-pink));
+  }
+
+  .pier-editor-panels { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pier-editor-nav__link { transition: none; }
+}

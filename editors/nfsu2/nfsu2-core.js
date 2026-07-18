@@ -1,0 +1,631 @@
+/* ============================================================
+   nfsu2-core.js — NFSU2 Save Data Editor
+   Author  : Piererra
+   Project : Piererra Tools
+   Binary read/write engine for NFSU2 save files (.sav)
+
+   Responsibilities:
+     - Load & validate save file from FileReader
+     - Parse profile name, money, car slot data
+     - Write edits back into the ArrayBuffer
+     - Handle car injection, patch extract/apply
+     - Clone save / create new save from template
+     - Trigger file downloads
+
+   Exports (on window.ptSDE):
+     loadSave(file)               → Promise<void>
+     getSaveInfo()                → { name, money, slots, headerOk, size }
+     setName(str)
+     setMoney(n)
+     setSlotPerf(slotIdx, mode)   mode: 'nil' | 'max'
+     unlockSlot(slotIdx)
+     unlockAllSlots()
+     unlockAllParts()
+     maxMoney()
+     injectCar(slotIdx, carData)  carData: [{off, hex}, ...]
+     extractCar(slotIdx)          → [{off, hex}, ...]
+     applyJsonPatch(slotIdx, json)
+     applyTxtPatch(slotIdx, txt)
+     downloadSave(filename)
+     downloadBackup(filename)
+     createProfile(name, money, carKey)  ← NEW: modal-based create flow
+     cloneSave(name)
+     isLoaded()
+============================================================ */
+
+(function (global) {
+  'use strict';
+
+  /* ----------------------------------------------------------
+     OFFSETS — derived from community research + save analysis
+  ---------------------------------------------------------- */
+  const OFF = {
+    // File header magic: ASCII "20CM"
+    HEADER:        0x0000,
+    HEADER_MAGIC:  [0x32, 0x30, 0x43, 0x4D],
+
+    // Money: signed 32-bit little-endian
+    MONEY:         0xA16A,
+
+    // Profile name: ASCII, null-terminated, fixed offset.
+    // NAME_READ_LEN is longer than the game's 7-char limit so names
+    // written by external tools still display correctly.
+    // Writing is always capped at 7 characters.
+    NAME_OFFSET:   0xD225,
+    NAME_READ_LEN: 16,
+
+    // Car slots: 5 slots, each 0x7F2 bytes, starting at 0x5AEC
+    SLOT_BASE:     0x5AEC,
+    SLOT_SIZE:     0x7F2,
+    SLOT_COUNT:    5,
+
+    // Within each slot — slot-in-use flag (1 = active, 0 = empty)
+    SLOT_INUSE:    0x0000,   // relative to slot base
+
+    // Performance — confirmed from real save diff (Piererra_1_ vs Piererra_2_)
+    // 9 upgrade level floats (float32 LE, 4B each) at these slot-relative offsets.
+    //   10.0 = 00002041 — fast + stable, no UI crash  ← our max
+    //    3.0 = 00004040 — other site max (slower)
+    //   0xFF = NaN      — crashes car selection + mod shops
+    PERF_UPGRADE_FLOATS: [
+      0x044, 0x048, 0x04C, 0x050, 0x054, 0x058, 0x05C, 0x060, 0x064,
+    ],
+    // Upgrade unlock flags: slot+0x094 to slot+0x0CB (56 bytes, 0x01 = unlocked)
+    PERF_FLAGS_START: 0x094,
+    PERF_FLAGS_SIZE:  0x038,
+    // Upgrade counters — 4-byte LE fields (confirmed changed in safe max save)
+    PERF_COUNTER_1: 0x1AC,   // 00 01 00 00
+    PERF_COUNTER_2: 0x1E8,   // 00 00 00 01
+    PERF_COUNTER_3: 0x200,   // 00 00 00 01
+
+    // Unlock all parts: 8 blocks of 0x10 bytes each
+    PARTS_OFFSETS: [
+      0x0234, 0x0244, 0x0254, 0x0264,
+      0x0274, 0x0284, 0x0294, 0x02A4
+    ],
+    PARTS_BLOCK_SIZE: 0x10,
+
+    // Active car area — absolute offsets used by car injection.
+    // These target the game's "current/active car" region (pre-slot area),
+    // NOT the slot memory. This is the same region GabriLex's tool writes to,
+    // confirmed against real injected save files.
+    // Writing order must be ascending offset to prevent corruption.
+    CAR_REGION_MIN: 0x5870,
+    CAR_REGION_MAX: 0xC3E6,  // 0xC3B0 + 0x36 (last block end)
+  };
+
+  /* ----------------------------------------------------------
+     STATE
+  ---------------------------------------------------------- */
+  let _buf      = null;   // ArrayBuffer — working copy of the save
+  let _orig     = null;   // ArrayBuffer — original bytes (for backup)
+  let _filename = '';     // original filename
+
+  /* ----------------------------------------------------------
+     INTERNAL HELPERS
+  ---------------------------------------------------------- */
+
+  function _dv() {
+    return new DataView(_buf);
+  }
+
+  function _readBytes(off, len) {
+    return new Uint8Array(_buf, off, len);
+  }
+
+  function _writeBytes(off, bytes) {
+    const view = new Uint8Array(_buf);
+    for (let i = 0; i < bytes.length; i++) {
+      view[off + i] = bytes[i];
+    }
+  }
+
+  function _hexToBytes(hex) {
+    const clean = hex.replace(/\s+/g, '');
+    const out = new Uint8Array(clean.length / 2);
+    for (let i = 0; i < out.length; i++) {
+      out[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
+    }
+    return out;
+  }
+
+  function _bytesToHex(bytes) {
+    return Array.from(bytes)
+      .map(b => b.toString(16).padStart(2, '0').toUpperCase())
+      .join(' ');
+  }
+
+  function _copyBuffer(src) {
+    const dst = new ArrayBuffer(src.byteLength);
+    new Uint8Array(dst).set(new Uint8Array(src));
+    return dst;
+  }
+
+  function _download(bytes, filename) {
+    const blob = new Blob([bytes], { type: 'application/octet-stream' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  /* ----------------------------------------------------------
+     NAME
+  ---------------------------------------------------------- */
+
+  function _readName() {
+    const off  = OFF.NAME_OFFSET;
+    const view = new Uint8Array(_buf);
+    let name   = '';
+    for (let i = 0; i < OFF.NAME_READ_LEN; i++) {
+      const c = view[off + i];
+      if (c === 0x00) break;
+      name += String.fromCharCode(c);
+    }
+    return name || '?';
+  }
+
+  function _writeName(name) {
+    const off   = OFF.NAME_OFFSET;
+    const clean = name.slice(0, 7).replace(/[^A-Za-z0-9]/g, '');
+    const view  = new Uint8Array(_buf);
+    for (let i = 0; i < OFF.NAME_READ_LEN; i++) {
+      view[off + i] = i < clean.length ? clean.charCodeAt(i) : 0x00;
+    }
+  }
+
+  /* ----------------------------------------------------------
+     MONEY
+  ---------------------------------------------------------- */
+
+  function _readMoney() {
+    return _dv().getInt32(OFF.MONEY, true);
+  }
+
+  function _writeMoney(n) {
+    _dv().setInt32(OFF.MONEY, Math.max(0, Math.min(n, 2147483647)), true);
+  }
+
+  /* ----------------------------------------------------------
+     CAR SLOTS
+  ---------------------------------------------------------- */
+
+  function _slotOffset(slotIdx) {
+    return OFF.SLOT_BASE + slotIdx * OFF.SLOT_SIZE;
+  }
+
+  function _slotInUse(slotIdx) {
+    const off = _slotOffset(slotIdx) + OFF.SLOT_INUSE;
+    return new Uint8Array(_buf)[off] !== 0x00;
+  }
+
+  function _unlockSlot(slotIdx) {
+    const off = _slotOffset(slotIdx) + OFF.SLOT_INUSE;
+    new Uint8Array(_buf)[off] = 0x01;
+  }
+
+  function _readSlotInfo() {
+    let inUse = 0;
+    for (let i = 0; i < OFF.SLOT_COUNT; i++) {
+      if (_slotInUse(i)) inUse++;
+    }
+    return { total: OFF.SLOT_COUNT, inUse };
+  }
+
+  /* ----------------------------------------------------------
+     PERFORMANCE
+  ---------------------------------------------------------- */
+
+  function _setSlotPerf(slotIdx, mode) {
+    const base = _slotOffset(slotIdx);
+    const view = new Uint8Array(_buf);
+
+    if (mode === 'max') {
+      // Write 10.0 (00 00 20 41) into each of the 9 upgrade float positions.
+      // Confirmed safe from real save analysis — fast car, no UI crash.
+      const f10 = [0x00, 0x00, 0x20, 0x41];
+      for (const relOff of OFF.PERF_UPGRADE_FLOATS) {
+        const abs = base + relOff;
+        for (let i = 0; i < 4; i++) view[abs + i] = f10[i];
+      }
+      // Upgrade unlock flags: fill 0x01 (unlocked)
+      for (let i = 0; i < OFF.PERF_FLAGS_SIZE; i++) {
+        view[base + OFF.PERF_FLAGS_START + i] = 0x01;
+      }
+      // Upgrade counters
+      const c1 = [0x00, 0x01, 0x00, 0x00];
+      const c2 = [0x00, 0x00, 0x00, 0x01];
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_1 + i] = c1[i];
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_2 + i] = c2[i];
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_3 + i] = c2[i];
+
+    } else {
+      // NIL — zero all upgrade floats and flags back to stock
+      const f0 = [0x00, 0x00, 0x00, 0x00];
+      for (const relOff of OFF.PERF_UPGRADE_FLOATS) {
+        const abs = base + relOff;
+        for (let i = 0; i < 4; i++) view[abs + i] = f0[i];
+      }
+      for (let i = 0; i < OFF.PERF_FLAGS_SIZE; i++) {
+        view[base + OFF.PERF_FLAGS_START + i] = 0x00;
+      }
+      // Zero counters back to stock
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_1 + i] = 0x00;
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_2 + i] = 0x00;
+      for (let i = 0; i < 4; i++) view[base + OFF.PERF_COUNTER_3 + i] = 0x00;
+    }
+  }
+
+  /* ----------------------------------------------------------
+     UNLOCK ALL PARTS
+  ---------------------------------------------------------- */
+
+  function _unlockAllParts() {
+    const view = new Uint8Array(_buf);
+    for (let s = 0; s < OFF.SLOT_COUNT; s++) {
+      const base = _slotOffset(s);
+      for (const relOff of OFF.PARTS_OFFSETS) {
+        const abs = base + relOff;
+        for (let i = 0; i < OFF.PARTS_BLOCK_SIZE; i++) {
+          view[abs + i] = 0xFF;
+        }
+      }
+    }
+  }
+
+  /* ----------------------------------------------------------
+     HEADER VALIDATION
+  ---------------------------------------------------------- */
+
+  function _validateHeader() {
+    if (!_buf || _buf.byteLength < 6) return false;
+    const view = new Uint8Array(_buf);
+    const magicOk = OFF.HEADER_MAGIC.every((b, i) => view[OFF.HEADER + i] === b);
+    if (!magicOk) return false;
+    const low16 = _dv().getUint16(0x0004, true);
+    return low16 === (_buf.byteLength & 0xFFFF);
+  }
+
+  /* ----------------------------------------------------------
+     CAR INJECTION (active car area — absolute offsets)
+
+     These blocks target the game's active/current car region,
+     NOT the slot memory. Offsets are absolute file positions.
+     Blocks are always written in ascending offset order.
+     Each block is bounds-checked against the buffer before write.
+
+     CRITICAL: Some patch blocks (e.g. 0x5B20) land inside slot
+     memory even though they're intended for the active car area.
+     Writing them into a fresh template corrupts the slot's car
+     data → crash when opening car selection in career mode.
+     Any block overlapping a slot range is silently skipped.
+     (GabriLex's tool works because it patches an existing save
+     where that slot data is already overwritten by the target car.)
+  ---------------------------------------------------------- */
+
+  // All 5 slot ranges — absolute [start, end) pairs
+  const SLOT_RANGES = Array.from({ length: OFF.SLOT_COUNT }, (_, i) => [
+    OFF.SLOT_BASE + i * OFF.SLOT_SIZE,
+    OFF.SLOT_BASE + i * OFF.SLOT_SIZE + OFF.SLOT_SIZE,
+  ]);
+
+  function _inSlotRange(off) {
+    return SLOT_RANGES.some(([s, e]) => off >= s && off < e);
+  }
+
+  function _injectActiveCar(carData) {
+    if (!carData || !carData.blocks || !carData.blocks.length) return false;
+
+    // Sort ascending — safe write order
+    const sorted = [...carData.blocks].sort((a, b) => a.off - b.off);
+
+    const view = new Uint8Array(_buf);
+    for (const block of sorted) {
+      const bytes = _hexToBytes(block.hex);
+      const off   = typeof block.off === 'string'
+        ? parseInt(block.off, 16)
+        : block.off;
+
+      // Skip blocks before the known active car region
+      if (off < OFF.CAR_REGION_MIN) continue;
+      // Skip blocks that overlap any slot — would corrupt career mode car data
+      if (_inSlotRange(off)) continue;
+      // Skip blocks that exceed the file
+      if (off + bytes.length > _buf.byteLength) continue;
+
+      for (let i = 0; i < bytes.length; i++) {
+        view[off + i] = bytes[i];
+      }
+    }
+    return true;
+  }
+
+  /* ----------------------------------------------------------
+     SLOT-BASED CAR INJECTION (legacy — for patch files)
+     Patch format: [{off, hex}, ...]
+     'off' is relative to slot start (0 .. SLOT_SIZE-1)
+  ---------------------------------------------------------- */
+
+  function _injectCar(slotIdx, carData) {
+    _unlockSlot(slotIdx);
+    const slotBase = _slotOffset(slotIdx);
+    for (const entry of carData) {
+      const relOff = typeof entry.off === 'string'
+        ? parseInt(entry.off, 16)
+        : entry.off;
+      const bytes = _hexToBytes(entry.hex);
+      if (relOff < 0 || relOff + bytes.length > OFF.SLOT_SIZE) continue;
+      const off = slotBase + relOff;
+      if (off + bytes.length > _buf.byteLength) continue;
+      _writeBytes(off, bytes);
+    }
+  }
+
+  function _extractCar(slotIdx) {
+    const base    = _slotOffset(slotIdx);
+    const size    = OFF.SLOT_SIZE;
+    const bytes   = _readBytes(base, size);
+    const patches = [];
+    const CHUNK   = 16;
+    for (let i = 0; i < size; i += CHUNK) {
+      const chunk = bytes.slice(i, i + CHUNK);
+      if (chunk.every(b => b === 0x00)) continue;
+      patches.push({ off: i, hex: _bytesToHex(chunk) });
+    }
+    return patches;
+  }
+
+  function _applyJsonPatch(slotIdx, json) {
+    let data;
+    try { data = JSON.parse(json); } catch (e) {
+      throw new Error('Invalid .json patch: could not parse JSON');
+    }
+    if (!Array.isArray(data)) throw new Error('Invalid .json patch: expected an array');
+    _injectCar(slotIdx, data);
+  }
+
+  function _applyTxtPatch(slotIdx, txt) {
+    _unlockSlot(slotIdx);
+    const lines  = txt.split(/\r?\n/);
+    const blocks = [];
+    let   i      = 0;
+    while (i < lines.length) {
+      const offLine = lines[i]?.trim();
+      const hexLine = lines[i + 1]?.trim();
+      if (offLine && hexLine) {
+        const off   = parseInt(offLine, 16);
+        const bytes = _hexToBytes(hexLine);
+        if (!isNaN(off) && bytes.length > 0) {
+          blocks.push({ off, hex: hexLine });
+        }
+      }
+      i += 2;
+      while (i < lines.length && lines[i].trim() === '') i++;
+    }
+    for (const block of blocks) {
+      const bytes = _hexToBytes(block.hex);
+      if (block.off + bytes.length <= _buf.byteLength) {
+        _writeBytes(block.off, bytes);
+      }
+    }
+  }
+
+  /* ----------------------------------------------------------
+     DECODE TEMPLATE — shared by createProfile and createNewSave
+  ---------------------------------------------------------- */
+
+  function _decodeTemplate() {
+    if (!global.ptSDE_TEMPLATE) {
+      throw new Error('Template not loaded. Make sure nfsu2-template.js is included.');
+    }
+    const binStr = atob(global.ptSDE_TEMPLATE);
+    const bytes  = new Uint8Array(binStr.length);
+    for (let i = 0; i < binStr.length; i++) {
+      bytes[i] = binStr.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  /* ----------------------------------------------------------
+     CREATE PROFILE (new modal flow)
+
+     1. Decode the Peugeot 206 base template
+     2. Write profile name at NAME_OFFSET
+     3. Write money at MONEY offset
+     4. If carKey provided → look up car in ptSDE_CARS and inject
+        into the active car region (absolute offsets)
+     5. If no carKey → Peugeot 206 stays as the default car
+     6. Download file named after the profile
+
+     carKey: string key from ptSDE_CARS, or null/undefined for default
+  ---------------------------------------------------------- */
+
+  function _createProfile(name, money, carKey, unlockParts) {
+    const clean = name.slice(0, 7).replace(/[^A-Za-z0-9]/g, '') || 'PLAYER';
+    const newBuf = _decodeTemplate();
+
+    // Temporarily swap _buf so shared write helpers work
+    const prev = _buf;
+    _buf = newBuf;
+
+    try {
+      // 1. Write name
+      _writeName(clean);
+
+      // 2. Write money (clamp to safe range)
+      const safeM = Math.max(0, Math.min(Number(money) || 0, 2147483647));
+      _writeMoney(safeM);
+
+      // 3. Inject car if requested.
+      //    Blocks landing inside slot ranges are skipped — they would
+      //    corrupt career mode car selection on a fresh template save.
+      if (carKey && global.ptSDE_CARS) {
+        const car = global.ptSDE_CARS.findByKey(carKey);
+        if (car) {
+          _injectActiveCar(car);
+        }
+        // carKey not found → silently keep Peugeot 206 default
+      }
+      // No carKey → Peugeot 206 from template is already the car
+
+      // 4. Unlock all parts if requested
+      if (unlockParts) {
+        _unlockAllParts();
+      }
+
+      const result = _copyBuffer(_buf);
+      _download(result, clean);
+
+    } finally {
+      // Always restore previous state — never corrupt a loaded save
+      _buf = prev;
+    }
+  }
+
+  /* ----------------------------------------------------------
+     CLONE SAVE
+  ---------------------------------------------------------- */
+
+  function _buildClone(name) {
+    if (!_buf) throw new Error('No save loaded');
+    const clone = _copyBuffer(_buf);
+    const prev  = _buf;
+    _buf        = clone;
+    _writeName(name);
+    const result = _copyBuffer(_buf);
+    _buf = prev;
+    return result;
+  }
+
+  /* ----------------------------------------------------------
+     PUBLIC API
+  ---------------------------------------------------------- */
+
+  const ptSDE = {
+
+    loadSave(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return reject(new Error('No file provided'));
+        _filename = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          _orig = e.target.result;
+          _buf  = _copyBuffer(_orig);
+          if (!_validateHeader()) {
+            _buf  = null;
+            _orig = null;
+            return reject(new Error('Invalid save file: header mismatch. Make sure this is an NFSU2 save.'));
+          }
+          resolve();
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsArrayBuffer(file);
+      });
+    },
+
+    getSaveInfo() {
+      if (!_buf) return null;
+      const slots = _readSlotInfo();
+      return {
+        name:     _readName(),
+        money:    _readMoney(),
+        slots,
+        headerOk: _validateHeader(),
+        size:     _buf.byteLength,
+        filename: _filename,
+      };
+    },
+
+    isSlotInUse(slotIdx) {
+      if (!_buf) return false;
+      return _slotInUse(slotIdx);
+    },
+
+    setName(str)      { if (_buf) _writeName(str); },
+    setMoney(n)       { if (_buf) _writeMoney(n); },
+
+    setSlotPerf(slotIdx, mode) {
+      if (_buf) _setSlotPerf(slotIdx, mode);
+    },
+
+    unlockSlot(slotIdx) {
+      if (_buf) _unlockSlot(slotIdx);
+    },
+
+    unlockAllSlots() {
+      if (!_buf) return;
+      for (let i = 0; i < OFF.SLOT_COUNT; i++) _unlockSlot(i);
+    },
+
+    unlockAllParts() {
+      if (_buf) _unlockAllParts();
+    },
+
+    maxMoney() {
+      if (_buf) _writeMoney(2147483647);
+    },
+
+    injectCar(slotIdx, carData) {
+      if (_buf) _injectCar(slotIdx, carData);
+    },
+
+    extractCar(slotIdx) {
+      if (!_buf) return [];
+      return _extractCar(slotIdx);
+    },
+
+    applyJsonPatch(slotIdx, json) {
+      if (_buf) _applyJsonPatch(slotIdx, json);
+    },
+
+    applyTxtPatch(slotIdx, txt) {
+      if (_buf) _applyTxtPatch(slotIdx, txt);
+    },
+
+    downloadSave(filename) {
+      if (_buf) _download(_buf, filename || _filename || 'save.sav');
+    },
+
+    downloadBackup(filename) {
+      if (_orig) _download(_orig, filename || (_filename ? _filename + '.bak' : 'save.sav.bak'));
+    },
+
+    /**
+     * createProfile(name, money, carKey, unlockParts)
+     * The new modal-driven create flow.
+     *   name         — profile name string (max 7 alphanumeric)
+     *   money        — starting money (0 – 2,147,483,647)
+     *   carKey       — car key from ptSDE_CARS, or null for Peugeot 206 default
+     *   unlockParts  — boolean, if true unlocks all parts across all slots
+     */
+    createProfile(name, money, carKey, unlockParts) {
+      _createProfile(name, money, carKey, unlockParts);
+    },
+
+    /**
+     * createNewSave(name) — legacy single-arg create.
+     * Kept for backward compatibility. Uses Peugeot 206 base, no car injection.
+     */
+    createNewSave(name) {
+      _createProfile(name, 0, null);
+    },
+
+    cloneSave(name) {
+      const clean = name.slice(0, 7).replace(/[^A-Za-z0-9]/g, '') || 'CLONE';
+      const buf   = _buildClone(clean);
+      _download(buf, clean);
+    },
+
+    isLoaded() {
+      return _buf !== null;
+    },
+  };
+
+  /* ----------------------------------------------------------
+     EXPORT
+  ---------------------------------------------------------- */
+  global.ptSDE = ptSDE;
+
+}(window));

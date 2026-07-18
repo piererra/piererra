@@ -1,0 +1,37 @@
+/* ============================================================
+   PIER — styles/pier-marquee.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 4 — Editor reskin (shared component, used by pick-grid
+             chips in Subway Surfers and future editors)
+
+   Auto-scrolling text for labels that overflow their box, used
+   instead of plain ellipsis truncation.
+
+   Markup:
+     <span class="pier-marquee"><span class="pier-marquee__track">TEXT</span></span>
+   Activated by scripts/pier-marquee.js.
+============================================================ */
+
+.pier-marquee {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+.pier-marquee__track {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+.pier-marquee--active .pier-marquee__track {
+  animation: pier-marquee-scroll var(--pier-marquee-duration, 6s) ease-in-out 1s infinite;
+}
+@keyframes pier-marquee-scroll {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(0); }
+  80%  { transform: translateX(var(--pier-marquee-distance, -40px)); }
+  100% { transform: translateX(var(--pier-marquee-distance, -40px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pier-marquee--active .pier-marquee__track { animation: none; }
+}

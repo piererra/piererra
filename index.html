@@ -1,0 +1,290 @@
+<!--
+  Project : Pier — Portfolio (index.html)
+  Phase   : 2 — Portfolio shell (total redesign)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Piererra — Developer &amp; Game Modder</title>
+  <meta name="description" content="Portfolio of Piererra — a hobbyist developer and GTA San Andreas modder. Creator of Piererra Tools, a free collection of browser-based save editors." />
+  <meta name="keywords" content="Piererra, piererra tools, developer portfolio, GTA San Andreas modder, save editor developer, web developer portfolio" />
+  <meta name="author" content="Piererra" />
+
+  <meta property="og:title" content="Piererra — Developer &amp; Game Modder" />
+  <meta property="og:description" content="Hobbyist developer and GTA San Andreas modder. Creator of Piererra Tools — free browser-based save editors for NFSU2, NFSMW, Subway Surfers and GTA San Andreas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piererra.pages.dev/" />
+  <meta property="og:image" content="https://piererra.pages.dev/assets/icons/index/icon-512.png" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Piererra — Developer &amp; Game Modder" />
+  <meta name="twitter:description" content="Hobbyist developer and GTA San Andreas modder. Creator of Piererra Tools — free browser-based save editors." />
+
+  <link rel="canonical" href="https://piererra.pages.dev/" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/index/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/index/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/index/apple-touch-icon.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Piererra",
+    "url": "https://piererra.pages.dev/",
+    "sameAs": ["https://discord.com/users/1413503870373462070"],
+    "jobTitle": "Developer",
+    "knowsAbout": ["Lua", "C++", "HTML5", "JavaScript", "TypeScript", "CSS3", "Visual Basic 6", "Python", "Git"]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles/pier-tokens.css" />
+  <link rel="stylesheet" href="styles/pier-effects.css" />
+  <link rel="stylesheet" href="styles/pier-layout.css" />
+  <link rel="stylesheet" href="styles/pier-components.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-brand" href="index.html" aria-label="Piererra — home">
+      <span class="pier-brand__name pier-shift-text">PIERERRA</span>
+      <span class="pier-brand__tag">developer &amp; game modder</span>
+    </a>
+
+    <nav class="pier-nav__links" aria-label="Primary">
+      <a class="pier-nav-link" href="#about">About</a>
+      <a class="pier-nav-link" href="#skills">Skills</a>
+      <a class="pier-nav-link" href="#projects">Projects</a>
+      <a class="pier-nav-link" href="#other-projects">Other Projects</a>
+      <a class="pier-nav-link" href="#contact">Contact</a>
+    </nav>
+
+    <div class="pier-nav__controls">
+      <a class="pier-btn pier-btn--primary pier-shimmer" href="editors.html">Open Tools</a>
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+      <button type="button" class="pier-icon-btn" id="pier-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="pier-mobile-menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <nav id="pier-mobile-menu" class="pier-nav__mobile-menu" data-open="false" aria-label="Mobile">
+    <a class="pier-nav-link" href="#about">About</a>
+    <a class="pier-nav-link" href="#skills">Skills</a>
+    <a class="pier-nav-link" href="#projects">Projects</a>
+    <a class="pier-nav-link" href="#other-projects">Other Projects</a>
+    <a class="pier-nav-link" href="#contact">Contact</a>
+    <a class="pier-nav-link" href="editors.html">Open Tools</a>
+  </nav>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="pier-hero pier-container">
+      <span class="pier-eyebrow pier-eyebrow--tag pier-mono">
+        <span class="pier-dot pier-pulse-glow"></span>AVAILABLE FOR SMALL PROJECTS
+      </span>
+      <h1 class="pier-h1">
+        Building reliable save editors and<br />
+        browser-based tools that just <span class="pier-shift-text">work</span>.
+      </h1>
+      <p class="pier-lead">
+        I'm Piererra, a developer focused on browser-based tools. My work began
+        with reverse-engineering GTA San Andreas save files and has grown into
+        a suite of editors used by players worldwide. Everything I build runs
+        entirely client-side — free, open-source, and private by design.
+      </p>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="pier-section pier-reveal">
+      <div class="pier-container">
+        <div class="pier-eyebrow pier-mono">ABOUT</div>
+        <h2 class="pier-h2">Self-taught, detail-driven, and focused on games.</h2>
+
+        <div class="pier-about">
+          <p class="pier-lead">
+            Piererra began as a personal project to repair my own save
+            files and has since grown into a suite of editors used by a wider
+            community of players. No save data is ever uploaded — every tool
+            runs entirely in the browser, start to finish.
+          </p>
+
+          <ol class="pier-timeline">
+            <li class="pier-timeline__item">
+              <span class="pier-timeline__dot"></span>
+              <div>
+                <div class="pier-timeline__title">Started modding GTA San Andreas</div>
+                <div class="pier-timeline__desc">Began by manually editing save files byte by byte, driven by curiosity and persistence.</div>
+              </div>
+            </li>
+            <li class="pier-timeline__item">
+              <span class="pier-timeline__dot"></span>
+              <div>
+                <div class="pier-timeline__title">Taught myself development</div>
+                <div class="pier-timeline__desc">Built on that experience to learn full browser-based web development.</div>
+              </div>
+            </li>
+            <li class="pier-timeline__item pier-timeline__item--current">
+              <span class="pier-timeline__dot pier-pulse-glow"></span>
+              <div>
+                <div class="pier-timeline__title">Shipped Piererra</div>
+                <div class="pier-timeline__desc">Released four live editors, translated into 75+ languages and used by players around the world.</div>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills" class="pier-section pier-reveal">
+      <div class="pier-container">
+        <div class="pier-eyebrow pier-mono">SKILLS</div>
+        <h2 class="pier-h2">Languages and tools I work with.</h2>
+        <div class="pier-skills__grid">
+          <span class="pier-chip">Lua</span>
+          <span class="pier-chip">C++</span>
+          <span class="pier-chip">HTML5</span>
+          <span class="pier-chip">JavaScript</span>
+          <span class="pier-chip">TypeScript</span>
+          <span class="pier-chip">CSS3</span>
+          <span class="pier-chip">Visual Basic 6</span>
+          <span class="pier-chip">Python</span>
+          <span class="pier-chip">Git</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects" class="pier-section pier-reveal">
+      <div class="pier-container">
+        <div class="pier-eyebrow pier-mono">PROJECTS</div>
+        <h2 class="pier-h2">Projects I've shipped.</h2>
+        <p class="pier-lead" style="margin-top: 8px;">A flagship project so far — more save editors and experiments will land here over time.</p>
+
+        <div class="pier-project" style="margin-top: 32px;">
+          <span class="pier-project__accent-bar pier-shift-border" aria-hidden="true"></span>
+          <div class="pier-project__eyebrow">FLAGSHIP PROJECT</div>
+          <h3 class="pier-project__title">Piererra</h3>
+          <p class="pier-project__desc">
+            A free, open-source hub of browser-based save editors — edit cash, cars, career
+            progress, gangs, zones, collectables and more without installing anything.
+          </p>
+          <div class="pier-project__meta">
+            <span class="pier-chip">4 editors</span>
+            <span class="pier-chip">75+ languages</span>
+            <span class="pier-chip">100% client-side</span>
+          </div>
+          <a class="pier-project__cta" href="editors.html">Open Piererra</a>
+
+          <div class="pier-tool-tiles">
+            <a class="pier-tool-tile" href="editors/gtasa/index.html" style="--c:#3EBD2F">
+              <span class="pier-tool-tile__dot"></span>
+              <span>GTA San Andreas</span>
+              <span class="pier-tool-tile__go">&rarr;</span>
+            </a>
+            <a class="pier-tool-tile" href="editors/nfsu2/index.html" style="--c:#7DFF6E">
+              <span class="pier-tool-tile__dot"></span>
+              <span>NFS Underground 2</span>
+              <span class="pier-tool-tile__go">&rarr;</span>
+            </a>
+            <a class="pier-tool-tile" href="editors/nfsmw/index.html" style="--c:#FF9142">
+              <span class="pier-tool-tile__dot"></span>
+              <span>NFS Most Wanted</span>
+              <span class="pier-tool-tile__go">&rarr;</span>
+            </a>
+            <a class="pier-tool-tile" href="editors/subway/index.html" style="--c:#FFC736">
+              <span class="pier-tool-tile__dot"></span>
+              <span>Subway Surfers</span>
+              <span class="pier-tool-tile__go">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ OTHER PROJECTS ============ -->
+    <section id="other-projects" class="pier-section pier-reveal">
+      <div class="pier-container">
+        <div class="pier-eyebrow pier-mono">OTHER PROJECTS</div>
+        <h2 class="pier-h2">Not a save editor, but still mine.</h2>
+        <p class="pier-lead" style="margin-top: 8px;">A small utility tool, separate from the Piererra save editors.</p>
+
+        <div class="pier-project" style="margin-top: 32px;">
+          <span class="pier-project__accent-bar pier-shift-border" aria-hidden="true"></span>
+          <div class="pier-project__eyebrow">UTILITY</div>
+          <h3 class="pier-project__title">Private Links</h3>
+          <p class="pier-project__desc">
+            Password-protect any link. Encryption and decryption happen entirely
+            in your browser using AES-GCM — nothing is ever sent to a server.
+          </p>
+          <div class="pier-project__meta">
+            <span class="pier-chip">Client-side encryption</span>
+            <span class="pier-chip">No signup</span>
+          </div>
+          <a class="pier-project__cta" href="tools/private-links/index.html">Open Private Links</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="pier-section pier-reveal">
+      <div class="pier-container">
+        <div class="pier-eyebrow pier-mono">CONTACT</div>
+        <h2 class="pier-h2">Get in touch.</h2>
+        <p class="pier-lead" style="margin: 8px 0 24px;">
+          For bug reports, feature requests, or general questions, Discord is the
+          fastest way to reach me.
+        </p>
+
+        <a class="pier-contact-card" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer" aria-label="Piererra's Discord profile — open Discord to message">
+          <div class="pier-contact-card__avatar">
+            <img src="assets/images/discord-avatar.jpg" alt="Piererra" loading="lazy" />
+            <span class="pier-contact-card__status" aria-hidden="true"></span>
+          </div>
+          <div>
+            <div class="pier-contact-card__name">Piererra</div>
+            <div class="pier-contact-card__tag">Open Discord</div>
+          </div>
+          <svg class="pier-contact-card__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127c-.598.35-1.22.645-1.873.893a.076.076 0 0 0-.04.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.028 19.83 19.83 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.662a.06.06 0 0 0-.031-.028ZM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.42 0 1.333-.955 2.418-2.157 2.418Zm7.974 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="editors.html">Piererra</a>
+      <span>&middot;</span>
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="scripts/pier-nav.js"></script>
+
+</body>
+</html>

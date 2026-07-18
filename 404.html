@@ -1,0 +1,119 @@
+<!--
+  Project : Pier — 404 (Not Found)
+  Notes   : Drop this in the site root as 404.html. Uses the same
+            tokens/effects/layout/components stylesheets and the
+            same header/footer markup as index.html and editors.html,
+            so it inherits dark/light theme + nav behavior for free.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>404 — Page Not Found | Piererra</title>
+  <meta name="description" content="This page doesn't exist. Head back to Piererra's portfolio or the Piererra Tools save editors." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="stylesheet" href="styles/pier-tokens.css" />
+  <link rel="stylesheet" href="styles/pier-effects.css" />
+  <link rel="stylesheet" href="styles/pier-layout.css" />
+  <link rel="stylesheet" href="styles/pier-components.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+
+  <style>
+    /* ── Page-local styles for the 404 view only ── */
+    .pier-404 {
+      min-height: calc(100vh - 220px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .pier-404__code {
+      font-family: var(--pier-font-mono);
+      font-size: clamp(72px, 18vw, 160px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--pier-pink), var(--pier-blue), var(--pier-pink));
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: pier-shift var(--pier-shift-duration) linear infinite;
+    }
+
+    .pier-404__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pier-404__code { animation: none; background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-brand" href="index.html" aria-label="Piererra — home">
+      <span class="pier-brand__name pier-shift-text">PIERERRA</span>
+      <span class="pier-brand__tag">developer &amp; game modder</span>
+    </a>
+
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pier-container">
+    <section class="pier-404">
+      <span class="pier-eyebrow pier-eyebrow--tag pier-mono">
+        <span class="pier-dot pier-pulse-glow"></span>ERROR 404
+      </span>
+
+      <div class="pier-404__code">404</div>
+
+      <h1 class="pier-h2">This page doesn't exist. Probably a bad save file.</h1>
+      <p class="pier-lead">
+        The link's broken, the page moved, or you fat-fingered a URL.
+        Either way, there's nothing here — try one of these instead.
+      </p>
+
+      <div class="pier-404__actions">
+        <a class="pier-btn pier-btn--primary pier-shimmer" href="index.html">Back to Home</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="editors.html">Piererra</a>
+      <span>&middot;</span>
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="scripts/pier-nav.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!--
+  Project : Pier — GTA San Andreas Editor (editors/gtasa/index.html)
+  Phase   : 5 — Editor reskin (total redesign)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>GTA San Andreas Save Editor — Piererra Tools</title>
+  <meta name="description" content="Free browser-based save editor for GTA: San Andreas. Edit money, cheats, skills, stats, weapons, garages, gangs, zones, tags, jumps and collectables. No install, runs entirely on your device." />
+  <meta name="keywords" content="gta san andreas save editor, gtasa save editor, gta sa cheats, gta san andreas online save editor" />
+  <meta name="author" content="Piererra" />
+
+  <meta property="og:title" content="GTA San Andreas Save Editor — Piererra Tools" />
+  <meta property="og:description" content="Free browser-based save editor for GTA: San Andreas. Edit money, cheats, skills, stats, weapons, garages, gangs, zones, tags, jumps and collectables." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piererra.pages.dev/editors/gtasa/" />
+  <meta property="og:image" content="https://piererra.pages.dev/assets/icons/gtasa/icon-512.png" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="GTA San Andreas Save Editor — Piererra Tools" />
+  <meta name="twitter:description" content="Free browser-based save editor for GTA: San Andreas — money, cheats, skills, weapons, garages, gangs, zones and more." />
+
+  <link rel="canonical" href="https://piererra.pages.dev/editors/gtasa/" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/icons/gtasa/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icons/gtasa/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../assets/icons/gtasa/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../styles/pier-editor-shell.css" />
+  <link rel="stylesheet" href="gtasa-editor.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../../editors.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">GTA San Andreas</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <header class="sae-header">
+    <p class="sae-header__game">GRAND THEFT AUTO: SAN ANDREAS</p>
+    <h1 class="sae-header__title">Save Editor</h1>
+    <p class="sae-header__by">by Piererra</p>
+  </header>
+
+  <main class="sae-main">
+
+    <div class="sae-intro">
+      <!-- LOAD FILE -->
+      <section class="sae-section sae-section--first">
+
+        <div class="sae-dropzone" id="sae-dropzone" role="button" tabindex="0"
+             aria-label="Drop GTA SA save file or click to browse">
+          <svg class="sae-dropzone__icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 16V4M12 16l-4-4M12 16l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 20h16" stroke-linecap="round"/>
+          </svg>
+          <p class="sae-dropzone__text">Drop your save file here</p>
+          <p class="sae-dropzone__sub">GTASAsf1.b &hellip; GTASAsf8.b &mdash; click to browse</p>
+          <input type="file" id="sae-file-input" class="sae-dropzone__input"
+                 aria-label="Select GTA SA save file" />
+        </div>
+
+        <p class="sae-action-hint" id="sae-save-location-hint">
+          PC save location:
+          <code>My Documents\GTA San Andreas User Files\</code>
+        </p>
+
+        <div class="pier-loaded-bar" id="sae-loaded-bar" hidden>
+          <span class="pier-loaded-bar__text">Loaded: <strong id="sae-loaded-filename">&mdash;</strong></span>
+          <button type="button" class="pier-change-file-btn" id="sae-btn-change-file">Change file</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- EDITOR BODY -->
+    <div id="sae-editor-body" class="pier-editor-layout" hidden>
+
+      <nav class="pier-editor-nav" id="pier-editor-nav" aria-label="Editor sections">
+        <a class="pier-editor-nav__link" href="#sae-panel-money" data-section="sae-panel-money">Money</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-cheats" data-section="sae-panel-cheats">Cheat Toggles</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-skills" data-section="sae-panel-skills">Skills</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-stats" data-section="sae-panel-stats">Stats Browser</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-weapons" data-section="sae-panel-weapons">Weapons</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-garages" data-section="sae-panel-garages">Garages &amp; Vehicles</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-gangs" data-section="sae-panel-gangs">Gang Weapons</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-zones" data-section="sae-panel-zones">Zones &amp; Territory</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-tags" data-section="sae-panel-tags">Tags</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-jumps" data-section="sae-panel-jumps">Unique Jumps</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-loc" data-section="sae-panel-loc">Collectable Locations</a>
+        <a class="pier-editor-nav__link" href="#sae-panel-progress" data-section="sae-panel-progress">Collectables Progress</a>
+      </nav>
+
+      <div class="pier-editor-panels">
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-money">
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Money</h2>
+            <p class="sae-section__desc">Block 15 &mdash; cash on hand and the animated "counted" total shown in the HUD.</p>
+        </div>
+        <div class="sae-row">
+          <div class="sae-field">
+            <label class="sae-field__label" for="sae-money">
+              Money <span class="sae-field__hint">max 2,147,483,647</span>
+            </label>
+            <div class="sae-money-row">
+              <input type="number" id="sae-money" class="sae-input sae-input--gold" min="0" max="2147483647" />
+              <button type="button" class="sae-max-btn" id="sae-max-money">MAX</button>
+            </div>
+          </div>
+          <div class="sae-field">
+            <label class="sae-field__label" for="sae-counted-money">
+              Counted Money <span class="sae-field__hint">HUD display value</span>
+            </label>
+            <input type="number" id="sae-counted-money" class="sae-input" min="0" max="2147483647" />
+          </div>
+        </div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-cheats" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Cheat Toggles</h2>
+            <p class="sae-section__desc">Persistent player flags stored in Block 15.</p>
+        </div>
+        <div class="sae-cheat-grid" id="sae-cheat-grid"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-skills" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Skills</h2>
+            <p class="sae-section__desc">Block 16 &mdash; weapon &amp; movement skill levels, 0&ndash;1000.</p>
+        </div>
+        <div class="sae-skills-grid" id="sae-skills-grid"></div>
+        <button type="button" class="sae-btn sae-btn--ghost sae-btn--inline" id="sae-skills-max-all">
+          Max All Skills
+        </button>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-stats" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Stats Browser</h2>
+            <p class="sae-section__desc">Search and edit any tracked lifetime stat.</p>
+        </div>
+        <label class="sae-field__label" for="sae-stat-search">Search Stats</label>
+        <input type="search" class="sae-input sae-stat-search" id="sae-stat-search"
+               placeholder="e.g. respect, territories, tags" />
+        <div class="sae-stat-browser" id="sae-stat-browser"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-weapons" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Weapons</h2>
+            <p class="sae-section__desc">Block 2 &mdash; all 13 weapon slots and their ammo counts.</p>
+        </div>
+        <div class="sae-weapons-list" id="sae-weapons-list"></div>
+        <button type="button" class="sae-btn sae-btn--ghost sae-btn--inline" id="sae-weapons-max-ammo">
+          Max All Ammo
+        </button>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-garages" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Garages &amp; Vehicles</h2>
+            <p class="sae-section__desc">Block 3 &mdash; 20 storage garages, 4 vehicle slots each. Garages with a car parked in them are named by their real in-game location where it can be confidently identified; otherwise shown as "Garage N". Tap a garage to expand.</p>
+        </div>
+        <div class="sae-garages-list" id="sae-garages-list"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-gangs" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Gang Weapons</h2>
+            <p class="sae-section__desc">Block 11 &mdash; the 3 weapons each gang uses when they spawn during a gang war.</p>
+        </div>
+        <div class="sae-gangs-list" id="sae-gangs-list"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-zones" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Zones &amp; Territory</h2>
+            <p class="sae-section__desc">Block 10 &mdash; gang and drug dealer density per map zone, shown by real location name. All zones are listed by default &mdash; scroll to browse, or search to jump to one.</p>
+        </div>
+        <label class="sae-field__label" for="sae-zone-search">
+          Search Zones <span class="sae-field__hint">optional &mdash; scroll the list below, or type a name (e.g. Ganton, Idlewood) to jump to it</span>
+        </label>
+        <input type="search" class="sae-input sae-stat-search" id="sae-zone-search"
+          placeholder="Filter by name&hellip;" />
+        <div class="sae-zones-list" id="sae-zones-list"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-tags" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Tags</h2>
+            <p class="sae-section__desc">Block 20 &mdash; 100 gang tags. Tap a tile to toggle sprayed / not sprayed.</p>
+            <span class="sae-section__count" id="sae-tags-count"></span>
+        </div>
+        <div class="sae-action-row">
+          <button type="button" class="sae-btn sae-btn--ghost" id="sae-tags-spray-all">Spray All</button>
+          <button type="button" class="sae-btn sae-btn--ghost" id="sae-tags-clear-all">Clear All</button>
+        </div>
+        <div class="sae-tags-grid" id="sae-tags-grid"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-jumps" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Unique Jumps</h2>
+            <p class="sae-section__desc">Block 24 &mdash; 70 stunt jumps. Toggle Found / Done and edit the cash reward for each.</p>
+            <span class="sae-section__count" id="sae-jumps-count"></span>
+        </div>
+        <div class="sae-action-row">
+          <button type="button" class="sae-btn sae-btn--ghost" id="sae-jumps-all-done">Mark All Done</button>
+          <button type="button" class="sae-btn sae-btn--ghost" id="sae-jumps-clear-all">Clear All</button>
+        </div>
+        <div class="sae-jumps-list" id="sae-jumps-list"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-loc" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Collectable Locations</h2>
+            <p class="sae-section__desc">Real coordinates for all 50 Horseshoes, 50 Oysters and 50 Snapshots, extracted directly from this game's main.scm. Tick a box to mark it collected or uncollected &mdash; verified against a real 0% save and a real 100% save.</p>
+        </div>
+        <h3 class="sae-loc-group__title">Horseshoes (Las Venturas) <span class="sae-section__count" id="sae-loc-count-horseshoes"></span></h3>
+        <div class="sae-loc-list" id="sae-loc-horseshoes"></div>
+        <h3 class="sae-loc-group__title">Oysters (map-wide) <span class="sae-section__count" id="sae-loc-count-oysters"></span></h3>
+        <div class="sae-loc-list" id="sae-loc-oysters"></div>
+        <h3 class="sae-loc-group__title">Snapshots (map-wide) <span class="sae-section__count" id="sae-loc-count-snapshots"></span></h3>
+        <div class="sae-loc-list" id="sae-loc-snapshots"></div>
+      </section>
+
+      <section class="sae-section pier-editor-panel" id="sae-panel-progress" hidden>
+        <div class="sae-section__head">
+          <h2 class="sae-section__title">Collectables Progress</h2>
+            <p class="sae-section__desc">Quick-glance totals &mdash; the same numbers the game's own stats menu reads. For per-location editing, use the Collectable Locations list above.</p>
+        </div>
+        <div class="sae-collectables-progress" id="sae-collectables-progress"></div>
+      </section>
+
+      <!-- DOWNLOAD -->
+      <section class="sae-section sae-section--actions sae-section--last">
+        <div class="sae-action-row">
+          <button class="sae-btn sae-btn--primary pier-shimmer" id="sae-btn-download">
+            Apply All &amp; Download
+          </button>
+        </div>
+        <p class="sae-action-hint">
+          Checksum is recalculated automatically so the game accepts the file.
+        </p>
+      </section>
+
+      </div>
+      <!-- end .pier-editor-panels -->
+
+    </div>
+    <!-- end #sae-editor-body -->
+
+  </main>
+
+  <div class="sae-toast" id="sae-toast" role="status" aria-live="polite"></div>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA TOOLS &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="gtasa-core.js"></script>
+  <script src="gtasa-blocks.js"></script>
+  <script src="gtasa-general.js"></script>
+  <script src="gtasa-stats-data.js"></script>
+  <script src="gtasa-stats.js"></script>
+  <script src="gtasa-weapons-data.js"></script>
+  <script src="gtasa-weapons.js"></script>
+  <script src="gtasa-vehicles-data.js"></script>
+  <script src="gtasa-garages.js"></script>
+  <script src="gtasa-gangs-data.js"></script>
+  <script src="gtasa-gangs.js"></script>
+  <script src="gtasa-zones-names-data.js"></script>
+  <script src="gtasa-zones.js"></script>
+  <script src="gtasa-tags.js"></script>
+  <script src="gtasa-jumps.js"></script>
+  <script src="gtasa-ui.js"></script>
+  <script src="gtasa-ui-stats.js"></script>
+  <script src="gtasa-ui-weapons.js"></script>
+  <script src="gtasa-ui-garages.js"></script>
+  <script src="gtasa-ui-gangs.js"></script>
+  <script src="gtasa-ui-zones.js"></script>
+  <script src="gtasa-ui-tags.js"></script>
+  <script src="gtasa-ui-jumps.js"></script>
+  <script src="gtasa-ui-collectables-progress.js"></script>
+  <script src="gtasa-collectable-locations-data.js"></script>
+  <script src="gtasa-collectables-pickups.js"></script>
+  <script src="gtasa-ui-collectable-locations.js"></script>
+
+  <script src="../../scripts/pier-nav.js"></script>
+  <script src="../../scripts/pier-sidebar-nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.PierSidebarNav) PierSidebarNav.init('#pier-editor-nav', '.pier-editor-panel');
+    });
+  </script>
+
+</body>
+</html>

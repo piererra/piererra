@@ -1,0 +1,323 @@
+<!--
+  Project : Pier — NFS Underground 2 Editor (editors/nfsu2/index.html)
+  Phase   : 6 — Editor reskin (total redesign)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>NFS Underground 2 Save Editor — Piererra Tools</title>
+  <meta name="description" content="Free browser-based save editor for NFS Underground 2. Edit cash, cars, career progress and unlocks. No install, runs entirely on your device." />
+  <meta name="keywords" content="nfs underground 2 save editor, nfsu2 save editor, need for speed underground 2 cheats" />
+  <meta name="author" content="Piererra" />
+
+  <meta property="og:title" content="NFS Underground 2 Save Editor — Piererra Tools" />
+  <meta property="og:description" content="Free browser-based save editor for NFS Underground 2. Edit cash, cars, career progress and unlocks." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piererra.pages.dev/editors/nfsu2/" />
+  <meta property="og:image" content="https://piererra.pages.dev/assets/icons/nfsu2/icon-512.png" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="NFS Underground 2 Save Editor — Piererra Tools" />
+  <meta name="twitter:description" content="Free browser-based save editor for NFS Underground 2 — cash, cars, career progress and unlocks." />
+
+  <link rel="canonical" href="https://piererra.pages.dev/editors/nfsu2/" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/icons/nfsu2/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icons/nfsu2/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../assets/icons/nfsu2/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="../../styles/pier-tokens.css" />
+  <link rel="stylesheet" href="../../styles/pier-effects.css" />
+  <link rel="stylesheet" href="../../styles/pier-layout.css" />
+  <link rel="stylesheet" href="../../styles/pier-components.css" />
+  <link rel="stylesheet" href="../../styles/pier-editor-shell.css" />
+  <link rel="stylesheet" href="nfsu2-editor.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('pier-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="pier-nav">
+    <a class="pier-nav__back" href="../../editors.html">&larr; Back</a>
+    <span class="pier-nav__sep">/</span>
+    <span class="pier-nav__current">NFS Underground 2</span>
+    <div class="pier-nav__controls">
+      <button type="button" class="pier-icon-btn" id="pier-theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <header class="sde-header">
+    <p class="sde-header__game">NEED FOR SPEED UNDERGROUND 2</p>
+    <h1 class="sde-header__title">Save Editor</h1>
+    <p class="sde-header__by">by Piererra</p>
+  </header>
+
+  <main class="sde-main">
+
+    <!-- CREATE NEW PROFILE — opens modal -->
+    <section class="sde-section sde-section--first">
+      <div class="sde-section__head">
+        <h2 class="sde-section__title">Create New Profile</h2>
+        <p class="sde-section__desc">Generates a fresh NFSU2 save file ready to play.</p>
+      </div>
+      <button class="sde-btn sde-btn--lime pier-shimmer" id="sde-btn-new-save">
+        + Create New Profile
+      </button>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="sde-divider"><span>or load an existing save</span></div>
+
+    <!-- LOAD FILE -->
+    <section class="sde-section">
+
+      <div class="sde-dropzone" id="sde-dropzone" role="button" tabindex="0"
+           aria-label="Drop NFSU2 save file or click to browse">
+        <svg class="sde-dropzone__icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M12 16V4M12 16l-4-4M12 16l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 20h16" stroke-linecap="round"/>
+        </svg>
+        <p class="sde-dropzone__text">Drop your save file here</p>
+        <p class="sde-dropzone__sub">or click to browse</p>
+        <input type="file" id="sde-file-input" class="sde-dropzone__input"
+               aria-label="Select save file" />
+      </div>
+
+      <div class="sde-infobar" id="sde-infobar" hidden>
+        <div class="sde-infobar__item">
+          <span class="sde-infobar__key">PROFILE</span>
+          <span class="sde-infobar__val" id="sde-info-name">&mdash;</span>
+        </div>
+        <div class="sde-infobar__item">
+          <span class="sde-infobar__key">MONEY</span>
+          <span class="sde-infobar__val sde-infobar__val--gold" id="sde-info-money">&mdash;</span>
+        </div>
+        <div class="sde-infobar__item">
+          <span class="sde-infobar__key">Car Slots</span>
+          <span class="sde-infobar__val" id="sde-info-slots">&mdash;</span>
+        </div>
+        <div class="sde-infobar__item">
+          <span class="sde-infobar__key">HEADER</span>
+          <span class="sde-infobar__val" id="sde-info-header">&mdash;</span>
+        </div>
+        <div class="sde-infobar__item">
+          <span class="sde-infobar__key">SIZE</span>
+          <span class="sde-infobar__val" id="sde-info-size">&mdash;</span>
+        </div>
+        <button type="button" class="pier-change-file-btn" id="sde-btn-change-file">Change file</button>
+      </div>
+    </section>
+
+    <!-- EDITOR BODY — revealed after file load -->
+    <div id="sde-editor-body" hidden>
+
+      <div id="sde-editor-layout" class="pier-editor-layout">
+        <nav class="pier-editor-nav" id="pier-editor-nav" aria-label="Editor sections">
+          <a class="pier-editor-nav__link" href="#sde-panel-profile" data-section="sde-panel-profile">Profile</a>
+          <a class="pier-editor-nav__link" href="#sde-panel-slots" data-section="sde-panel-slots">Car Slots</a>
+          <a class="pier-editor-nav__link" href="#sde-panel-clone" data-section="sde-panel-clone">Clone Save</a>
+          <a class="pier-editor-nav__link" href="#sde-panel-cheats" data-section="sde-panel-cheats">Cheats</a>
+        </nav>
+
+        <div class="pier-editor-panels">
+
+      <!-- PROFILE -->
+      <section class="sde-section pier-editor-panel" id="sde-panel-profile">
+        <h2 class="sde-section__title">Profile</h2>
+        <div class="sde-row">
+          <div class="sde-field">
+            <label class="sde-field__label" for="sde-input-name">
+              Name <span class="sde-field__hint">max 7 chars, alphanumeric</span>
+            </label>
+            <input type="text" id="sde-input-name" class="sde-input"
+                   maxlength="7" placeholder="e.g. SPEEDER" autocomplete="off" />
+          </div>
+          <div class="sde-field">
+            <label class="sde-field__label" for="sde-input-money">
+              Money <span class="sde-field__hint">max 2,147,483,647</span>
+            </label>
+            <input type="number" id="sde-input-money" class="sde-input sde-input--gold"
+                   min="0" max="2147483647" placeholder="e.g. 999999" />
+          </div>
+        </div>
+      </section>
+
+      <!-- CAR SLOTS -->
+      <section class="sde-section pier-editor-panel" id="sde-panel-slots" hidden>
+        <div class="sde-section__head">
+          <h2 class="sde-section__title">Car Slots</h2>
+          <p class="sde-section__desc">MAX fills all performance stats. NIL zeroes them.</p>
+        </div>
+        <div class="sde-slots" id="sde-slots-grid"></div>
+      </section>
+
+      <!-- CLONE SAVE -->
+      <section class="sde-section pier-editor-panel" id="sde-panel-clone" hidden>
+        <div class="sde-section__head">
+          <h2 class="sde-section__title">Clone Save</h2>
+          <p class="sde-section__desc">Copy the loaded save under a new profile name.</p>
+        </div>
+        <div class="sde-row sde-row--aligned">
+          <div class="sde-field">
+            <label class="sde-field__label" for="sde-clone-name">
+              New Name <span class="sde-field__hint">1&ndash;7 alphanumeric</span>
+            </label>
+            <input type="text" id="sde-clone-name" class="sde-input"
+                   maxlength="7" placeholder="e.g. BACKUP1" autocomplete="off" />
+          </div>
+          <button class="sde-btn sde-btn--lime sde-btn--inline" id="sde-btn-clone">
+            Clone &amp; Download
+          </button>
+        </div>
+      </section>
+
+      <!-- CHEATS -->
+      <section class="sde-section pier-editor-panel" id="sde-panel-cheats" hidden>
+        <div class="sde-section__head">
+          <h2 class="sde-section__title">Cheats</h2>
+          <p class="sde-section__desc">One-click bulk operations applied to the save in memory.</p>
+        </div>
+        <div class="sde-cheat-grid">
+          <button class="sde-btn sde-btn--cheat" id="sde-btn-unlock-parts">Unlock All Parts</button>
+          <button class="sde-btn sde-btn--cheat" id="sde-btn-unlock-slots">Unlock All Car Slots</button>
+          <button class="sde-btn sde-btn--cheat sde-btn--cheat-gold" id="sde-btn-max-money">Max Money</button>
+        </div>
+      </section>
+
+      <!-- DOWNLOAD -->
+      <section class="sde-section sde-section--actions sde-section--last">
+        <div class="sde-action-row">
+          <button class="sde-btn sde-btn--primary pier-shimmer" id="sde-btn-download">
+            Apply All &amp; Download
+          </button>
+          <button class="sde-btn sde-btn--ghost" id="sde-btn-backup">
+            Download Backup (.bak)
+          </button>
+        </div>
+        <p class="sde-action-hint">
+          Place the file in:
+          <code>%LOCALAPPDATA%\NFS Underground 2\&lt;Name&gt;\&lt;Name&gt;</code>
+        </p>
+      </section>
+
+        </div>
+        <!-- end .pier-editor-panels -->
+      </div>
+      <!-- end .pier-editor-layout -->
+
+    </div>
+    <!-- end #sde-editor-body -->
+
+  </main>
+
+  <div class="sde-modal" id="sde-modal" role="dialog" aria-modal="true"
+       aria-labelledby="sde-modal-title">
+    <div class="sde-modal__box">
+
+      <button class="sde-modal__close" id="sde-modal-close" aria-label="Close">&times;</button>
+
+      <h2 class="sde-modal__title" id="sde-modal-title">Create New Profile</h2>
+      <p class="sde-modal__sub">Generates a fresh NFSU2 save file ready to play.</p>
+
+      <div class="sde-modal__fields">
+
+        <!-- Profile Name -->
+        <div class="sde-modal__field">
+          <label for="sde-modal-name">
+            Profile Name <span>(1&ndash;7 alphanumeric, game limit)</span>
+          </label>
+          <input type="text" id="sde-modal-name"
+                 maxlength="7" placeholder="e.g. SPEEDER" autocomplete="off" />
+        </div>
+
+        <!-- Starting Money -->
+        <div class="sde-modal__field">
+          <label for="sde-modal-money">
+            Starting Money <span>(0 &ndash; 2,147,483,647)</span>
+          </label>
+          <div class="sde-modal__money-row">
+            <input type="number" id="sde-modal-money" class="gold"
+                   min="0" max="2147483647" value="0" placeholder="0" />
+            <button class="sde-modal__max-btn" id="sde-modal-max-money"
+                    type="button">MAX</button>
+          </div>
+        </div>
+
+        <!-- Car Selection -->
+        <div class="sde-modal__field">
+          <label for="sde-modal-car">
+            Starting Car <span>(optional &mdash; default is Peugeot 206)</span>
+          </label>
+          <select id="sde-modal-car">
+            <!-- Populated by nfsu2-ui.js -> buildCarSelect() -->
+          </select>
+        </div>
+
+        <!-- Unlock All Parts -->
+        <label class="sde-modal__checkbox">
+          <input type="checkbox" id="sde-modal-unlock-parts" />
+          <span class="sde-modal__checkbox-mark"></span>
+          <span class="sde-modal__checkbox-label">Unlock All Parts</span>
+        </label>
+
+      </div>
+
+      <div class="sde-modal__actions">
+        <button class="sde-modal__confirm" id="sde-modal-confirm" type="button">Create &amp; Download</button>
+        <button class="sde-modal__cancel" id="sde-modal-cancel-btn" type="button">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <!-- end .sde-modal -->
+
+  <div class="sde-toast" id="sde-toast" role="status" aria-live="polite"></div>
+
+  <footer class="pier-footer">
+    <span class="pier-footer__text">PIERERRA TOOLS &middot; built by Piererra</span>
+    <div class="pier-footer__links">
+      <a class="pier-footer__link" href="https://discord.com/users/1413503870373462070" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </footer>
+
+  <script src="nfsu2-template.js"></script>
+  <script src="nfsu2-cars.js"></script>
+  <script src="nfsu2-core.js"></script>
+  <script src="nfsu2-ui.js"></script>
+  <script src="../../scripts/pier-nav.js"></script>
+  <script src="../../scripts/pier-sidebar-nav.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.PierSidebarNav) PierSidebarNav.init('#pier-editor-nav', '.pier-editor-panel');
+
+      var cancelBtn = document.getElementById('sde-modal-cancel-btn');
+      var modal = document.getElementById('sde-modal');
+      if (cancelBtn && modal) {
+        cancelBtn.addEventListener('click', function () {
+          modal.classList.remove('sde-modal--open');
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

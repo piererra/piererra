@@ -1,0 +1,225 @@
+/* ============================================================
+   PIER — styles/pier-privatelinks.css
+   Project : Pier (Piererra site)
+
+   Styling specific to the Private Links tool (create/unlock,
+   decrypt-without-redirect, hidden bookmarks, brute-force demo).
+   Requires pier-tokens.css, pier-effects.css, pier-layout.css,
+   and pier-components.css to already be loaded.
+============================================================ */
+
+.pier-pl-main {
+  padding: 48px 0 96px;
+}
+
+.pier-pl-intro {
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.pier-pl-intro .pier-h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.pier-pl-card {
+  background: var(--pier-panel);
+  border: 1px solid var(--pier-border);
+  border-radius: var(--pier-radius);
+  padding: 28px;
+  max-width: 640px;
+}
+
+.pier-pl-card + .pier-pl-card {
+  margin-top: 24px;
+}
+
+/* ── Form fields ── */
+.pier-pl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.pier-pl-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pier-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pier-pl-field input[type="text"],
+.pier-pl-field input[type="url"],
+.pier-pl-field input[type="password"],
+.pier-pl-field textarea {
+  font-family: var(--pier-font-body);
+  font-size: 15px;
+  padding: 11px 14px;
+  border-radius: var(--pier-radius-sm);
+  border: 1px solid var(--pier-border-strong);
+  background: var(--pier-bg);
+  color: var(--pier-text);
+  transition: border-color var(--pier-ease);
+}
+
+.pier-pl-field input:focus,
+.pier-pl-field textarea:focus {
+  border-color: var(--pier-pink);
+  outline: none;
+}
+
+.pier-pl-field textarea { resize: vertical; min-height: 40px; }
+
+.pier-pl-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 520px) {
+  .pier-pl-split { grid-template-columns: 1fr; }
+}
+
+/* ── Advanced <details> ── */
+.pier-pl-advanced {
+  margin: 4px 0 20px;
+}
+
+.pier-pl-advanced summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pier-text-muted);
+  list-style: none;
+}
+
+.pier-pl-advanced summary::-webkit-details-marker { display: none; }
+.pier-pl-advanced summary::before { content: '▸ '; }
+.pier-pl-advanced[open] summary::before { content: '▾ '; }
+
+.pier-pl-advanced-body {
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Checkbox row ── */
+.pier-pl-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pier-pl-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--pier-text);
+}
+
+/* ── Output box ── */
+.pier-pl-output {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.pier-pl-output input[type="text"] {
+  font-family: var(--pier-font-mono);
+  font-size: 13px;
+  padding: 11px 14px;
+  border-radius: var(--pier-radius-sm);
+  border: 1px solid var(--pier-border-strong);
+  background: var(--pier-bg);
+  color: var(--pier-text);
+  width: 100%;
+}
+
+.pier-pl-output-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Disabled/placeholder state for the hidden-bookmark drag target */
+.pier-pl-bookmark {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: var(--pier-radius-sm);
+  border: 1px dashed var(--pier-border-strong);
+  color: var(--pier-text-muted);
+  font-size: 14px;
+}
+
+.pier-pl-bookmark[aria-disabled="false"] {
+  border-style: solid;
+  color: var(--pier-text);
+  cursor: grab;
+}
+
+/* ── Toast / alert ── */
+.pier-pl-toast {
+  margin-top: 14px;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: var(--pier-radius-sm);
+  background: var(--pier-card);
+  border: 1px solid var(--pier-border);
+  color: var(--pier-text-muted);
+  opacity: 0;
+  transition: opacity var(--pier-ease);
+}
+
+.pier-pl-toast--err { border-color: rgba(255, 100, 100, 0.4); color: #ff9c9c; }
+.pier-pl-toast--ok { border-color: rgba(125, 255, 110, 0.35); color: #9be89a; }
+
+/* ── Unlock prompt (index.html when a fragment is present) ── */
+.pier-pl-unlock {
+  max-width: 440px;
+}
+
+.pier-pl-unlock .pier-pl-hint {
+  font-size: 13px;
+  color: var(--pier-text-muted);
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+/* ── Error state ── */
+.pier-pl-error {
+  border-color: rgba(255, 100, 100, 0.4);
+}
+
+.pier-pl-error-text {
+  color: #ff9c9c;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.pier-pl-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ── Progress readout (brute-force demo) ── */
+.pier-pl-progress {
+  font-family: var(--pier-font-mono);
+  font-size: 13px;
+  color: var(--pier-text-muted);
+  margin-top: 14px;
+}
+
+/* ── Small helper list on the create page ── */
+.pier-pl-uses {
+  margin: 16px 0 0 20px;
+  color: var(--pier-text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}

@@ -1,0 +1,108 @@
+/* ============================================================
+   PIER — styles/pier-hub.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 3 — Tools hub
+
+   This file owns the tools.html hub page only: intro block +
+   the editor card grid. Requires styles/pier-tokens.css,
+   styles/pier-effects.css and styles/pier-components.css.
+============================================================ */
+
+.pier-hub {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 96px 24px 80px;
+}
+
+.pier-hub__title {
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 12px 0 16px;
+  max-width: 20ch;
+}
+
+.pier-hub__subtitle {
+  color: var(--pier-text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 56ch;
+  margin-bottom: 48px;
+}
+
+.pier-hub__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 680px) {
+  .pier-hub__grid { grid-template-columns: 1fr; }
+}
+
+.pier-hub__card {
+  position: relative;
+  display: block;
+  padding: 24px;
+  border: 1px solid var(--pier-border);
+  border-radius: var(--pier-radius);
+  background: var(--pier-panel);
+  transition: border-color var(--pier-ease), transform var(--pier-ease);
+}
+
+.pier-hub__card:hover {
+  border-color: var(--c, var(--pier-pink));
+  transform: translateY(-2px);
+}
+
+.pier-hub__card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.pier-hub__card__badge {
+  font-family: var(--pier-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
+  border-radius: var(--pier-radius-sm);
+  border: 1px solid var(--pier-border-strong);
+  color: var(--c, var(--pier-text));
+}
+
+.pier-hub__card__stat {
+  font-family: var(--pier-font-mono);
+  font-size: 12px;
+  color: var(--pier-text-muted);
+}
+
+.pier-hub__card__eyebrow {
+  font-family: var(--pier-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--pier-text-muted);
+  margin-bottom: 6px;
+}
+
+.pier-hub__card__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pier-hub__card__desc {
+  font-size: 13px;
+  color: var(--pier-text-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.pier-hub__card__cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pier-text);
+}

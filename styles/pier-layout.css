@@ -1,0 +1,153 @@
+/* ============================================================
+   PIER — styles/pier-layout.css
+   Project : Pier (rebuild of Piererra portfolio + tools)
+   Phase   : 2 — Portfolio shell
+
+   This file owns structural layout only:
+     - Page container / max-width
+     - Nav bar layout
+     - Section spacing / grid rhythm
+     - Responsive breakpoints
+
+   Requires styles/pier-tokens.css. Pairs with styles/pier-components.css
+   (which owns visual styling of individual pieces: buttons, cards, chips).
+============================================================ */
+
+.pier-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Nav ── */
+.pier-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+  background: color-mix(in srgb, var(--pier-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--pier-border);
+}
+
+.pier-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.pier-nav__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pier-nav__mobile-menu {
+  position: fixed;
+  inset: 0 0 auto 0;
+  top: 64px;
+  z-index: 39;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 24px 24px;
+  background: var(--pier-panel);
+  border-bottom: 1px solid var(--pier-border);
+}
+
+.pier-nav__mobile-menu[data-open="true"] {
+  display: flex;
+}
+
+@media (min-width: 721px) {
+  .pier-nav__mobile-menu { display: none !important; }
+}
+
+@media (max-width: 720px) {
+  .pier-nav__links { display: none; }
+  .pier-nav { padding: 16px; gap: 12px; }
+  .pier-nav__controls { gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  .pier-nav__controls .pier-btn--primary { display: none; }
+}
+
+/* ── Sections ── */
+.pier-section {
+  padding: 88px 0;
+  border-bottom: 1px solid var(--pier-border);
+}
+
+.pier-section:last-of-type {
+  border-bottom: none;
+}
+
+.pier-hero {
+  padding: 120px 0 96px;
+}
+
+/* ── About: two-column text + timeline ── */
+.pier-about {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+@media (max-width: 780px) {
+  .pier-about { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ── Skills: chip grid ── */
+.pier-skills__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+/* ── Projects: featured card + tool tile grid ── */
+.pier-tool-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 560px) {
+  .pier-tool-tiles { grid-template-columns: 1fr; }
+}
+
+/* ── Reveal-on-scroll target (see scripts/pier-nav.js) ── */
+.pier-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.pier-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pier-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Footer ── */
+.pier-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 32px 24px 40px;
+  max-width: 960px;
+  margin: 0 auto;
+}
