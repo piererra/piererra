@@ -28,7 +28,8 @@ mix of both until this is refined against more catalog data.
 
 import json
 import re
-from js import Response
+from urllib.parse import urlparse
+from workers import WorkerEntrypoint, Response
 
 CHAR_RE = re.compile(
     r'characterpreviews-(?:builtin|remote)_assets_([a-z0-9]+)_([a-z0-9]+)_preview_big_'
@@ -137,54 +138,53 @@ def cors_headers():
     }
 
 
-async def on_fetch(request, env):
-    url = request.url
-    path = url.split('?')[0]
-    # strip origin, keep only the path
-    path = '/' + path.split('/', 3)[3] if path.count('/') >= 3 else path
+class Default(WorkerEntrypoint):
+    async def fetch(self, request):
+        env = self.env
+        path = urlparse(request.url).path
 
-    if request.method == 'OPTIONS':
-        return Response.new('', headers=cors_headers())
+        if request.method == 'OPTIONS':
+            return Response('', headers=cors_headers())
 
-    if path == '/roster' and request.method == 'GET':
-        roster = await env.SUBWAY_ROSTER.get('roster:latest')
-        if roster is None:
-            return Response.new(
-                json.dumps({'error': 'no roster generated yet — run /parse first'}),
-                status=404,
-                headers={**cors_headers(), 'Content-Type': 'application/json'},
+        if path == '/roster' and request.method == 'GET':
+            roster = await env.SUBWAY_ROSTER.get('roster:latest')
+            if roster is None:
+                return Response(
+                    json.dumps({'error': 'no roster generated yet — run /parse first'}),
+                    status=404,
+                    headers={**cors_headers(), 'Content-Type': 'application/json'},
+                )
+            return Response(
+                roster, headers={**cors_headers(), 'Content-Type': 'application/json'}
             )
-        return Response.new(
-            roster, headers={**cors_headers(), 'Content-Type': 'application/json'}
-        )
 
-    if path == '/parse' and request.method == 'POST':
-        auth = request.headers.get('Authorization') or ''
-        if auth != f'Bearer {env.PARSE_SECRET}':
-            return Response.new('Unauthorized', status=401)
+        if path == '/parse' and request.method == 'POST':
+            auth = request.headers.get('Authorization') or ''
+            if auth != f'Bearer {env.PARSE_SECRET}':
+                return Response('Unauthorized', status=401)
 
-        raw = await env.SUBWAY_ROSTER.get('catalog:raw')
-        if raw is None:
-            return Response.new(
-                json.dumps({'error': 'no catalog uploaded yet — PUT it to KV key catalog:raw first'}),
-                status=400,
+            raw = await env.SUBWAY_ROSTER.get('catalog:raw')
+            if raw is None:
+                return Response(
+                    json.dumps({'error': 'no catalog uploaded yet — PUT it to KV key catalog:raw first'}),
+                    status=400,
+                    headers={'Content-Type': 'application/json'},
+                )
+
+            try:
+                roster = parse_catalog(raw)
+            except Exception as e:
+                return Response(
+                    json.dumps({'error': str(e)}),
+                    status=500,
+                    headers={'Content-Type': 'application/json'},
+                )
+
+            await env.SUBWAY_ROSTER.put('roster:latest', json.dumps(roster))
+
+            return Response(
+                json.dumps({'ok': True, 'counts': roster['counts']}),
                 headers={'Content-Type': 'application/json'},
             )
 
-        try:
-            roster = parse_catalog(raw)
-        except Exception as e:
-            return Response.new(
-                json.dumps({'error': str(e)}),
-                status=500,
-                headers={'Content-Type': 'application/json'},
-            )
-
-        await env.SUBWAY_ROSTER.put('roster:latest', json.dumps(roster))
-
-        return Response.new(
-            json.dumps({'ok': True, 'counts': roster['counts']}),
-            headers={'Content-Type': 'application/json'},
-        )
-
-    return Response.new('Not found', status=404)
+        return Response('Not found', status=404)
