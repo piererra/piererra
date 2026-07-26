@@ -138,11 +138,17 @@ def cors_headers():
     }
 
 
+def hdrs(d):
+    """Pyodide can't auto-convert a Python dict into a JS HeadersInit;
+    it needs a sequence of [key, value] pairs instead."""
+    return list(d.items())
+
+
 async def on_fetch(request, env):
     path = urlparse(request.url).path
 
     if request.method == 'OPTIONS':
-        return Response.new('', headers=cors_headers())
+        return Response.new('', headers=hdrs(cors_headers()))
 
     if path == '/roster' and request.method == 'GET':
         roster = await env.SUBWAY_ROSTER.get('roster:latest')
@@ -150,10 +156,10 @@ async def on_fetch(request, env):
             return Response.new(
                 json.dumps({'error': 'no roster generated yet — run /parse first'}),
                 status=404,
-                headers={**cors_headers(), 'Content-Type': 'application/json'},
+                headers=hdrs({**cors_headers(), 'Content-Type': 'application/json'}),
             )
         return Response.new(
-            roster, headers={**cors_headers(), 'Content-Type': 'application/json'}
+            roster, headers=hdrs({**cors_headers(), 'Content-Type': 'application/json'})
         )
 
     if path == '/parse' and request.method == 'POST':
@@ -166,7 +172,7 @@ async def on_fetch(request, env):
             return Response.new(
                 json.dumps({'error': 'no catalog uploaded yet — PUT it to KV key catalog:raw first'}),
                 status=400,
-                headers={'Content-Type': 'application/json'},
+                headers=hdrs({'Content-Type': 'application/json'}),
             )
 
         try:
@@ -175,14 +181,14 @@ async def on_fetch(request, env):
             return Response.new(
                 json.dumps({'error': str(e)}),
                 status=500,
-                headers={'Content-Type': 'application/json'},
+                headers=hdrs({'Content-Type': 'application/json'}),
             )
 
         await env.SUBWAY_ROSTER.put('roster:latest', json.dumps(roster))
 
         return Response.new(
             json.dumps({'ok': True, 'counts': roster['counts']}),
-            headers={'Content-Type': 'application/json'},
+            headers=hdrs({'Content-Type': 'application/json'}),
         )
 
     return Response.new('Not found', status=404)
