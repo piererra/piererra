@@ -1,0 +1,11 @@
+name = "subway-sync"
+main = "entry.py"
+compatibility_date = "2026-07-01"
+compatibility_flags = ["python_workers"]
+
+kv_namespaces = [
+  { binding = "SUBWAY_ROSTER", id = "27607c9ce96d4e29850f9c7dac5e8e46" }
+]
+
+# PARSE_SECRET is set as a Worker secret via the Cloudflare dashboard
+# (Settings > Variables and Secrets), NOT committed here.
