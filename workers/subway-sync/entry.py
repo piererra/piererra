@@ -47,7 +47,7 @@ BACKGROUND_RE = re.compile(
     r'playerprofile-(?:builtin|remote)_assets_([a-z0-9]+)_background'
 )
 
-CORS_ORIGIN = "https://piererra.pages.dev"  # TODO: confirm/replace with the real site domain
+CORS_ORIGIN = "https://piererra.pages.dev"
 
 
 def humanize(id_str):
