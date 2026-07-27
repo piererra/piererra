@@ -147,23 +147,24 @@ def extract_known_ids(js_text, var_name, strip_suffixes=None):
     """Same logic as the standalone check-new-subway-content.py script:
     pull id: "..." values out of one array block in subway-data.js,
     stripping known local naming suffixes so ids line up with the
-    suffix-free ids this Worker produces from the raw catalog."""
-    m = re.search(r'var\s+' + var_name + r'\s*=\s*\[', js_text)
-    if not m:
+    suffix-free ids this Worker produces from the raw catalog.
+
+    Uses fast native str.find() to slice out the block instead of a
+    manual character-by-character Python loop — the latter is cheap in
+    native JS/CPython but very CPU-expensive under Pyodide (WASM), and
+    was pushing this Worker over its CPU time limit (error 1102) when
+    combined with the primary catalog parse in the same request."""
+    marker = 'var ' + var_name + ' = ['
+    start = js_text.find(marker)
+    if start == -1:
         return set()
-    start = m.end() - 1
-    depth = 0
-    end = start
-    for i in range(start, len(js_text)):
-        if js_text[i] == '[':
-            depth += 1
-        elif js_text[i] == ']':
-            depth -= 1
-            if depth == 0:
-                end = i
-                break
-    block = js_text[start:end]
-    raw_ids = [mm.group(1).lower() for mm in re.finditer(r'id:\s*"([^"]+)"', block)]
+    # Next "  var " after this one marks the start of the following
+    # block; slicing to there (or EOF) avoids needing real bracket
+    # depth tracking, since we only care about id: "..." occurrences
+    # inside this section, not the exact array boundary.
+    next_var = js_text.find('\n  var ', start + len(marker))
+    block = js_text[start:next_var] if next_var != -1 else js_text[start:]
+    raw_ids = [m.group(1).lower() for m in re.finditer(r'id:\s*"([^"]+)"', block)]
     if strip_suffixes:
         cleaned = []
         for rid in raw_ids:
