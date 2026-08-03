@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-08-02T23:58:17.597Z
+   Last synced: 2026-08-03T08:28:54.378Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -230,7 +230,7 @@ var ptSSGData = (function () {
     { id: "rudyrascal", name: "Rudy Rascal", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "ventura", name: "Ventura", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "glorgalax", name: "Glorgalax", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "helene", name: "Helene", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "helene", name: "Helene", available: true, outfits: [{"id":"default","name":"Default"},{"id":"ogrepowerOutfit","name":"Ogrepower Outfit"}] },
     { id: "leo", name: "Leo", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "ozzy", name: "Ozzy", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "pins", name: "Pins", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -330,7 +330,9 @@ var ptSSGData = (function () {
     { id: "danUnder", name: "Dan Under", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "sandy", name: "Sandy", available: true, outfits: [{"id":"default","name":"Default"},{"id":"sinkOrSwimOutfit","name":"Sink Or Swim Outfit"}] },
     { id: "marieMacaron", name: "Marie Macaron", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "pierre", name: "Pierre", available: false, outfits: [{"id":"default","name":"Default"},{"id":"bonVoyageOutfit","name":"Bon Voyage Outfit"}] },
+    { id: "pierre", name: "Pierre", available: true, outfits: [{"id":"default","name":"Default"},{"id":"bonVoyageOutfit","name":"Bon Voyage Outfit"}] },
+    { id: "runaDarko", name: "Runa & Darko", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "wolf", name: "Wolf", available: false, outfits: [{"id":"default","name":"Default"},{"id":"heroOfRainOutfit","name":"Hero Of Rain Outfit"}] },
     { id: "redino", name: "Dino", available: true, outfits: [{"id":"default","name":"Default"}] }
   ];
 
@@ -663,9 +665,12 @@ var ptSSGData = (function () {
     { id: "offRoadRanger", name: "Off-Road Ranger", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"superJump","name":"Super Jump"}] },
     { id: "bayDrifter", name: "Bay Drifter", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
     { id: "rooRush", name: "Roo Rush", available: true, upgrades: [{"id":"default","name":"Default"}] },
-    { id: "jeTaime", name: "Je T'aime", available: false, upgrades: [{"id":"default","name":"Default"}] },
-    { id: "sweetElite", name: "Sweet Elite", available: false, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"glider","name":"Glider"}] },
-    { id: "yellowFellow", name: "Yellow Fellow", available: false, upgrades: [{"id":"superJump","name":"Super Jump"}] }
+    { id: "jeTaime", name: "Je T'aime", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "sweetElite", name: "Sweet Elite", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"glider","name":"Glider"}] },
+    { id: "yellowFellow", name: "Yellow Fellow", available: true, upgrades: [{"id":"superJump","name":"Super Jump"}] },
+    { id: "forestForce", name: "Forest Force", available: false, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "silverFlame", name: "Silver Flame", available: false, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
+    { id: "vulkarion", name: "Vulkarion", available: false, upgrades: [{"id":"glider","name":"Glider"},{"id":"highSpeed","name":"High Speed"}] }
   ];
 
   var FRAMES = [
@@ -681,6 +686,7 @@ var ptSSGData = (function () {
     { id: "pumpkin_frame", name: "Pumpkin Frame" },
     { id: "summer_frame", name: "Summer Frame" },
     { id: "winter_frame", name: "Winter Frame" },
+    { id: "dragon_frame", name: "Dragon Frame" },
     { id: "plant_frame", name: "Plant Frame" },
     { id: "pride_frame", name: "Pride Frame" },
     { id: "glorx_frame", name: "Glorx Frame" },
@@ -716,6 +722,7 @@ var ptSSGData = (function () {
     { id: "pvp_leaderboard_04_frame", name: "Pvp Leaderboard 04 Frame" },
     { id: "pvp_leaderboard_05_frame", name: "Pvp Leaderboard 05 Frame" },
     { id: "pvp_leaderboard_06_frame", name: "Pvp Leaderboard 06 Frame" },
+    { id: "pvp_leaderboard_07_frame", name: "Pvp Leaderboard 07 Frame" },
     { id: "stpatrick_frame", name: "Stpatrick Frame" }
   ];
 
@@ -820,8 +827,11 @@ var ptSSGData = (function () {
     { id: "bspointyguy_illustration_portrait", name: "Bspointyguy Illustration Portrait" },
     { id: "bsskullguy_illustration_portrait", name: "Bsskullguy Illustration Portrait" },
     { id: "bstoughguy_illustration_portrait", name: "Bstoughguy Illustration Portrait" },
+    { id: "bubbletea_graffiti_portrait", name: "Bubbletea Graffiti Portrait" },
     { id: "eightball_jake_illustration_portrait", name: "Eightball Jake Illustration Portrait" },
-    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" }
+    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" },
+    { id: "runadarko_illustration_portrait", name: "Runadarko Illustration Portrait" },
+    { id: "wolf_illustration_portrait", name: "Wolf Illustration Portrait" }
   ];
 
   var BACKGROUNDS = [
@@ -840,9 +850,9 @@ var ptSSGData = (function () {
   // null if a check failed — the UI shows "unknown" in that case
   // rather than a misleading guess.
   var VERSION_INFO = {
-    ourVersion: "3.66.0",
-    playStoreVersion: "3.66.1",
-    lastChecked: "2026-08-02T23:58:17.599Z"
+    ourVersion: "3.67.0",
+    playStoreVersion: "3.67.0",
+    lastChecked: "2026-08-03T08:28:54.379Z"
   };
 
   return {
