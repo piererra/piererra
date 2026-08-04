@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ＩＭＰＥＲＩ신Ｌ Nickname Generator</title>
+    <!-- Coded by Piererra -->
+    <style>
+        :root {
+            --pier_bg_color: #0d0f17;
+            --pier_card_bg: #161926;
+            --pier_accent: #6366f1;
+            --pier_accent_hover: #4f46e5;
+            --pier_text: #f3f4f6;
+            --pier_text_muted: #9ca3af;
+            --pier_border: #262a3d;
+            --pier_card_inner: #0f111a;
+            --pier_success: #10b981;
+            --pier_danger: #ef4444;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--pier_bg_color);
+            color: var(--pier_text);
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+        }
+
+        .pier_container {
+            background-color: var(--pier_card_bg);
+            border: 1px solid var(--pier_border);
+            border-radius: 16px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .pier_header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* Shimmering Animated Gradient Effect */
+        .pier_shimmer_text {
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: 2px;
+            background: linear-gradient(
+                90deg, 
+                #a855f7 0%, 
+                #3b82f6 25%, 
+                #ffffff 50%, 
+                #3b82f6 75%, 
+                #a855f7 100%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: pier_shimmer 3.5s linear infinite;
+        }
+
+        @keyframes pier_shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .pier_subtitle {
+            font-size: 0.875rem;
+            color: var(--pier_text_muted);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .pier_group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--pier_text_muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: var(--pier_card_inner);
+            border: 1px solid var(--pier_border);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.05rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--pier_accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Mode Selector Grid */
+        .pier_mode_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .pier_mode_btn {
+            background-color: var(--pier_card_inner);
+            border: 1px solid var(--pier_border);
+            border-radius: 8px;
+            color: var(--pier_text_muted);
+            padding: 8px 10px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .pier_mode_btn:hover {
+            border-color: var(--pier_accent);
+            color: #ffffff;
+        }
+
+        .pier_mode_btn.active {
+            background-color: rgba(99, 102, 241, 0.15);
+            border-color: var(--pier_accent);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Results List Container */
+        .pier_results_container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pier_result_card {
+            background-color: var(--pier_card_inner);
+            border: 1px solid var(--pier_border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .pier_result_card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .pier_result_info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .pier_result_tag {
+            font-size: 0.7rem;
+            color: var(--pier_text_muted);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .pier_result_text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            word-break: break-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pier_meta_bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            font-size: 0.75rem;
+        }
+
+        .pier_meta_valid {
+            color: var(--pier_success);
+        }
+
+        .pier_meta_invalid {
+            color: var(--pier_danger);
+        }
+
+        .pier_copy_btn {
+            background-color: var(--pier_accent);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 70px;
+        }
+
+        .pier_copy_btn:hover {
+            background-color: var(--pier_accent_hover);
+            transform: translateY(-1px);
+        }
+
+        .pier_copy_btn.copied {
+            background-color: var(--pier_success);
+        }
+
+        .pier_footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--pier_text_muted);
+            margin-top: 28px;
+            border-top: 1px solid var(--pier_border);
+            padding-top: 16px;
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 480px) {
+            .pier_container {
+                padding: 24px 18px;
+            }
+            .pier_shimmer_text {
+                font-size: 1.5rem;
+            }
+            .pier_mode_grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Coded by Piererra -->
+
+    <div class="pier_container">
+        <div class="pier_header">
+            <h1 class="pier_shimmer_text">ＩＭＰＥＲＩ신Ｌ</h1>
+            <p class="pier_subtitle">Family Nickname Generator</p>
+        </div>
+
+        <div class="pier_group">
+            <label for="pier_input">Desired Nickname:</label>
+            <input type="text" id="pier_input" placeholder="Enter name (e.g. Piererra)" autocomplete="off" autofocus oninput="pier_generate()">
+        </div>
+
+        <div class="pier_group">
+            <label>Formatting Mode Filter:</label>
+            <div class="pier_mode_grid">
+                <button class="pier_mode_btn active" onclick="pier_setFilter('all', this)">All Variations</button>
+                <button class="pier_mode_btn" onclick="pier_setFilter('fullwidth', this)">Full-Width</button>
+                <button class="pier_mode_btn" onclick="pier_setFilter('smallcaps', this)">Small Caps</button>
+                <button class="pier_mode_btn" onclick="pier_setFilter('circled', this)">Circled</button>
+                <button class="pier_mode_btn" onclick="pier_setFilter('bold', this)">Cyber Bold</button>
+                <button class="pier_mode_btn" onclick="pier_setFilter('dotted', this)">Dotted</button>
+            </div>
+        </div>
+
+        <div class="pier_group">
+            <label>Generated Nicknames (Includes ＩＭ신•):</label>
+            <div id="pier_results_list" class="pier_results_container">
+                <!-- Results rendered via JS -->
+            </div>
+        </div>
+
+        <div class="pier_footer">
+            Coded by Piererra &bull; ＩＭＰＥＲＩ신Ｌ Family
+        </div>
+    </div>
+
+    <script>
+        // Coded by Piererra
+
+        const PIER_FAMILY_PREFIX = "ＩＭ신•";
+        const PIER_MAX_CHARS = 12;
+        let pier_current_filter = 'all';
+
+        // Char map converters
+        const pier_maps = {
+            fullwidth: (str) => str.replace(/[!-~]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)),
+            
+            smallcaps: (str) => {
+                const sc = {
+                    'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ',
+                    'l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ',
+                    'w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ',
+                    'A':'ᴀ','B':'ʙ','C':'ᴄ','D':'ᴅ','E':'ᴇ','F':'ғ','G':'ɢ','H':'ʜ','I':'ɪ','J':'ᴊ','K':'ᴋ',
+                    'L':'ʟ','M':'ᴍ','N':'ɴ','O':'ᴏ','P':'ᴘ','Q':'ǫ','R':'ʀ','S':'s','T':'ᴛ','U':'ᴜ','V':'ᴠ',
+                    'W':'ᴡ','X':'x','Y':'ʏ','Z':'ᴢ'
+                };
+                return str.split('').map(c => sc[c] || c).join('');
+            },
+
+            circled: (str) => {
+                return str.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if (code >= 65 && code <= 90) return String.fromCodePoint(0x24B6 + (code - 65));
+                    if (code >= 97 && code <= 122) return String.fromCodePoint(0x24D0 + (code - 97));
+                    if (code >= 49 && code <= 57) return String.fromCodePoint(0x2460 + (code - 49));
+                    if (code === 48) return '⓪';
+                    return c;
+                }).join('');
+            },
+
+            bold: (str) => {
+                return str.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D5D4 + (code - 65));
+                    if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D5EE + (code - 97));
+                    if (code >= 48 && code <= 57) return String.fromCodePoint(0x1D7EC + (code - 48));
+                    return c;
+                }).join('');
+            },
+
+            dotted: (str) => str.split('').filter(c => c !== ' ').join('•'),
+
+            superscript: (str) => {
+                const superMap = {
+                    'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ',
+                    'l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ',
+                    'x':'ˣ','y':'ʸ','z':'ᶻ',
+                    'A':'ᴬ','B':'ᴮ','C':'ᶜ','D':'ᴰ','E':'ᴱ','F':'ᶠ','G':'ᴳ','H':'ᴴ','I':'ᴵ','J':'ᴶ','K':'ᴷ',
+                    'L':'ᴸ','M':'ᴹ','N':'ᴺ','O':'ᴼ','P':'ᴾ','R':'ᴿ','S':'ˢ','T':'ᵀ','U':'ᵁ','V':'ⱽ','W':'ᵂ'
+                };
+                return str.split('').map(c => superMap[c] || c).join('');
+            },
+
+            spaced: (str) => str.split('').join(' '),
+            raw: (str) => str
+        };
+
+        const pier_formats = [
+            { id: 'fullwidth', label: 'Full-Width Aesthetic', fn: pier_maps.fullwidth },
+            { id: 'smallcaps', label: 'Small Caps', fn: pier_maps.smallcaps },
+            { id: 'circled', label: 'Bubble Circled', fn: pier_maps.circled },
+            { id: 'bold', label: 'Cyberpunk Bold', fn: pier_maps.bold },
+            { id: 'dotted', label: 'Dotted Spaced', fn: pier_maps.dotted },
+            { id: 'superscript', label: 'Tiny Superscript', fn: pier_maps.superscript },
+            { id: 'spaced', label: 'Standard Spaced', fn: pier_maps.spaced },
+            { id: 'raw', label: 'Raw As Typed', fn: pier_maps.raw }
+        ];
+
+        function pier_getCharLength(str) {
+            return Array.from(str).length;
+        }
+
+        function pier_setFilter(filterId, btn) {
+            pier_current_filter = filterId;
+            document.querySelectorAll('.pier_mode_btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            pier_generate();
+        }
+
+        function pier_generate() {
+            const rawInput = document.getElementById('pier_input').value.trim() || "Piererra";
+            const container = document.getElementById('pier_results_list');
+            container.innerHTML = "";
+
+            const activeFormats = pier_current_filter === 'all' 
+                ? pier_formats 
+                : pier_formats.filter(f => f.id === pier_current_filter);
+
+            activeFormats.forEach((fmt, idx) => {
+                const formattedName = fmt.fn(rawInput);
+                const fullNickname = PIER_FAMILY_PREFIX + formattedName;
+                const charLen = pier_getCharLength(fullNickname);
+                const isValid = charLen <= PIER_MAX_CHARS;
+
+                const card = document.createElement('div');
+                card.className = 'pier_result_card';
+                card.innerHTML = `
+                    <div class="pier_result_info">
+                        <span class="pier_result_tag">${fmt.label}</span>
+                        <div class="pier_result_text" title="${fullNickname}">${fullNickname}</div>
+                        <div class="pier_meta_bar">
+                            <span class="${isValid ? 'pier_meta_valid' : 'pier_meta_invalid'}">
+                                ${charLen} / ${PIER_MAX_CHARS} Chars ${isValid ? '✓' : '⚠️ Exceeds limit'}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="pier_copy_btn" onclick="pier_copyText('${fullNickname.replace(/'/g, "\'")}', this)">
+                        Copy
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function pier_copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = "Copied!";
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 1500);
+            }).catch(() => {
+                // Fallback for iframe restrictions
+                const input = document.createElement('textarea');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                btn.textContent = "Copied!";
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = "Copy";
+                    btn.classList.remove('copied');
+                }, 1500);
+            });
+        }
+
+        // Initial generation on load
+        window.addEventListener('DOMContentLoaded', pier_generate);
+    </script>
+</body>
+</html>
