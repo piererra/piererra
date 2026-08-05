@@ -2,26 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ＩＭＰＥＲＩ신Ｌ Nickname Generator</title>
     <!-- Coded by Piererra -->
     <style>
         :root {
-            --pier_bg_color: #0d0f17;
+            --pier_bg_color: #0a0c14;
             --pier_card_bg: #161926;
             --pier_accent: #6366f1;
             --pier_accent_hover: #4f46e5;
+            --pier_gold: #f0b429;
+            --pier_gold_dim: #b8860b;
             --pier_text: #f3f4f6;
             --pier_text_muted: #9ca3af;
+            --pier_text_faint: #6b7280;
             --pier_border: #262a3d;
             --pier_card_inner: #0f111a;
             --pier_success: #10b981;
             --pier_danger: #ef4444;
+            --pier_warning: #f59e0b;
         }
 
         *, *::before, *::after {
             box-sizing: border-box;
         }
+
+        html { -webkit-text-size-adjust: 100%; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -29,42 +35,50 @@
             color: var(--pier_text);
             min-height: 100vh;
             margin: 0;
-            padding: 24px 16px;
+            padding: clamp(12px, 4vw, 24px);
             display: flex;
             justify-content: center;
-            align-items: center;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
-                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+            align-items: flex-start;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.16) 0%, transparent 60%),
+                radial-gradient(circle at 85% 15%, rgba(240, 180, 41, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.07) 0%, transparent 50%);
         }
 
         .pier_container {
             background-color: var(--pier_card_bg);
             border: 1px solid var(--pier_border);
-            border-radius: 16px;
-            padding: 32px 28px;
+            border-radius: 18px;
+            padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 28px);
             width: 100%;
-            max-width: 520px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            max-width: 560px;
+            margin: clamp(8px, 3vh, 40px) auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
         }
 
         .pier_header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 26px;
         }
 
-        /* Shimmering Animated Gradient Effect */
+        .pier_crown {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
         .pier_shimmer_text {
-            font-size: 1.85rem;
+            font-size: clamp(1.35rem, 6vw, 1.85rem);
             font-weight: 800;
             margin: 0 0 8px 0;
             letter-spacing: 2px;
             background: linear-gradient(
-                90deg, 
-                #a855f7 0%, 
-                #3b82f6 25%, 
-                #ffffff 50%, 
-                #3b82f6 75%, 
+                90deg,
+                #a855f7 0%,
+                #3b82f6 25%,
+                #ffffff 50%,
+                #3b82f6 75%,
                 #a855f7 100%
             );
             background-size: 200% auto;
@@ -87,7 +101,7 @@
         }
 
         .pier_group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -100,7 +114,22 @@
             letter-spacing: 0.5px;
         }
 
-        input[type="text"] {
+        .pier_label_row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .pier_char_hint {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--pier_text_faint);
+        }
+
+        input[type="text"], input[type="number"] {
             width: 100%;
             padding: 14px 16px;
             background-color: var(--pier_card_inner);
@@ -110,51 +139,198 @@
             font-size: 1.05rem;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
             border-color: var(--pier_accent);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
 
-        /* Mode Selector Grid */
-        .pier_mode_grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 8px;
-            margin-bottom: 22px;
+        /* Dropdown format selector */
+        .pier_select_wrapper {
+            position: relative;
         }
 
-        .pier_mode_btn {
+        select.pier_select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
             background-color: var(--pier_card_inner);
             border: 1px solid var(--pier_border);
-            border-radius: 8px;
-            color: var(--pier_text_muted);
-            padding: 8px 10px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-
-        .pier_mode_btn:hover {
-            border-color: var(--pier_accent);
+            border-radius: 10px;
             color: #ffffff;
-        }
-
-        .pier_mode_btn.active {
-            background-color: rgba(99, 102, 241, 0.15);
-            border-color: var(--pier_accent);
-            color: #ffffff;
+            font-size: 1rem;
             font-weight: 600;
+            padding: 14px 42px 14px 16px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select.pier_select optgroup {
+            color: var(--pier_text_faint);
+            font-style: normal;
+            font-weight: 700;
+            background-color: var(--pier_card_inner);
+        }
+
+        select.pier_select option {
+            color: #ffffff;
+            font-weight: 500;
+            background-color: var(--pier_card_inner);
+        }
+
+        .pier_select_arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            width: 9px;
+            height: 9px;
+            border-right: 2px solid var(--pier_text_muted);
+            border-bottom: 2px solid var(--pier_text_muted);
+            transform: translateY(-65%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .pier_format_hint {
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: var(--pier_text_faint);
+            line-height: 1.4;
+        }
+
+        .pier_format_hint.pier_risky {
+            color: var(--pier_warning);
+        }
+
+        /* Clan settings (collapsible) */
+        details.pier_settings {
+            margin-bottom: 20px;
+            border: 1px solid var(--pier_border);
+            border-radius: 10px;
+            background-color: var(--pier_card_inner);
+            overflow: hidden;
+        }
+
+        details.pier_settings summary {
+            padding: 12px 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--pier_text_muted);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        details.pier_settings summary::-webkit-details-marker { display: none; }
+
+        details.pier_settings summary::after {
+            content: "▾";
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+            color: var(--pier_text_faint);
+        }
+
+        details.pier_settings[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .pier_settings_body {
+            padding: 4px 14px 16px 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .pier_settings_body label {
+            margin-bottom: 6px;
+        }
+
+        .pier_settings_body input {
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .pier_settings_body input:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .pier_settings_full {
+            grid-column: 1 / -1;
+        }
+
+        .pier_checkbox_row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pier_checkbox_row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--pier_accent);
+            cursor: pointer;
+        }
+
+        .pier_checkbox_row label {
+            margin-bottom: 0;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 0.85rem;
+            color: var(--pier_text);
+            cursor: pointer;
+        }
+
+        @media (max-width: 420px) {
+            .pier_settings_body { grid-template-columns: 1fr; }
+        }
+
+        /* Results actions bar */
+        .pier_results_toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            min-height: 22px;
+        }
+
+        .pier_results_count {
+            font-size: 0.78rem;
+            color: var(--pier_text_faint);
+        }
+
+        .pier_copy_all_btn {
+            background: none;
+            border: 1px solid var(--pier_border);
+            color: var(--pier_text_muted);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .pier_copy_all_btn:hover {
+            border-color: var(--pier_gold);
+            color: var(--pier_gold);
         }
 
         /* Results List Container */
         .pier_results_container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .pier_result_card {
@@ -167,10 +343,15 @@
             justify-content: space-between;
             gap: 12px;
             transition: border-color 0.2s;
+            flex-wrap: wrap;
         }
 
         .pier_result_card:hover {
             border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .pier_result_card.pier_invalid {
+            border-color: rgba(239, 68, 68, 0.35);
         }
 
         .pier_result_info {
@@ -182,8 +363,21 @@
             font-size: 0.7rem;
             color: var(--pier_text_muted);
             text-transform: uppercase;
-            margin-bottom: 2px;
-            display: block;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.4px;
+        }
+
+        .pier_risky_badge {
+            font-size: 0.62rem;
+            color: var(--pier_warning);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 4px;
+            padding: 1px 5px;
+            text-transform: none;
+            letter-spacing: 0;
         }
 
         .pier_result_text {
@@ -199,24 +393,34 @@
         .pier_meta_bar {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 4px;
+            gap: 8px;
+            margin-top: 6px;
             font-size: 0.75rem;
         }
 
-        .pier_meta_valid {
-            color: var(--pier_success);
+        .pier_bar_track {
+            flex-grow: 1;
+            max-width: 90px;
+            height: 4px;
+            border-radius: 4px;
+            background-color: var(--pier_border);
+            overflow: hidden;
         }
 
-        .pier_meta_invalid {
-            color: var(--pier_danger);
+        .pier_bar_fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.2s ease;
         }
+
+        .pier_meta_valid { color: var(--pier_success); white-space: nowrap; }
+        .pier_meta_invalid { color: var(--pier_danger); white-space: nowrap; }
 
         .pier_copy_btn {
             background-color: var(--pier_accent);
             color: white;
             border: none;
-            padding: 8px 14px;
+            padding: 9px 16px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
@@ -226,7 +430,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 70px;
+            min-width: 72px;
         }
 
         .pier_copy_btn:hover {
@@ -238,26 +442,40 @@
             background-color: var(--pier_success);
         }
 
+        .pier_empty_state {
+            text-align: center;
+            padding: 24px 12px;
+            color: var(--pier_text_faint);
+            font-size: 0.85rem;
+            border: 1px dashed var(--pier_border);
+            border-radius: 10px;
+        }
+
         .pier_footer {
             text-align: center;
             font-size: 0.8rem;
             color: var(--pier_text_muted);
-            margin-top: 28px;
+            margin-top: 26px;
             border-top: 1px solid var(--pier_border);
             padding-top: 16px;
         }
 
-        /* Mobile tweaks */
         @media (max-width: 480px) {
-            .pier_container {
-                padding: 24px 18px;
+            .pier_result_card {
+                gap: 8px;
             }
-            .pier_shimmer_text {
-                font-size: 1.5rem;
+            .pier_copy_btn {
+                width: 100%;
+                order: 3;
             }
-            .pier_mode_grid {
-                grid-template-columns: repeat(2, 1fr);
+            .pier_result_info {
+                width: 100%;
             }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pier_shimmer_text { animation: none; }
+            .pier_copy_btn:hover { transform: none; }
         }
     </style>
 </head>
@@ -267,29 +485,91 @@
 
     <div class="pier_container">
         <div class="pier_header">
+            <span class="pier_crown" aria-hidden="true">♛</span>
             <h1 class="pier_shimmer_text">ＩＭＰＥＲＩ신Ｌ</h1>
             <p class="pier_subtitle">Family Nickname Generator</p>
         </div>
 
         <div class="pier_group">
-            <label for="pier_input">Desired Nickname:</label>
+            <div class="pier_label_row">
+                <label for="pier_input">Desired Nickname</label>
+                <span class="pier_char_hint" id="pier_base_count">0 chars</span>
+            </div>
             <input type="text" id="pier_input" placeholder="Enter name (e.g. Piererra)" autocomplete="off" autofocus oninput="pier_generate()">
         </div>
 
-        <div class="pier_group">
-            <label>Formatting Mode Filter:</label>
-            <div class="pier_mode_grid">
-                <button class="pier_mode_btn active" onclick="pier_setFilter('all', this)">All Variations</button>
-                <button class="pier_mode_btn" onclick="pier_setFilter('fullwidth', this)">Full-Width</button>
-                <button class="pier_mode_btn" onclick="pier_setFilter('smallcaps', this)">Small Caps</button>
-                <button class="pier_mode_btn" onclick="pier_setFilter('circled', this)">Circled</button>
-                <button class="pier_mode_btn" onclick="pier_setFilter('bold', this)">Cyber Bold</button>
-                <button class="pier_mode_btn" onclick="pier_setFilter('dotted', this)">Dotted</button>
+        <details class="pier_settings" open>
+            <summary>Fam Settings (prefix)</summary>
+            <div class="pier_settings_body">
+                <div class="pier_settings_full pier_checkbox_row">
+                    <input type="checkbox" id="pier_include_prefix" checked onchange="pier_onPrefixToggle()">
+                    <label for="pier_include_prefix">Include fam name in nickname</label>
+                </div>
+                <div class="pier_settings_full">
+                    <label for="pier_prefix">Family Prefix</label>
+                    <input type="text" id="pier_prefix" value="ＩＭ신•" oninput="pier_generate()">
+                </div>
+                <p class="pier_settings_full pier_format_hint" style="margin-top:0;">Let's Get Rich caps nicknames at a fixed 12 characters, prefix included.</p>
             </div>
+        </details>
+
+        <div class="pier_group">
+            <label for="pier_format_select">Formatting Mode</label>
+            <div class="pier_select_wrapper">
+                <select id="pier_format_select" class="pier_select" onchange="pier_onFilterChange()">
+                    <option value="all">✦ All Styles</option>
+                    <optgroup label="Basic &amp; Popular">
+                        <option value="raw">Raw As Typed</option>
+                        <option value="fullwidth">Full-Width Aesthetic</option>
+                        <option value="smallcaps">Small Caps</option>
+                        <option value="spaced">Standard Spaced</option>
+                        <option value="dotted">Dotted Spaced</option>
+                        <option value="underscore">Underscore Spaced</option>
+                        <option value="hyphen">Hyphen Spaced</option>
+                    </optgroup>
+                    <optgroup label="Fancy Unicode Fonts">
+                        <option value="boldserif">Bold Serif</option>
+                        <option value="italic">Italic Slant</option>
+                        <option value="bolditalic">Bold Italic</option>
+                        <option value="sansbold">Cyber Bold</option>
+                        <option value="sans">Sans Clean</option>
+                        <option value="sansitalic">Sans Italic</option>
+                        <option value="monospace">Monospace Code</option>
+                        <option value="script">Elegant Script</option>
+                        <option value="boldscript">Bold Script</option>
+                        <option value="fraktur">Gothic Fraktur</option>
+                        <option value="boldfraktur">Bold Fraktur</option>
+                        <option value="doublestruck">Double-Struck</option>
+                    </optgroup>
+                    <optgroup label="Playful &amp; Stylized">
+                        <option value="circled">Bubble Circled</option>
+                        <option value="circledfilled">Circled Filled</option>
+                        <option value="bubblefilled">Bubble Filled</option>
+                        <option value="squared">Squared Blocks</option>
+                        <option value="squaredfilled">Squared Filled</option>
+                        <option value="superscript">Tiny Superscript</option>
+                        <option value="subscript">Tiny Subscript</option>
+                        <option value="upsidedown">Upside Down</option>
+                        <option value="mirror">Mirror Reverse</option>
+                        <option value="strikethrough">Strikethrough</option>
+                        <option value="underline">Underline</option>
+                        <option value="wavy">Wavy Underline</option>
+                        <option value="cursedglitch">Zalgo Glitch</option>
+                        <option value="parenthesized">Parenthesized</option>
+                        <option value="fullwidthbracket">Bracketed Wide</option>
+                        <option value="tagcombo">Tag Combo (•name•)</option>
+                    </optgroup>
+                </select>
+                <span class="pier_select_arrow" aria-hidden="true"></span>
+            </div>
+            <p class="pier_format_hint" id="pier_format_hint"></p>
         </div>
 
         <div class="pier_group">
-            <label>Generated Nicknames (Includes ＩＭ신•):</label>
+            <div class="pier_results_toolbar">
+                <span class="pier_results_count" id="pier_results_count"></span>
+                <button class="pier_copy_all_btn" id="pier_copy_all_btn" onclick="pier_copyAllValid()" style="display:none;">Copy All Valid</button>
+            </div>
             <div id="pier_results_list" class="pier_results_container">
                 <!-- Results rendered via JS -->
             </div>
@@ -303,148 +583,376 @@
     <script>
         // Coded by Piererra
 
-        const PIER_FAMILY_PREFIX = "ＩＭ신•";
-        const PIER_MAX_CHARS = 12;
         let pier_current_filter = 'all';
 
-        // Char map converters
-        const pier_maps = {
-            fullwidth: (str) => str.replace(/[!-~]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)),
-            
-            smallcaps: (str) => {
-                const sc = {
-                    'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ',
-                    'l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ',
-                    'w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ',
-                    'A':'ᴀ','B':'ʙ','C':'ᴄ','D':'ᴅ','E':'ᴇ','F':'ғ','G':'ɢ','H':'ʜ','I':'ɪ','J':'ᴊ','K':'ᴋ',
-                    'L':'ʟ','M':'ᴍ','N':'ɴ','O':'ᴏ','P':'ᴘ','Q':'ǫ','R':'ʀ','S':'s','T':'ᴛ','U':'ᴜ','V':'ᴠ',
-                    'W':'ᴡ','X':'x','Y':'ʏ','Z':'ᴢ'
-                };
-                return str.split('').map(c => sc[c] || c).join('');
-            },
+        function pier_buildMap(baseUpper, baseLower, baseDigit, exceptions) {
+            exceptions = exceptions || {};
+            const map = {};
+            for (let i = 0; i < 26; i++) {
+                const upperChar = String.fromCharCode(65 + i);
+                const lowerChar = String.fromCharCode(97 + i);
+                map[upperChar] = exceptions[upperChar] || String.fromCodePoint(baseUpper + i);
+                map[lowerChar] = exceptions[lowerChar] || String.fromCodePoint(baseLower + i);
+            }
+            if (baseDigit !== null) {
+                for (let i = 0; i < 10; i++) {
+                    map[String(i)] = String.fromCodePoint(baseDigit + i);
+                }
+            }
+            return map;
+        }
 
-            circled: (str) => {
-                return str.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if (code >= 65 && code <= 90) return String.fromCodePoint(0x24B6 + (code - 65));
-                    if (code >= 97 && code <= 122) return String.fromCodePoint(0x24D0 + (code - 97));
-                    if (code >= 49 && code <= 57) return String.fromCodePoint(0x2460 + (code - 49));
-                    if (code === 48) return '⓪';
-                    return c;
-                }).join('');
-            },
+        function pier_applyMap(map) {
+            return (str) => str.split('').map(c => map[c] || c).join('');
+        }
 
-            bold: (str) => {
-                return str.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D5D4 + (code - 65));
-                    if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D5EE + (code - 97));
-                    if (code >= 48 && code <= 57) return String.fromCodePoint(0x1D7EC + (code - 48));
-                    return c;
-                }).join('');
-            },
+        // Mathematical Alphanumeric Symbols mappings
+        const pier_map_boldserif   = pier_buildMap(0x1D400, 0x1D41A, 0x1D7CE);
+        const pier_map_italic      = pier_buildMap(0x1D434, 0x1D44E, null);
+        const pier_map_bolditalic  = pier_buildMap(0x1D468, 0x1D482, null);
+        const pier_map_sansbold    = pier_buildMap(0x1D5D4, 0x1D5EE, 0x1D7EC);
+        const pier_map_sans        = pier_buildMap(0x1D5A0, 0x1D5BA, 0x1D7E2);
+        const pier_map_sansitalic  = pier_buildMap(0x1D608, 0x1D622, null);
+        const pier_map_monospace   = pier_buildMap(0x1D670, 0x1D68A, 0x1D7F6);
+        const pier_map_boldscript  = pier_buildMap(0x1D4D0, 0x1D4EA, null);
+        const pier_map_boldfraktur = pier_buildMap(0x1D56C, 0x1D586, null);
+        const pier_map_script      = pier_buildMap(0x1D49C, 0x1D4B6, null, {
+            'B':'\u212C','E':'\u2130','F':'\u2131','H':'\u210B','I':'\u2110','L':'\u2112','M':'\u2133','R':'\u211B',
+            'e':'\u212F','g':'\u210A','l':'\u2113','o':'\u2134'
+        });
+        const pier_map_fraktur     = pier_buildMap(0x1D504, 0x1D51E, null, {
+            'C':'\u212D','H':'\u210C','I':'\u2111','R':'\u211C','Z':'\u2128'
+        });
+        const pier_map_doublestruck = pier_buildMap(0x1D538, 0x1D552, 0x1D7D8, {
+            'C':'\u2102','H':'\u210D','N':'\u2115','P':'\u2119','Q':'\u211A','R':'\u211D','Z':'\u2124'
+        });
 
-            dotted: (str) => str.split('').filter(c => c !== ' ').join('•'),
-
-            superscript: (str) => {
-                const superMap = {
-                    'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ',
-                    'l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ',
-                    'x':'ˣ','y':'ʸ','z':'ᶻ',
-                    'A':'ᴬ','B':'ᴮ','C':'ᶜ','D':'ᴰ','E':'ᴱ','F':'ᶠ','G':'ᴳ','H':'ᴴ','I':'ᴵ','J':'ᴶ','K':'ᴷ',
-                    'L':'ᴸ','M':'ᴹ','N':'ᴺ','O':'ᴼ','P':'ᴾ','R':'ᴿ','S':'ˢ','T':'ᵀ','U':'ᵁ','V':'ⱽ','W':'ᵂ'
-                };
-                return str.split('').map(c => superMap[c] || c).join('');
-            },
-
-            spaced: (str) => str.split('').join(' '),
-            raw: (str) => str
+        // Small caps
+        const pier_map_smallcaps = {
+            'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ',
+            'l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ',
+            'w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ',
+            'A':'ᴀ','B':'ʙ','C':'ᴄ','D':'ᴅ','E':'ᴇ','F':'ғ','G':'ɢ','H':'ʜ','I':'ɪ','J':'ᴊ','K':'ᴋ',
+            'L':'ʟ','M':'ᴍ','N':'ɴ','O':'ᴏ','P':'ᴘ','Q':'ǫ','R':'ʀ','S':'s','T':'ᴛ','U':'ᴜ','V':'ᴠ',
+            'W':'ᴡ','X':'x','Y':'ʏ','Z':'ᴢ'
         };
 
+        const pier_map_superscript = {
+            'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ',
+            'l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ',
+            'x':'ˣ','y':'ʸ','z':'ᶻ',
+            'A':'ᴬ','B':'ᴮ','C':'ᶜ','D':'ᴰ','E':'ᴱ','F':'ᶠ','G':'ᴳ','H':'ᴴ','I':'ᴵ','J':'ᴶ','K':'ᴷ',
+            'L':'ᴸ','M':'ᴹ','N':'ᴺ','O':'ᴼ','P':'ᴾ','R':'ᴿ','S':'ˢ','T':'ᵀ','U':'ᵁ','V':'ⱽ','W':'ᵂ'
+        };
+
+        const pier_map_subscript = {
+            'a':'ₐ','e':'ₑ','h':'ₕ','i':'ᵢ','j':'ⱼ','k':'ₖ','l':'ₗ','m':'ₘ','n':'ₙ','o':'ₒ','p':'ₚ',
+            'r':'ᵣ','s':'ₛ','t':'ₜ','u':'ᵤ','v':'ᵥ','x':'ₓ',
+            '0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'
+        };
+
+        const pier_map_upsidedown = {
+            'a':'ɐ','b':'q','c':'ɔ','d':'p','e':'ǝ','f':'ɟ','g':'ƃ','h':'ɥ','i':'ᴉ','j':'ɾ','k':'ʞ',
+            'l':'ʃ','m':'ɯ','n':'u','o':'o','p':'d','q':'b','r':'ɹ','s':'s','t':'ʇ','u':'n','v':'ʌ',
+            'w':'ʍ','x':'x','y':'ʎ','z':'z',
+            'A':'∀','B':'B','C':'Ɔ','D':'D','E':'Ǝ','F':'Ⅎ','G':'⅁','H':'H','I':'I','J':'ſ','K':'K',
+            'L':'˥','M':'W','N':'N','O':'O','P':'Ԁ','Q':'Q','R':'R','S':'S','T':'⊥','U':'∩','V':'Λ',
+            'W':'M','X':'X','Y':'⅄','Z':'Z',
+            '0':'0','1':'Ɩ','2':'ᄅ','3':'Ɛ','4':'ㄣ','5':'ϛ','6':'9','7':'ㄥ','8':'8','9':'6'
+        };
+
+        // Bubble filled (negative circled) has capitals only; fall back to outline circled for the rest
+        function pier_circled(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x24B6 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x24D0 + (code - 97));
+                if (code >= 49 && code <= 57) return String.fromCodePoint(0x2460 + (code - 49));
+                if (code === 48) return '⓪';
+                return c;
+            }).join('');
+        }
+
+        function pier_bubbleFilled(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F150 + (code - 65));
+                return pier_circled(c);
+            }).join('');
+        }
+
+        function pier_squared(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F130 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1F130 + (code - 97 - 32));
+                return c;
+            }).join('');
+        }
+
+        // Circled Filled uses black-circle letters where available (upper only), falls back to outline
+        function pier_circledFilled(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F150 + (code - 65));
+                if (code >= 48 && code <= 57) return String.fromCodePoint(0x2776 - 1 + (code - 48 === 0 ? 0 : code - 48));
+                return pier_circled(c);
+            }).join('');
+        }
+
+        function pier_squaredFilled(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x1F170 + (code - 65));
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x1F170 + (code - 97 - 32));
+                return c;
+            }).join('');
+        }
+
+        function pier_parenthesized(str) {
+            return str.split('').map(c => {
+                const code = c.charCodeAt(0);
+                if (code >= 97 && code <= 122) return String.fromCodePoint(0x249C + (code - 97));
+                if (code >= 65 && code <= 90) return String.fromCodePoint(0x249C + (code - 65));
+                if (code >= 49 && code <= 57) return String.fromCodePoint(0x2474 + (code - 49));
+                return c === ' ' ? ' ' : '(' + c + ')';
+            }).join('');
+        }
+
+        function pier_glitch(str) {
+            const marks = ['\u0301','\u0308','\u0330','\u0332','\u0336','\u0347','\u0353'];
+            return str.split('').map((c, i) => c === ' ' ? c : c + marks[i % marks.length]).join('');
+        }
+
+        const pier_maps = {
+            raw: (str) => str,
+            fullwidth: (str) => str.replace(/[!-~]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)),
+            smallcaps: pier_applyMap(pier_map_smallcaps),
+            spaced: (str) => str.split('').join(' '),
+            dotted: (str) => str.split('').filter(c => c !== ' ').join('•'),
+            underscore: (str) => str.split('').filter(c => c !== ' ').join('_'),
+            hyphen: (str) => str.split('').filter(c => c !== ' ').join('-'),
+            boldserif: pier_applyMap(pier_map_boldserif),
+            italic: pier_applyMap(pier_map_italic),
+            bolditalic: pier_applyMap(pier_map_bolditalic),
+            sansbold: pier_applyMap(pier_map_sansbold),
+            sans: pier_applyMap(pier_map_sans),
+            sansitalic: pier_applyMap(pier_map_sansitalic),
+            monospace: pier_applyMap(pier_map_monospace),
+            script: pier_applyMap(pier_map_script),
+            boldscript: pier_applyMap(pier_map_boldscript),
+            fraktur: pier_applyMap(pier_map_fraktur),
+            boldfraktur: pier_applyMap(pier_map_boldfraktur),
+            doublestruck: pier_applyMap(pier_map_doublestruck),
+            circled: pier_circled,
+            circledfilled: pier_circledFilled,
+            bubblefilled: pier_bubbleFilled,
+            squared: pier_squared,
+            squaredfilled: pier_squaredFilled,
+            superscript: pier_applyMap(pier_map_superscript),
+            subscript: pier_applyMap(pier_map_subscript),
+            upsidedown: (str) => str.split('').reverse().map(c => pier_map_upsidedown[c] || c).join(''),
+            mirror: (str) => str.split('').reverse().join(''),
+            strikethrough: (str) => str.split('').map(c => c === ' ' ? c : c + '\u0336').join(''),
+            underline: (str) => str.split('').map(c => c === ' ' ? c : c + '\u0332').join(''),
+            wavy: (str) => str.split('').map(c => c === ' ' ? c : c + '\u0330').join(''),
+            cursedglitch: pier_glitch,
+            parenthesized: pier_parenthesized,
+            fullwidthbracket: (str) => '［' + str.replace(/[!-~]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)) + '］',
+            tagcombo: (str) => '•' + str + '•'
+        };
+
+        // risky = true => uses less common Unicode planes that some in-game bitmap fonts may not render
         const pier_formats = [
-            { id: 'fullwidth', label: 'Full-Width Aesthetic', fn: pier_maps.fullwidth },
-            { id: 'smallcaps', label: 'Small Caps', fn: pier_maps.smallcaps },
-            { id: 'circled', label: 'Bubble Circled', fn: pier_maps.circled },
-            { id: 'bold', label: 'Cyberpunk Bold', fn: pier_maps.bold },
-            { id: 'dotted', label: 'Dotted Spaced', fn: pier_maps.dotted },
-            { id: 'superscript', label: 'Tiny Superscript', fn: pier_maps.superscript },
-            { id: 'spaced', label: 'Standard Spaced', fn: pier_maps.spaced },
-            { id: 'raw', label: 'Raw As Typed', fn: pier_maps.raw }
+            { id: 'raw', label: 'Raw As Typed', risky: false },
+            { id: 'fullwidth', label: 'Full-Width Aesthetic', risky: false },
+            { id: 'smallcaps', label: 'Small Caps', risky: false },
+            { id: 'spaced', label: 'Standard Spaced', risky: false },
+            { id: 'dotted', label: 'Dotted Spaced', risky: false },
+            { id: 'underscore', label: 'Underscore Spaced', risky: false },
+            { id: 'hyphen', label: 'Hyphen Spaced', risky: false },
+            { id: 'boldserif', label: 'Bold Serif', risky: true },
+            { id: 'italic', label: 'Italic Slant', risky: true },
+            { id: 'bolditalic', label: 'Bold Italic', risky: true },
+            { id: 'sansbold', label: 'Cyber Bold', risky: true },
+            { id: 'sans', label: 'Sans Clean', risky: true },
+            { id: 'sansitalic', label: 'Sans Italic', risky: true },
+            { id: 'monospace', label: 'Monospace Code', risky: true },
+            { id: 'script', label: 'Elegant Script', risky: true },
+            { id: 'boldscript', label: 'Bold Script', risky: true },
+            { id: 'fraktur', label: 'Gothic Fraktur', risky: true },
+            { id: 'boldfraktur', label: 'Bold Fraktur', risky: true },
+            { id: 'doublestruck', label: 'Double-Struck', risky: true },
+            { id: 'circled', label: 'Bubble Circled', risky: true },
+            { id: 'circledfilled', label: 'Circled Filled', risky: true },
+            { id: 'bubblefilled', label: 'Bubble Filled', risky: true },
+            { id: 'squared', label: 'Squared Blocks', risky: true },
+            { id: 'squaredfilled', label: 'Squared Filled', risky: true },
+            { id: 'superscript', label: 'Tiny Superscript', risky: true },
+            { id: 'subscript', label: 'Tiny Subscript', risky: true },
+            { id: 'upsidedown', label: 'Upside Down', risky: true },
+            { id: 'mirror', label: 'Mirror Reverse', risky: false },
+            { id: 'strikethrough', label: 'Strikethrough', risky: true },
+            { id: 'underline', label: 'Underline', risky: true },
+            { id: 'wavy', label: 'Wavy Underline', risky: true },
+            { id: 'cursedglitch', label: 'Zalgo Glitch', risky: true },
+            { id: 'parenthesized', label: 'Parenthesized', risky: true },
+            { id: 'fullwidthbracket', label: 'Bracketed Wide', risky: false },
+            { id: 'tagcombo', label: 'Tag Combo (•name•)', risky: false }
         ];
 
         function pier_getCharLength(str) {
             return Array.from(str).length;
         }
 
-        function pier_setFilter(filterId, btn) {
-            pier_current_filter = filterId;
-            document.querySelectorAll('.pier_mode_btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        const PIER_MAX_CHARS = 12;
+
+        function pier_getSettings() {
+            const includePrefix = document.getElementById('pier_include_prefix').checked;
+            const prefixInput = document.getElementById('pier_prefix').value;
+            return {
+                prefix: includePrefix ? (prefixInput.length ? prefixInput : 'ＩＭ신•') : '',
+                maxLen: PIER_MAX_CHARS
+            };
+        }
+
+        function pier_onPrefixToggle() {
+            const includePrefix = document.getElementById('pier_include_prefix').checked;
+            document.getElementById('pier_prefix').disabled = !includePrefix;
             pier_generate();
         }
 
-        function pier_generate() {
-            const rawInput = document.getElementById('pier_input').value.trim() || "Piererra";
-            const container = document.getElementById('pier_results_list');
-            container.innerHTML = "";
+        function pier_onFilterChange() {
+            pier_current_filter = document.getElementById('pier_format_select').value;
+            pier_generate();
+        }
 
-            const activeFormats = pier_current_filter === 'all' 
-                ? pier_formats 
+        function pier_updateFormatHint() {
+            const hintEl = document.getElementById('pier_format_hint');
+            if (pier_current_filter === 'all') {
+                hintEl.textContent = 'Browsing every style at once. Exotic fonts (marked ⚠) may not render on every device or in-game font.';
+                hintEl.classList.remove('pier_risky');
+                return;
+            }
+            const fmt = pier_formats.find(f => f.id === pier_current_filter);
+            if (fmt && fmt.risky) {
+                hintEl.textContent = '⚠ Uses special Unicode characters. Some games\' custom fonts may show boxes (□) instead — preview in-game before saving.';
+                hintEl.classList.add('pier_risky');
+            } else {
+                hintEl.textContent = 'Widely supported — safe bet for most in-game fonts.';
+                hintEl.classList.remove('pier_risky');
+            }
+        }
+
+        function pier_generate() {
+            const rawInputEl = document.getElementById('pier_input');
+            const rawInput = rawInputEl.value.trim() || 'Piererra';
+            document.getElementById('pier_base_count').textContent = pier_getCharLength(rawInputEl.value) + ' chars';
+
+            const { prefix, maxLen } = pier_getSettings();
+            const container = document.getElementById('pier_results_list');
+            container.innerHTML = '';
+            pier_updateFormatHint();
+
+            const activeFormats = pier_current_filter === 'all'
+                ? pier_formats
                 : pier_formats.filter(f => f.id === pier_current_filter);
 
-            activeFormats.forEach((fmt, idx) => {
-                const formattedName = fmt.fn(rawInput);
-                const fullNickname = PIER_FAMILY_PREFIX + formattedName;
+            let validCount = 0;
+            const validNicknames = [];
+
+            activeFormats.forEach((fmt) => {
+                const fn = pier_maps[fmt.id];
+                const formattedName = fn(rawInput);
+                const fullNickname = prefix + formattedName;
                 const charLen = pier_getCharLength(fullNickname);
-                const isValid = charLen <= PIER_MAX_CHARS;
+                const isValid = charLen <= maxLen;
+                const pct = Math.min(100, Math.round((charLen / maxLen) * 100));
+
+                if (isValid) {
+                    validCount++;
+                    validNicknames.push(fullNickname);
+                }
 
                 const card = document.createElement('div');
-                card.className = 'pier_result_card';
+                card.className = 'pier_result_card' + (isValid ? '' : ' pier_invalid');
                 card.innerHTML = `
                     <div class="pier_result_info">
-                        <span class="pier_result_tag">${fmt.label}</span>
+                        <span class="pier_result_tag">${fmt.label}${fmt.risky ? '<span class="pier_risky_badge">⚠ unicode</span>' : ''}</span>
                         <div class="pier_result_text" title="${fullNickname}">${fullNickname}</div>
                         <div class="pier_meta_bar">
+                            <div class="pier_bar_track"><div class="pier_bar_fill" style="width:${pct}%; background-color:${isValid ? 'var(--pier_success)' : 'var(--pier_danger)'};"></div></div>
                             <span class="${isValid ? 'pier_meta_valid' : 'pier_meta_invalid'}">
-                                ${charLen} / ${PIER_MAX_CHARS} Chars ${isValid ? '✓' : '⚠️ Exceeds limit'}
+                                ${charLen}/${maxLen} ${isValid ? '✓' : '⚠️ over limit'}
                             </span>
                         </div>
                     </div>
-                    <button class="pier_copy_btn" onclick="pier_copyText('${fullNickname.replace(/'/g, "\'")}', this)">
+                    <button class="pier_copy_btn" onclick="pier_copyText('${fullNickname.replace(/'/g, "\\'")}', this)">
                         Copy
                     </button>
                 `;
                 container.appendChild(card);
             });
+
+            if (activeFormats.length === 0) {
+                container.innerHTML = '<div class="pier_empty_state">No formats match this selection.</div>';
+            }
+
+            const countEl = document.getElementById('pier_results_count');
+            countEl.textContent = `${activeFormats.length} style${activeFormats.length === 1 ? '' : 's'} · ${validCount} within limit`;
+
+            const copyAllBtn = document.getElementById('pier_copy_all_btn');
+            if (pier_current_filter === 'all' && validNicknames.length > 0) {
+                copyAllBtn.style.display = 'inline-block';
+                copyAllBtn.dataset.payload = validNicknames.join('\n');
+            } else {
+                copyAllBtn.style.display = 'none';
+            }
+        }
+
+        function pier_writeClipboard(text) {
+            return navigator.clipboard && navigator.clipboard.writeText
+                ? navigator.clipboard.writeText(text)
+                : new Promise((resolve, reject) => {
+                    try {
+                        const input = document.createElement('textarea');
+                        input.value = text;
+                        document.body.appendChild(input);
+                        input.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(input);
+                        resolve();
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
         }
 
         function pier_copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
+            pier_writeClipboard(text).then(() => {
                 const originalText = btn.textContent;
-                btn.textContent = "Copied!";
+                btn.textContent = 'Copied!';
                 btn.classList.add('copied');
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.classList.remove('copied');
                 }, 1500);
             }).catch(() => {
-                // Fallback for iframe restrictions
-                const input = document.createElement('textarea');
-                input.value = text;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-                btn.textContent = "Copied!";
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = "Copy";
-                    btn.classList.remove('copied');
-                }, 1500);
+                btn.textContent = 'Failed';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
             });
         }
 
-        // Initial generation on load
+        function pier_copyAllValid() {
+            const btn = document.getElementById('pier_copy_all_btn');
+            const payload = btn.dataset.payload || '';
+            pier_writeClipboard(payload).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied all!';
+                setTimeout(() => { btn.textContent = originalText; }, 1500);
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', pier_generate);
     </script>
 </body>
