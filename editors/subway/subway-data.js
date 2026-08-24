@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-08-24T05:37:20.696Z
+   Last synced: 2026-08-24T11:27:51.979Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -229,7 +229,7 @@ var ptSSGData = (function () {
     { id: "lily", name: "Lily", available: true, outfits: [{"id":"default","name":"Default"},{"id":"kangarumiOutfit","name":"Kangarumi Outfit"}] },
     { id: "rudyrascal", name: "Rudy Rascal", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "ventura", name: "Ventura", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "glorgalax", name: "Glorgalax", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "glorgalax", name: "Glorgalax", available: true, outfits: [{"id":"default","name":"Default"},{"id":"galaxyEmpurrorOutfit","name":"Galaxy Empurror Outfit"}] },
     { id: "helene", name: "Helene", available: true, outfits: [{"id":"default","name":"Default"},{"id":"ogrepowerOutfit","name":"Ogrepower Outfit"}] },
     { id: "leo", name: "Leo", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "ozzy", name: "Ozzy", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -329,11 +329,14 @@ var ptSSGData = (function () {
     { id: "lestari", name: "Lestari", available: true, outfits: [{"id":"default","name":"Default"},{"id":"hotSpotOutfit","name":"Hot Spot Outfit"}] },
     { id: "danUnder", name: "Dan Under", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "sandy", name: "Sandy", available: true, outfits: [{"id":"default","name":"Default"},{"id":"sinkOrSwimOutfit","name":"Sink Or Swim Outfit"}] },
+    { id: "redino", name: "Redino", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "marieMacaron", name: "Marie Macaron", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "pierre", name: "Pierre", available: true, outfits: [{"id":"default","name":"Default"},{"id":"bonVoyageOutfit","name":"Bon Voyage Outfit"}] },
     { id: "runaDarko", name: "Runa & Darko", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "wolf", name: "Wolf", available: false, outfits: [{"id":"default","name":"Default"},{"id":"heroOfRainOutfit","name":"Hero Of Rain Outfit"}] },
-    { id: "redino", name: "Dino", available: true, outfits: [{"id":"default","name":"Default"}] }
+    { id: "wolf", name: "Wolf", available: true, outfits: [{"id":"default","name":"Default"},{"id":"heroOfRainOutfit","name":"Hero Of Rain Outfit"}] },
+    { id: "orionStarborn", name: "Orion Starborn", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "alpha", name: "Alpha", available: false, outfits: [{"id":"default","name":"Default"},{"id":"omegaOutfit","name":"Omega Outfit"}] },
+    { id: "amongUsFrank", name: "Frank", available: true, outfits: [{"id":"default","name":"Default"}] }
   ];
 
   var HOVERBOARDS = [
@@ -668,9 +671,12 @@ var ptSSGData = (function () {
     { id: "jeTaime", name: "Je T'aime", available: true, upgrades: [{"id":"default","name":"Default"}] },
     { id: "sweetElite", name: "Sweet Elite", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"glider","name":"Glider"}] },
     { id: "yellowFellow", name: "Yellow Fellow", available: true, upgrades: [{"id":"superJump","name":"Super Jump"}] },
-    { id: "forestForce", name: "Forest Force", available: false, upgrades: [{"id":"default","name":"Default"}] },
-    { id: "silverFlame", name: "Silver Flame", available: false, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
-    { id: "vulkarion", name: "Vulkarion", available: false, upgrades: [{"id":"glider","name":"Glider"},{"id":"highSpeed","name":"High Speed"}] }
+    { id: "vulkarion", name: "Vulkarion", available: true, upgrades: [{"id":"glider","name":"Glider"},{"id":"highSpeed","name":"High Speed"}] },
+    { id: "silverFlame", name: "Silver Flame", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
+    { id: "forestForce", name: "Forest Force", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "astroBelt", name: "Astro Belt", available: false, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"lowrider","name":"Lowrider"}] },
+    { id: "lunarSurfer", name: "Lunar Surfer", available: false, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "neoGlarx4000", name: "Neo Glarx 4000", available: false, upgrades: [{"id":"doubleJump","name":"Double Jump"}] }
   ];
 
   var FRAMES = [
@@ -686,7 +692,7 @@ var ptSSGData = (function () {
     { id: "pumpkin_frame", name: "Pumpkin Frame" },
     { id: "summer_frame", name: "Summer Frame" },
     { id: "winter_frame", name: "Winter Frame" },
-    { id: "dragon_frame", name: "Dragon Frame" },
+    { id: "galaxy_frame", name: "Galaxy Frame" },
     { id: "plant_frame", name: "Plant Frame" },
     { id: "pride_frame", name: "Pride Frame" },
     { id: "glorx_frame", name: "Glorx Frame" },
@@ -699,6 +705,7 @@ var ptSSGData = (function () {
     { id: "easter_frame", name: "Easter Frame" },
     { id: "birthday2024_frame", name: "Birthday2024 Frame" },
     { id: "brawlstars_gems_frame", name: "Brawlstars Gems Frame" },
+    { id: "dragon_frame", name: "Dragon Frame" },
     { id: "collection_revamp_01_frame", name: "Collection Revamp 01 Frame" },
     { id: "collection_revamp_02_frame", name: "Collection Revamp 02 Frame" },
     { id: "collection_revamp_03_frame", name: "Collection Revamp 03 Frame" },
@@ -723,6 +730,7 @@ var ptSSGData = (function () {
     { id: "pvp_leaderboard_05_frame", name: "Pvp Leaderboard 05 Frame" },
     { id: "pvp_leaderboard_06_frame", name: "Pvp Leaderboard 06 Frame" },
     { id: "pvp_leaderboard_07_frame", name: "Pvp Leaderboard 07 Frame" },
+    { id: "pvp_leaderboard_08_frame", name: "Pvp Leaderboard 08 Frame" },
     { id: "stpatrick_frame", name: "Stpatrick Frame" }
   ];
 
@@ -732,6 +740,7 @@ var ptSSGData = (function () {
     { id: "burger_graffiti_portrait", name: "Burger Graffiti Portrait" },
     { id: "noodlebox_graffiti_portrait", name: "Noodlebox Graffiti Portrait" },
     { id: "sandwich_graffiti_portrait", name: "Sandwich Graffiti Portrait" },
+    { id: "bubbletea_graffiti_portrait", name: "Bubbletea Graffiti Portrait" },
     { id: "ballerinatricky_portrait", name: "Ballerinatricky Portrait" },
     { id: "bobtheblob_graffiti_portrait", name: "Bobtheblob Graffiti Portrait" },
     { id: "bobtheblob_illustration_portrait", name: "Bobtheblob Illustration Portrait" },
@@ -782,6 +791,7 @@ var ptSSGData = (function () {
     { id: "tara_graffiti_portrait", name: "Tara Graffiti Portrait" },
     { id: "alexandre_stanoutfit_portrait", name: "Alexandre Stanoutfit Portrait" },
     { id: "mateosantocampooutfit_illustration_portrait", name: "Mateosantocampooutfit Illustration Portrait" },
+    { id: "orionstarborn_illustration_portrait", name: "Orionstarborn Illustration Portrait" },
     { id: "mariemacaron_illustration_portrait", name: "Mariemacaron Illustration Portrait" },
     { id: "chickenjake_illustration_portrait", name: "Chickenjake Illustration Portrait" },
     { id: "whiterabbit_illustration_portrait", name: "Whiterabbit Illustration Portrait" },
@@ -789,6 +799,8 @@ var ptSSGData = (function () {
     { id: "grandjuke_illustration_portrait", name: "Grandjuke Illustration Portrait" },
     { id: "valentina_illustration_portrait", name: "Valentina Illustration Portrait" },
     { id: "tsukichan_illustration_portrait", name: "Tsukichan Illustration Portrait" },
+    { id: "glorgalax_illustration_portrait", name: "Glorgalax Illustration Portrait" },
+    { id: "runadarko_illustration_portrait", name: "Runadarko Illustration Portrait" },
     { id: "yutanigiftgrifter_illustration_portrait", name: "Yutanigiftgrifter Illustration Portrait" },
     { id: "missmaia_illustration_portrait", name: "Missmaia Illustration Portrait" },
     { id: "seansnow_illustration_portrait", name: "Seansnow Illustration Portrait" },
@@ -817,6 +829,7 @@ var ptSSGData = (function () {
     { id: "ruhi_illustration_portrait", name: "Ruhi Illustration Portrait" },
     { id: "soul_illustration_portrait", name: "Soul Illustration Portrait" },
     { id: "lucy_illustration_portrait", name: "Lucy Illustration Portrait" },
+    { id: "wolf_illustration_portrait", name: "Wolf Illustration Portrait" },
     { id: "sunny_graffiti_portrait", name: "Sunny Graffiti Portrait" },
     { id: "stella_graffiti_portrait", name: "Stella Graffiti Portrait" },
     { id: "mia_graffiti_portrait", name: "Mia Graffiti Portrait" },
@@ -827,11 +840,8 @@ var ptSSGData = (function () {
     { id: "bspointyguy_illustration_portrait", name: "Bspointyguy Illustration Portrait" },
     { id: "bsskullguy_illustration_portrait", name: "Bsskullguy Illustration Portrait" },
     { id: "bstoughguy_illustration_portrait", name: "Bstoughguy Illustration Portrait" },
-    { id: "bubbletea_graffiti_portrait", name: "Bubbletea Graffiti Portrait" },
     { id: "eightball_jake_illustration_portrait", name: "Eightball Jake Illustration Portrait" },
-    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" },
-    { id: "runadarko_illustration_portrait", name: "Runadarko Illustration Portrait" },
-    { id: "wolf_illustration_portrait", name: "Wolf Illustration Portrait" }
+    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" }
   ];
 
   var BACKGROUNDS = [
@@ -850,9 +860,9 @@ var ptSSGData = (function () {
   // null if a check failed — the UI shows "unknown" in that case
   // rather than a misleading guess.
   var VERSION_INFO = {
-    ourVersion: "3.67.0",
-    playStoreVersion: "3.67.1",
-    lastChecked: "2026-08-24T05:37:20.697Z"
+    ourVersion: "3.68.0",
+    playStoreVersion: "3.68.0",
+    lastChecked: "2026-08-24T11:27:51.980Z"
   };
 
   return {
