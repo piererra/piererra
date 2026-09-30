@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-09-30T10:54:51.632Z
+   Last synced: 2026-09-30T16:40:46.888Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -872,8 +872,8 @@ var ptSSGData = (function () {
   // rather than a misleading guess.
   var VERSION_INFO = {
     ourVersion: "3.69.0",
-    playStoreVersion: null,
-    lastChecked: "2026-09-30T10:54:51.634Z"
+    playStoreVersion: "3.69.2",
+    lastChecked: "2026-09-30T16:40:46.889Z"
   };
 
   return {
