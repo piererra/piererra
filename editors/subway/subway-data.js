@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-10-05T01:39:03.818Z
+   Last synced: 2026-10-05T12:03:53.845Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -278,7 +278,7 @@ var ptSSGData = (function () {
     { id: "rochelleRebelle", name: "Rochelle Rebelle", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "asher", name: "Asher", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "asherSplasherOutfit", name: "Asher", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "whiteRabbit", name: "White Rabbit", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "whiteRabbit", name: "White Rabbit", available: true, outfits: [{"id":"default","name":"Default"},{"id":"nightshadeOutfit","name":"Nightshade Outfit"}] },
     { id: "peter", name: "Peter", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "peterBunAndRunOutfit", name: "Peter", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "tara", name: "Tara", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -310,7 +310,7 @@ var ptSSGData = (function () {
     { id: "ballerinaLatticina", name: "Ballerina Latticina", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "frankNoir", name: "Frank Noir", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "holly", name: "Holly", available: true, outfits: [{"id":"default","name":"Default"},{"id":"blobbusterOutfit","name":"Blobbuster Outfit"}] },
-    { id: "seanSnow", name: "Sean Snow", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "seanSnow", name: "Sean Snow", available: true, outfits: [{"id":"default","name":"Default"},{"id":"frankenstyleOutfit","name":"Frankenstyle Outfit"}] },
     { id: "mia", name: "Mia", available: true, outfits: [{"id":"default","name":"Default"},{"id":"alpineAmourOutfit","name":"Alpine Amour Outfit"}] },
     { id: "rosalita", name: "Rosalita", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "lorcan", name: "Lorcan", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -338,8 +338,10 @@ var ptSSGData = (function () {
     { id: "alpha", name: "Alpha", available: true, outfits: [{"id":"default","name":"Default"},{"id":"omegaOutfit","name":"Omega Outfit"}] },
     { id: "amongUsFrank", name: "Frank", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "santiGrafito", name: "Santi Grafito", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "matilda", name: "Matilda", available: false, outfits: [{"id":"default","name":"Default"},{"id":"comicCoreOutfit","name":"Comic Core Outfit"}] },
-    { id: "bbno$", name: "Bbno$", available: false, outfits: [{"id":"default","name":"Default"}] }
+    { id: "matilda", name: "Matilda", available: true, outfits: [{"id":"default","name":"Default"},{"id":"comicCoreOutfit","name":"Comic Core Outfit"}] },
+    { id: "bbno$", name: "Bbno$", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "xoloko", name: "Xoloko", available: false, outfits: [{"id":"default","name":"Default"}] },
+    { id: "countCorvin", name: "Count Corvin", available: true, outfits: [{"id":"default","name":"Default"}] }
   ];
 
   var HOVERBOARDS = [
@@ -680,9 +682,12 @@ var ptSSGData = (function () {
     { id: "astroBelt", name: "Astro Belt", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"lowrider","name":"Lowrider"}] },
     { id: "lunarSurfer", name: "Lunar Surfer", available: true, upgrades: [{"id":"default","name":"Default"}] },
     { id: "neoGlarx4000", name: "Neo Glarx 4000", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
-    { id: "digiDash", name: "Digi Dash", available: true, upgrades: [{"id":"default","name":"Default"}] },
     { id: "plankenstein", name: "Plankenstein", available: true, upgrades: [{"id":"superJump","name":"Super Jump"},{"id":"glider","name":"Glider"}] },
-    { id: "sketchySkater", name: "Sketchy Skater", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"}] }
+    { id: "digiDash", name: "Digi Dash", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "sketchySkater", name: "Sketchy Skater", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
+    { id: "batLuck", name: "Bat Luck", available: true, upgrades: [{"id":"superJump","name":"Super Jump"},{"id":"highSpeed","name":"High Speed"}] },
+    { id: "broom", name: "Broom", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
+    { id: "noxDrift", name: "Nox Drift", available: true, upgrades: [{"id":"default","name":"Default"}] }
   ];
 
   var FRAMES = [
@@ -739,6 +744,8 @@ var ptSSGData = (function () {
     { id: "pvp_leaderboard_07_frame", name: "Pvp Leaderboard 07 Frame" },
     { id: "pvp_leaderboard_08_frame", name: "Pvp Leaderboard 08 Frame" },
     { id: "pvp_leaderboard_09_frame", name: "Pvp Leaderboard 09 Frame" },
+    { id: "pvp_leaderboard_10_frame", name: "Pvp Leaderboard 10 Frame" },
+    { id: "sanctuary_frame", name: "Sanctuary Frame" },
     { id: "stpatrick_frame", name: "Stpatrick Frame" }
   ];
 
@@ -750,6 +757,7 @@ var ptSSGData = (function () {
     { id: "sandwich_graffiti_portrait", name: "Sandwich Graffiti Portrait" },
     { id: "sandwich_illustration_portrait", name: "Sandwich Illustration Portrait" },
     { id: "bubbletea_graffiti_portrait", name: "Bubbletea Graffiti Portrait" },
+    { id: "princek_graffiti_portrait", name: "Princek Graffiti Portrait" },
     { id: "ballerinatricky_portrait", name: "Ballerinatricky Portrait" },
     { id: "bobtheblob_graffiti_portrait", name: "Bobtheblob Graffiti Portrait" },
     { id: "bobtheblob_illustration_portrait", name: "Bobtheblob Illustration Portrait" },
@@ -801,10 +809,12 @@ var ptSSGData = (function () {
     { id: "alexandre_stanoutfit_portrait", name: "Alexandre Stanoutfit Portrait" },
     { id: "mateosantocampooutfit_illustration_portrait", name: "Mateosantocampooutfit Illustration Portrait" },
     { id: "orionstarborn_illustration_portrait", name: "Orionstarborn Illustration Portrait" },
+    { id: "countcorvin_illustration_portrait", name: "Countcorvin Illustration Portrait" },
     { id: "mariemacaron_illustration_portrait", name: "Mariemacaron Illustration Portrait" },
     { id: "santigrafito_illustration_portrait", name: "Santigrafito Illustration Portrait" },
     { id: "chickenjake_illustration_portrait", name: "Chickenjake Illustration Portrait" },
     { id: "whiterabbit_illustration_portrait", name: "Whiterabbit Illustration Portrait" },
+    { id: "whiterabbitnightshade_illustration_portrait", name: "Whiterabbitnightshade Illustration Portrait" },
     { id: "rebecaroar_illustration_portrait", name: "Rebecaroar Illustration Portrait" },
     { id: "grandjuke_illustration_portrait", name: "Grandjuke Illustration Portrait" },
     { id: "valentina_illustration_portrait", name: "Valentina Illustration Portrait" },
@@ -852,7 +862,9 @@ var ptSSGData = (function () {
     { id: "bsskullguy_illustration_portrait", name: "Bsskullguy Illustration Portrait" },
     { id: "bstoughguy_illustration_portrait", name: "Bstoughguy Illustration Portrait" },
     { id: "eightball_jake_illustration_portrait", name: "Eightball Jake Illustration Portrait" },
-    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" }
+    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" },
+    { id: "xoloko_illustration_portrait", name: "Xoloko Illustration Portrait" },
+    { id: "zoe_illustration_portrait", name: "Zoe Illustration Portrait" }
   ];
 
   var BACKGROUNDS = [
@@ -871,9 +883,9 @@ var ptSSGData = (function () {
   // null if a check failed — the UI shows "unknown" in that case
   // rather than a misleading guess.
   var VERSION_INFO = {
-    ourVersion: "3.69.0",
-    playStoreVersion: "3.69.2",
-    lastChecked: "2026-10-05T01:39:03.819Z"
+    ourVersion: "3.70.0",
+    playStoreVersion: "3.70.0",
+    lastChecked: "2026-10-05T12:03:53.847Z"
   };
 
   return {
