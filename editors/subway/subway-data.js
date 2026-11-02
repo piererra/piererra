@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-11-02T02:07:59.005Z
+   Last synced: 2026-11-02T13:08:58.050Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -205,7 +205,7 @@ var ptSSGData = (function () {
     { id: "clockworkJohnny", name: "Clockwork Johnny", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "captainFlash", name: "Captain Flash", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "skye", name: "Skye", available: true, outfits: [{"id":"default","name":"Default"},{"id":"skyAttackOutfit","name":"Sky Attack Outfit"}] },
-    { id: "thunder", name: "Thunder", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "thunder", name: "Thunder", available: true, outfits: [{"id":"default","name":"Default"},{"id":"neonFuOutfit","name":"Neon Fu Outfit"}] },
     { id: "thunderUrbanHeroOutfit", name: "Thunder", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "azura", name: "Azura", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "dragonyear", name: "Dragon", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -340,8 +340,10 @@ var ptSSGData = (function () {
     { id: "santiGrafito", name: "Santi Grafito", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "matilda", name: "Matilda", available: true, outfits: [{"id":"default","name":"Default"},{"id":"comicCoreOutfit","name":"Comic Core Outfit"}] },
     { id: "bbno$", name: "Bbno$", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "xoloko", name: "Xoloko", available: false, outfits: [{"id":"default","name":"Default"}] },
-    { id: "countCorvin", name: "Count Corvin", available: true, outfits: [{"id":"default","name":"Default"}] }
+    { id: "xoloko", name: "Xoloko", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "countCorvin", name: "Count Corvin", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "wuJadeLing", name: "Wu Jade & Ling", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "meihua", name: "Meihua", available: false, outfits: [{"id":"default","name":"Default"},{"id":"baoBaoOutfit","name":"Bao Bao Outfit"}] }
   ];
 
   var HOVERBOARDS = [
@@ -687,7 +689,10 @@ var ptSSGData = (function () {
     { id: "sketchySkater", name: "Sketchy Skater", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
     { id: "batLuck", name: "Bat Luck", available: true, upgrades: [{"id":"superJump","name":"Super Jump"},{"id":"highSpeed","name":"High Speed"}] },
     { id: "broom", name: "Broom", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
-    { id: "noxDrift", name: "Nox Drift", available: true, upgrades: [{"id":"default","name":"Default"}] }
+    { id: "noxDrift", name: "Nox Drift", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "bambooster", name: "Bambooster", available: false, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
+    { id: "dynastyDrifter", name: "Dynasty Drifter", available: false, upgrades: [{"id":"doubleJump","name":"Double Jump"},{"id":"lowrider","name":"Lowrider"}] },
+    { id: "nimbusLink", name: "Nimbus Link", available: false, upgrades: [{"id":"default","name":"Default"}] }
   ];
 
   var FRAMES = [
@@ -697,6 +702,7 @@ var ptSSGData = (function () {
     { id: "hollywood_frame", name: "Hollywood Frame" },
     { id: "candycane_frame", name: "Candycane Frame" },
     { id: "midsummer_frame", name: "Midsummer Frame" },
+    { id: "sanctuary_frame", name: "Sanctuary Frame" },
     { id: "earthday_frame", name: "Earthday Frame" },
     { id: "football_frame", name: "Football Frame" },
     { id: "default_frame", name: "Default Frame" },
@@ -708,6 +714,7 @@ var ptSSGData = (function () {
     { id: "pride_frame", name: "Pride Frame" },
     { id: "glorx_frame", name: "Glorx Frame" },
     { id: "comic_frame", name: "Comic Frame" },
+    { id: "panda_frame", name: "Panda Frame" },
     { id: "lava_frame", name: "Lava Frame" },
     { id: "club_frame", name: "Club Frame" },
     { id: "blob_frame", name: "Blob Frame" },
@@ -745,7 +752,7 @@ var ptSSGData = (function () {
     { id: "pvp_leaderboard_08_frame", name: "Pvp Leaderboard 08 Frame" },
     { id: "pvp_leaderboard_09_frame", name: "Pvp Leaderboard 09 Frame" },
     { id: "pvp_leaderboard_10_frame", name: "Pvp Leaderboard 10 Frame" },
-    { id: "sanctuary_frame", name: "Sanctuary Frame" },
+    { id: "pvp_leaderboard_11_frame", name: "Pvp Leaderboard 11 Frame" },
     { id: "stpatrick_frame", name: "Stpatrick Frame" }
   ];
 
@@ -757,7 +764,6 @@ var ptSSGData = (function () {
     { id: "sandwich_graffiti_portrait", name: "Sandwich Graffiti Portrait" },
     { id: "sandwich_illustration_portrait", name: "Sandwich Illustration Portrait" },
     { id: "bubbletea_graffiti_portrait", name: "Bubbletea Graffiti Portrait" },
-    { id: "princek_graffiti_portrait", name: "Princek Graffiti Portrait" },
     { id: "ballerinatricky_portrait", name: "Ballerinatricky Portrait" },
     { id: "bobtheblob_graffiti_portrait", name: "Bobtheblob Graffiti Portrait" },
     { id: "bobtheblob_illustration_portrait", name: "Bobtheblob Illustration Portrait" },
@@ -796,6 +802,7 @@ var ptSSGData = (function () {
     { id: "thursday_graffiti_portrait", name: "Thursday Graffiti Portrait" },
     { id: "thursday_lilimpoutfit_illustration_portrait", name: "Thursday Lilimpoutfit Illustration Portrait" },
     { id: "electra_graffiti_portrait", name: "Electra Graffiti Portrait" },
+    { id: "princek_graffiti_portrait", name: "Princek Graffiti Portrait" },
     { id: "dog_graffiti_portrait", name: "Dog Graffiti Portrait" },
     { id: "lorcan_graffiti_portrait", name: "Lorcan Graffiti Portrait" },
     { id: "guard_graffiti_portrait", name: "Guard Graffiti Portrait" },
@@ -808,16 +815,18 @@ var ptSSGData = (function () {
     { id: "tara_graffiti_portrait", name: "Tara Graffiti Portrait" },
     { id: "alexandre_stanoutfit_portrait", name: "Alexandre Stanoutfit Portrait" },
     { id: "mateosantocampooutfit_illustration_portrait", name: "Mateosantocampooutfit Illustration Portrait" },
+    { id: "meihuabaobao_graffiti_portrait", name: "Meihuabaobao Graffiti Portrait" },
+    { id: "whiterabbitnightshade_illustration_portrait", name: "Whiterabbitnightshade Illustration Portrait" },
     { id: "orionstarborn_illustration_portrait", name: "Orionstarborn Illustration Portrait" },
-    { id: "countcorvin_illustration_portrait", name: "Countcorvin Illustration Portrait" },
     { id: "mariemacaron_illustration_portrait", name: "Mariemacaron Illustration Portrait" },
     { id: "santigrafito_illustration_portrait", name: "Santigrafito Illustration Portrait" },
     { id: "chickenjake_illustration_portrait", name: "Chickenjake Illustration Portrait" },
     { id: "whiterabbit_illustration_portrait", name: "Whiterabbit Illustration Portrait" },
-    { id: "whiterabbitnightshade_illustration_portrait", name: "Whiterabbitnightshade Illustration Portrait" },
+    { id: "countcorvin_illustration_portrait", name: "Countcorvin Illustration Portrait" },
     { id: "rebecaroar_illustration_portrait", name: "Rebecaroar Illustration Portrait" },
     { id: "grandjuke_illustration_portrait", name: "Grandjuke Illustration Portrait" },
     { id: "valentina_illustration_portrait", name: "Valentina Illustration Portrait" },
+    { id: "wujadeling_illustration_portrait", name: "Wujadeling Illustration Portrait" },
     { id: "tsukichan_illustration_portrait", name: "Tsukichan Illustration Portrait" },
     { id: "glorgalax_illustration_portrait", name: "Glorgalax Illustration Portrait" },
     { id: "runadarko_illustration_portrait", name: "Runadarko Illustration Portrait" },
@@ -839,6 +848,7 @@ var ptSSGData = (function () {
     { id: "george_illustration_portrait", name: "George Illustration Portrait" },
     { id: "joowon_illustration_portrait", name: "Joowon Illustration Portrait" },
     { id: "callum_illustration_portrait", name: "Callum Illustration Portrait" },
+    { id: "xoloko_illustration_portrait", name: "Xoloko Illustration Portrait" },
     { id: "frank_illustration_portrait", name: "Frank Illustration Portrait" },
     { id: "snowy_illustration_portrait", name: "Snowy Illustration Portrait" },
     { id: "akira_illustration_portrait", name: "Akira Illustration Portrait" },
@@ -852,6 +862,7 @@ var ptSSGData = (function () {
     { id: "lucy_illustration_portrait", name: "Lucy Illustration Portrait" },
     { id: "wolf_illustration_portrait", name: "Wolf Illustration Portrait" },
     { id: "sunny_graffiti_portrait", name: "Sunny Graffiti Portrait" },
+    { id: "zoe_illustration_portrait", name: "Zoe Illustration Portrait" },
     { id: "stella_graffiti_portrait", name: "Stella Graffiti Portrait" },
     { id: "mia_graffiti_portrait", name: "Mia Graffiti Portrait" },
     { id: "amongusred_illustration_portrait", name: "Amongusred Illustration Portrait" },
@@ -862,9 +873,7 @@ var ptSSGData = (function () {
     { id: "bsskullguy_illustration_portrait", name: "Bsskullguy Illustration Portrait" },
     { id: "bstoughguy_illustration_portrait", name: "Bstoughguy Illustration Portrait" },
     { id: "eightball_jake_illustration_portrait", name: "Eightball Jake Illustration Portrait" },
-    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" },
-    { id: "xoloko_illustration_portrait", name: "Xoloko Illustration Portrait" },
-    { id: "zoe_illustration_portrait", name: "Zoe Illustration Portrait" }
+    { id: "mrgobbles_illustration_portrait", name: "Mrgobbles Illustration Portrait" }
   ];
 
   var BACKGROUNDS = [
@@ -883,9 +892,9 @@ var ptSSGData = (function () {
   // null if a check failed — the UI shows "unknown" in that case
   // rather than a misleading guess.
   var VERSION_INFO = {
-    ourVersion: "3.70.0",
-    playStoreVersion: "3.70.2",
-    lastChecked: "2026-11-02T02:07:59.007Z"
+    ourVersion: "3.71.0",
+    playStoreVersion: "3.71.0",
+    lastChecked: "2026-11-02T13:08:58.051Z"
   };
 
   return {
