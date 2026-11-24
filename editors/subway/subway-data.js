@@ -11,7 +11,7 @@
    Each character/hoverboard entry has an "available" flag — false
    means it was found in the datamined files but isn't actually
    released in-game yet. The UI hides these by default.
-   Last synced: 2026-11-23T15:42:07.605Z
+   Last synced: 2026-11-24T03:09:42.854Z
 ============================================================ */
 
 var ptSSGData = (function () {
@@ -241,12 +241,12 @@ var ptSSGData = (function () {
     { id: "drflyman", name: "Dr. Flyman", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "pumpkinpete", name: "Pumpkin Pete", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "logan", name: "Logan", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "ginger", name: "Ginger", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "ginger", name: "Ginger", available: true, outfits: [{"id":"default","name":"Default"},{"id":"bunnyBusinessOutfit","name":"Bunny Business Outfit"}] },
     { id: "leif", name: "Leif", available: true, outfits: [{"id":"default","name":"Default"},{"id":"fireBirdOutfit","name":"Fire Bird Outfit"}] },
     { id: "sindri", name: "Sindri", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "demi", name: "Pride Miss Maia", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "snowy", name: "Snowy", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "grandjuke", name: "Grand Juke", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "grandjuke", name: "Grand Juke", available: true, outfits: [{"id":"default","name":"Default"},{"id":"jackpotOutfit","name":"Jackpot Outfit"}] },
     { id: "snake", name: "Snake", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "tangyuan", name: "Tang Yuan", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "valentina", name: "Valentina", available: true, outfits: [{"id":"default","name":"Default"}] },
@@ -343,7 +343,9 @@ var ptSSGData = (function () {
     { id: "xoloko", name: "Xoloko", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "countCorvin", name: "Count Corvin", available: true, outfits: [{"id":"default","name":"Default"}] },
     { id: "wuJadeLing", name: "Wu Jade & Ling", available: true, outfits: [{"id":"default","name":"Default"}] },
-    { id: "meihua", name: "Meihua", available: false, outfits: [{"id":"default","name":"Default"},{"id":"baoBaoOutfit","name":"Bao Bao Outfit"}] }
+    { id: "meihua", name: "Meihua", available: true, outfits: [{"id":"default","name":"Default"},{"id":"baoBaoOutfit","name":"Bao Bao Outfit"}] },
+    { id: "queenOfCards", name: "Queen of Cards", available: true, outfits: [{"id":"default","name":"Default"}] },
+    { id: "jimbo", name: "Jimbo", available: true, outfits: [{"id":"default","name":"Default"}] }
   ];
 
   var HOVERBOARDS = [
@@ -690,9 +692,13 @@ var ptSSGData = (function () {
     { id: "batLuck", name: "Bat Luck", available: true, upgrades: [{"id":"superJump","name":"Super Jump"},{"id":"highSpeed","name":"High Speed"}] },
     { id: "broom", name: "Broom", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"}] },
     { id: "noxDrift", name: "Nox Drift", available: true, upgrades: [{"id":"default","name":"Default"}] },
-    { id: "bambooster", name: "Bambooster", available: false, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
-    { id: "dynastyDrifter", name: "Dynasty Drifter", available: false, upgrades: [{"id":"doubleJump","name":"Double Jump"},{"id":"lowrider","name":"Lowrider"}] },
-    { id: "nimbusLink", name: "Nimbus Link", available: false, upgrades: [{"id":"default","name":"Default"}] }
+    { id: "dynastyDrifter", name: "Dynasty Drifter", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"},{"id":"lowrider","name":"Lowrider"}] },
+    { id: "bambooster", name: "Bambooster", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
+    { id: "nimbusLink", name: "Nimbus Link", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "clockAndRoll", name: "Clock And Roll", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"}] },
+    { id: "flaBingo", name: "Fla Bingo", available: true, upgrades: [{"id":"default","name":"Default"}] },
+    { id: "joker", name: "Joker", available: true, upgrades: [{"id":"highSpeed","name":"High Speed"},{"id":"glider","name":"Glider"}] },
+    { id: "royalFlash", name: "Royal Flash", available: true, upgrades: [{"id":"doubleJump","name":"Double Jump"},{"id":"glider","name":"Glider"}] }
   ];
 
   var FRAMES = [
@@ -718,6 +724,7 @@ var ptSSGData = (function () {
     { id: "lava_frame", name: "Lava Frame" },
     { id: "club_frame", name: "Club Frame" },
     { id: "blob_frame", name: "Blob Frame" },
+    { id: "card_frame", name: "Card Frame" },
     { id: "koi_frame", name: "Koi Frame" },
     { id: "oxford_green_frame", name: "Oxford Green Frame" },
     { id: "oxford_red_frame", name: "Oxford Red Frame" },
@@ -753,6 +760,7 @@ var ptSSGData = (function () {
     { id: "pvp_leaderboard_09_frame", name: "Pvp Leaderboard 09 Frame" },
     { id: "pvp_leaderboard_10_frame", name: "Pvp Leaderboard 10 Frame" },
     { id: "pvp_leaderboard_11_frame", name: "Pvp Leaderboard 11 Frame" },
+    { id: "pvp_leaderboard_12_frame", name: "Pvp Leaderboard 12 Frame" },
     { id: "stpatrick_frame", name: "Stpatrick Frame" }
   ];
 
@@ -820,6 +828,7 @@ var ptSSGData = (function () {
     { id: "orionstarborn_illustration_portrait", name: "Orionstarborn Illustration Portrait" },
     { id: "mariemacaron_illustration_portrait", name: "Mariemacaron Illustration Portrait" },
     { id: "santigrafito_illustration_portrait", name: "Santigrafito Illustration Portrait" },
+    { id: "queenofcards_illustration_portrait", name: "Queenofcards Illustration Portrait" },
     { id: "chickenjake_illustration_portrait", name: "Chickenjake Illustration Portrait" },
     { id: "whiterabbit_illustration_portrait", name: "Whiterabbit Illustration Portrait" },
     { id: "countcorvin_illustration_portrait", name: "Countcorvin Illustration Portrait" },
@@ -855,6 +864,7 @@ var ptSSGData = (function () {
     { id: "rocky_illustration_portrait", name: "Rocky Illustration Portrait" },
     { id: "berta_illustration_portrait", name: "Berta Illustration Portrait" },
     { id: "tasha_illustration_portrait", name: "Tasha Illustration Portrait" },
+    { id: "jimbo_illustration_portrait", name: "Jimbo Illustration Portrait" },
     { id: "pins_illustration_portrait", name: "Pins Illustration Portrait" },
     { id: "kedi_illustration_portrait", name: "Kedi Illustration Portrait" },
     { id: "ruhi_illustration_portrait", name: "Ruhi Illustration Portrait" },
@@ -892,9 +902,9 @@ var ptSSGData = (function () {
   // null if a check failed — the UI shows "unknown" in that case
   // rather than a misleading guess.
   var VERSION_INFO = {
-    ourVersion: "3.71.0",
+    ourVersion: "3.72.0",
     playStoreVersion: "3.72.0",
-    lastChecked: "2026-11-23T15:42:07.607Z"
+    lastChecked: "2026-11-24T03:09:42.855Z"
   };
 
   return {
